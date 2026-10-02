@@ -1,5 +1,21 @@
+function t(key, fallback) {
+    return (window.I18n && typeof window.I18n.t === 'function') ? window.I18n.t(key, fallback) : fallback;
+}
 
-        async function loadInvoiceStoreIdentity() {
+function getSafeErrorMessage(data, fallbackKey = 'messages.load_invoice_error') {
+    if (typeof getErrorMessage === 'function') {
+        return getErrorMessage(data, fallbackKey);
+    }
+    if (window.getErrorMessage && typeof window.getErrorMessage === 'function') {
+        return window.getErrorMessage(data, fallbackKey);
+    }
+    if (data && data.message) return data.message;
+    if (data && data.error) return data.error;
+    if (typeof data === 'string') return data;
+    return t(fallbackKey, 'تعذر تحميل بيانات الفاتورة');
+}
+
+async function loadInvoiceStoreIdentity() {
             let settings = null;
 
             // Tier 1: use settings already fetched by main.js (fastest, no extra request)
@@ -62,8 +78,6 @@
             const token = clean(urlParams.get('token')) || clean(localStorage.getItem('lastOrderToken')) || '';
             const phone = clean(urlParams.get('phone')) || clean(localStorage.getItem('lastOrderPhone')) || '';
 
-            const t = (key, fallback) => (window.I18n && typeof window.I18n.t === 'function') ? window.I18n.t(key, fallback) : fallback;
-
             if (!orderId) {
                 document.getElementById('invoiceItemsBody').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--danger-color);">' + t('invoice.no_order_id', 'لم يتم تحديد رقم الطلب') + '</td></tr>';
                 return;
@@ -105,7 +119,7 @@
                     const authRes = await fetch(`/api/orders/${orderId}`, { credentials: 'include' });
                     if (!authRes.ok) {
                         const errData = await authRes.json().catch(() => ({}));
-                        throw new Error(getErrorMessage(errData, 'messages.load_invoice_error'));
+                        throw new Error(getSafeErrorMessage(errData, 'messages.load_invoice_error'));
                     }
                     order = await authRes.json();
                     items = order.items || [];
@@ -130,7 +144,9 @@
                 document.getElementById('invPayStatus').textContent = order.payment_status === 'paid' ? t('invoice.status_paid', 'مدفوع إلكترونياً بالكامل ✅') : t('invoice.status_unpaid', 'قيد التحصيل نقداً عند الاستلام 📦');
 
                 // Items list
-                const items = order.items || [];
+                if (!items || !items.length) {
+                    items = order.items || [];
+                }
                 const tbody = document.getElementById('invoiceItemsBody');
                 let subtotal = 0;
 
@@ -176,7 +192,7 @@
                 console.error('Invoice error:', err);
                 const tbody = document.getElementById('invoiceItemsBody');
                 if (tbody) {
-                    const errorText = getErrorMessage(err, 'messages.load_invoice_error');
+                    const errorText = getSafeErrorMessage(err, 'messages.load_invoice_error');
                     tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--danger-color);">${t('messages.load_invoice_error', 'تعذر تحميل بيانات الفاتورة')}: ${window.escapeHtml ? window.escapeHtml(errorText) : errorText}</td></tr>`;
                 }
                 const subEl = document.getElementById('invSubtotal');
