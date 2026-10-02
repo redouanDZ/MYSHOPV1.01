@@ -70,22 +70,46 @@
             }
 
             try {
-                let url = `/api/orders/${orderId}`;
-                const queryParts = [];
-                if (token) queryParts.push(`token=${encodeURIComponent(token)}`);
-                if (phone) queryParts.push(`phone=${encodeURIComponent(phone)}`);
-                if (queryParts.length) url += `?${queryParts.join('&')}`;
+                let order = null;
+                let items = [];
 
-                const headers = {};
-                if (token) headers['X-Tracking-Token'] = token;
-                if (phone) headers['X-Verification-Phone'] = phone;
-
-                const res = await fetch(url, { credentials: 'include', headers });
-                if (!res.ok) {
-                    const errData = await res.json().catch(() => ({}));
-                    throw new Error(getErrorMessage(errData, 'messages.load_invoice_error'));
+                // 1. Try full order API if tracking token is available
+                if (token) {
+                    try {
+                        const tokenRes = await fetch(`/api/orders/${orderId}?token=${encodeURIComponent(token)}`, {
+                            credentials: 'include',
+                            headers: { 'X-Tracking-Token': token }
+                        });
+                        if (tokenRes.ok) {
+                            const fullData = await tokenRes.json();
+                            order = fullData;
+                            items = fullData.items || [];
+                        }
+                    } catch (e) {}
                 }
-                const order = await res.json();
+
+                // 2. If order not loaded and phone is present (e.g. from track-order page), fetch via tracking status API
+                if (!order && phone) {
+                    try {
+                        const statusRes = await fetch(`/api/orders/status?orderId=${encodeURIComponent(orderId)}&phone=${encodeURIComponent(phone)}`);
+                        if (statusRes.ok) {
+                            const statusData = await statusRes.json();
+                            order = statusData.order;
+                            items = statusData.items || [];
+                        }
+                    } catch (e) {}
+                }
+
+                // 3. Fallback: try session credentials (logged in user or admin)
+                if (!order) {
+                    const authRes = await fetch(`/api/orders/${orderId}`, { credentials: 'include' });
+                    if (!authRes.ok) {
+                        const errData = await authRes.json().catch(() => ({}));
+                        throw new Error(getErrorMessage(errData, 'messages.load_invoice_error'));
+                    }
+                    order = await authRes.json();
+                    items = order.items || [];
+                }
 
                 // Fill Meta
                 document.getElementById('invNumber').textContent = `INV-${order.order_number || order.id}`;
@@ -94,7 +118,7 @@
 
                 // Customer info
                 document.getElementById('custName').textContent = order.shipping_full_name || t('product.store_customer', 'عميل المتجر');
-                document.getElementById('custPhone').textContent = order.phone || '-';
+                document.getElementById('custPhone').textContent = order.phone || phone || '-';
                 document.getElementById('custEmail').textContent = order.email || '-';
                 document.getElementById('custWilaya').textContent = order.wilaya_name || order.city || t('wilayas.algiers', 'الجزائر');
                 document.getElementById('custAddress').textContent = order.address || '-';
