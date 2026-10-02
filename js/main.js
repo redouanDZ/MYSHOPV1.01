@@ -57,7 +57,12 @@ function initTheme() {
 // Run immediately to avoid page flicker
 initTheme();
 
+let lastThemeToggleTime = 0;
 function toggleTheme() {
+  const now = Date.now();
+  if (now - lastThemeToggleTime < 300) return;
+  lastThemeToggleTime = now;
+
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
