@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="checkout.meta_title">إتمام الطلب والدفع - المتجر الإلكتروني</title>
-    <!-- Preload Primary Font for LCP / Text Performance -->
-    <link rel="preload" href="/fonts/font-1.woff2" as="font" type="font/woff2" crossorigin>
+
 
     <!-- Local Fonts & Icons -->
     <link rel="stylesheet" href="/fonts/fonts.css">
@@ -59,7 +58,7 @@
             padding: 16px;
             cursor: pointer;
             transition: all 0.2s ease;
-            background: var(--card-bg)fff;
+            background: var(--card-bg);
             position: relative;
         }
         .payment-option:hover {
@@ -107,7 +106,7 @@
             color: var(--primary-color);
         }
         .payment-option-icon.bank {
-            background: var(--card-bg)beb;
+            background: #fefce8;
             color: #d97706;
         }
         .payment-option-content {
@@ -140,12 +139,12 @@
             white-space: nowrap;
         }
         [data-theme="dark"] .payment-option {
-            background: var(--text-color);
-            border-color: var(--text-color);
+            background: var(--card-bg);
+            border-color: var(--border-color);
         }
         [data-theme="dark"] .payment-option:hover {
             border-color: #818cf8;
-            background: var(--text-color);
+            background: var(--card-bg);
         }
         [data-theme="dark"] .payment-option.active {
             border-color: #6366f1;
