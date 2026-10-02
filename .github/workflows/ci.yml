@@ -1,0 +1,66 @@
+name: CI Quality Gate
+
+on:
+  push:
+    branches: [ main, "release/*" ]
+  pull_request:
+    branches: [ main, "release/*" ]
+
+jobs:
+  test:
+    name: Lint, Test & Build Validation
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: ecommerce_store_test
+          MYSQL_USER: ecommerce_user
+          MYSQL_PASSWORD: testing_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Run ESLint
+      run: npm run lint
+
+    - name: Run Automated Test Suites
+      env:
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_USER: ecommerce_user
+        DB_PASSWORD: testing_password
+        DB_NAME: ecommerce_store_test
+      run: npm test
+
+    - name: Build Minified CSS Assets
+      run: npm run build:css
+
+    - name: Run Build & Integrity Check
+      run: npm run build
+
+    - name: Run I18n Integrity Check
+      run: npm run check:i18n

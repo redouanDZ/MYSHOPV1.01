@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="checkout.meta_title">إتمام الطلب والدفع - المتجر الإلكتروني</title>
+    <!-- Preload Primary Font for LCP / Text Performance -->
+    <link rel="preload" href="/fonts/font-1.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Local Fonts & Icons -->
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
+    <style>
+        .delivery-type-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .delivery-card {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .delivery-card.active, .delivery-card:hover {
+            border-color: var(--primary-color);
+            background: #eff6ff;
+        }
+        .delivery-card input[type="radio"] {
+            margin: 0;
+            accent-color: var(--primary-color);
+        }
+        .delivery-card-info strong {
+            display: block;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+        .delivery-card-info span {
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+
+        /* Modern Payment Options Styling */
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .payment-option {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--card-bg)fff;
+            position: relative;
+        }
+        .payment-option:hover {
+            border-color: #6366f1;
+            background: #faf5ff;
+        }
+        .payment-option.active {
+            border-color: #4f46e5;
+            background: #f5f3ff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+        }
+        .payment-option:last-child:nth-child(odd) {
+            grid-column: 1 / -1;
+        }
+        .payment-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .payment-option label {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            cursor: pointer;
+            width: 100%;
+            margin: 0;
+        }
+        .payment-option-icon {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .payment-option-icon.cod {
+            background: #ecfdf5;
+            color: var(--success-color);
+        }
+        .payment-option-icon.epay {
+            background: #eff6ff;
+            color: var(--primary-color);
+        }
+        .payment-option-icon.bank {
+            background: var(--card-bg)beb;
+            color: #d97706;
+        }
+        .payment-option-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .payment-option-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 4px;
+        }
+        .payment-option-header strong {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+        .payment-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #ecfdf5;
+            color: var(--success-color);
+            border: 1px solid #a7f3d0;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 9px;
+            border-radius: 9999px;
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+        [data-theme="dark"] .payment-option {
+            background: var(--text-color);
+            border-color: var(--text-color);
+        }
+        [data-theme="dark"] .payment-option:hover {
+            border-color: #818cf8;
+            background: var(--text-color);
+        }
+        [data-theme="dark"] .payment-option.active {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.12);
+        }
+        [data-theme="dark"] .payment-option-header strong {
+            color: #f1f5f9;
+        }
+        [data-theme="dark"] .payment-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        [data-theme="dark"] .payment-option-icon.cod {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+        }
+        [data-theme="dark"] .payment-option-icon.epay {
+            background: rgba(37, 99, 235, 0.15);
+            color: #60a5fa;
+        }
+        [data-theme="dark"] .payment-option-icon.bank {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+        }
+        @media (max-width: 640px) {
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+  <meta name="theme-color" content="#2563eb">
+  <link rel="manifest" href="/manifest.json">
+      <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+
+    <!-- Theme Anti-Flicker -->
+    <script src="js/theme-init.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header id="site-header"></header>
+
+    <!-- Page title -->
+    <div class="page-title">
+        <div class="container">
+            <h1 data-i18n="checkout.title">إتمام الطلب والدفع</h1>
+            <div class="breadcrumb">
+                <a href="index.html" ><span data-i18n="footer.link_home">الرئيسية</span></a> <i class="fas fa-chevron-left"></i> <a href="cart.html" ><span data-i18n="footer.link_cart">عربة التسوق</span></a> <i class="fas fa-chevron-left"></i> <span data-i18n="common.checkout">الدفع</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section">
+        <div class="container">
+            <div class="checkout-container">
+                <form id="checkout-form">
+                    <div class="checkout-steps">
+                        <div class="step active" id="stepIndicator1">
+                            <span class="step-number">1</span>
+                            <span class="step-title" data-i18n="checkout.step_shipping">معلومات الشحن والولاية</span>
+                        </div>
+                        <div class="step" id="stepIndicator2">
+                            <span class="step-number">2</span>
+                            <span class="step-title" data-i18n="checkout.step_payment">طريقة الدفع</span>
+                        </div>
+                        <div class="step" id="stepIndicator3">
+                            <span class="step-number">3</span>
+                            <span class="step-title" data-i18n="checkout.step_review">مراجعة وتأكيد الطلب</span>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Info -->
+                    <div class="checkout-step active" id="shipping-info">
+                        <h2><span data-i18n="checkout.shipping_info">معلومات الشحن والتوصيل</span></h2>
+
+                        <div class="form-group">
+                            <label for="fullname"><span data-i18n="checkout.full_name">الاسم الكامل</span> <span style="color:red">*</span></label>
+                            <input type="text" id="fullname" name="fullname" data-i18n-placeholder="checkout.name_placeholder" placeholder="أدخل اسمك الكامل" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone"><span data-i18n="checkout.phone_label">رقم الهاتف (الجزائر)</span> <span style="color:red">*</span></label>
+                            <input type="tel" id="phone" name="phone" data-i18n-placeholder="checkout.phone_placeholder" placeholder="مثال: 0550123456 أو 0660123456" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email"><span data-i18n="checkout.email_label">البريد الإلكتروني (اختياري لاستلام الفاتورة)</span></label>
+                            <input type="email" id="email" name="email" placeholder="email@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wilayaSelect"><span data-i18n="checkout.wilaya_label">الولاية (58 ولاية)</span> <span style="color:red">*</span></label>
+                            <select id="wilayaSelect" name="wilaya" required data-action="onWilayaChange" data-args="">
+                                <option value=""><span data-i18n="checkout.wilaya_loading">جاري تحميل الولايات...</span></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address"><span data-i18n="checkout.address_label">العنوان الكامل / البلدية</span> <span style="color:red">*</span></label>
+                            <textarea id="address" name="address" rows="2" data-i18n-placeholder="checkout.address_placeholder" placeholder="البلدية، اسم الشارع، رقم العمارة أو المنزل..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label><span data-i18n="checkout.delivery_type_label">نوع التوصيل المفضل:</span></label>
+                            <div class="delivery-type-options">
+                                <label class="delivery-card active" id="deliveryCardHome">
+                                    <input type="radio" name="delivery-type" value="home" checked data-action="onDeliveryTypeChange" data-args="">
+                                    <div class="delivery-card-info">
+                                        <strong><span data-i18n="checkout.home_delivery">توصيل للمنزل (Home Delivery)</span></strong>
+                                        <span id="homeDeliveryPriceLabel"><span data-i18n="checkout.home_delivery_price">السعر: حسب الولاية</span>
+                                    </div>
+                                </label>
+                                <label class="delivery-card" id="deliveryCardDesk">
+                                    <input type="radio" name="delivery-type" value="desk" data-action="onDeliveryTypeChange" data-args="">
+                                    <div class="delivery-card-info">
+                                        <strong><span data-i18n="checkout.desk_delivery">استلام من المكتب (Stop Desk)</span></strong>
+                                        <span id="deskDeliveryPriceLabel"><span data-i18n="checkout.desk_delivery_price">السعر: خيار اقتصادي</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes"><span data-i18n="checkout.notes_label">ملاحظات خاصة بالموزع (اختياري)</span></label>
+                            <textarea id="notes" name="notes" rows="2" data-i18n-placeholder="checkout.notes_placeholder" placeholder="أوقات التواجد المفضلة، تفاصيل إضافية..."></textarea>
+                        </div>
+
+                        <button type="button" class="next-step-btn" data-action="proceedToPayment" data-args=""><span data-i18n="checkout.next_payment">التالي: اختيار طريقة الدفع</span> <i class="fas fa-chevron-left"></i></button>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="checkout-step" id="payment-method">
+                        <h2><span data-i18n="checkout.payment_method">طريقة الدفع</span></h2>
+
+                        <div class="payment-options">
+                            <div class="payment-option active">
+                                <input type="radio" id="cash" name="payment-method" value="cod" checked>
+                                <label for="cash">
+                                    <div class="payment-option-icon cod">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                    </div>
+                                    <div class="payment-option-content">
+                                        <div class="payment-option-header">
+                                            <strong><span data-i18n="checkout.cod_title">الدفع عند الاستلام (COD)</span></strong>
+                                            <span class="payment-badge"><span data-i18n="checkout.most_used">الأكثر استخداماً</span></span>
+                                        </div>
+                                        <p style="margin: 0; font-size: 0.85rem; color: var(--light-text);"><span data-i18n="checkout.cod_desc">ادفع نقداً ومباشرة عند استلام الطلب من موزع شركة التوصيل.</span></p>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="payment-option">
+                                <input type="radio" id="chargily" name="payment-method" value="chargily">
+                                <label for="chargily">
+                                    <div class="payment-option-icon epay">
+                                        <i class="fas fa-credit-card"></i>
+                                    </div>
+                                    <div class="payment-option-content">
+                                        <div class="payment-option-header">
+                                            <strong><span data-i18n="checkout.epay_title">الدفع الإلكتروني (البطاقة الذهبية / CIB)</span></strong>
+                                        </div>
+                                        <p style="margin: 0; font-size: 0.85rem; color: var(--light-text);"><span data-i18n="checkout.epay_desc">دفع فوري وآمن عبر بوابة الدفع الإلكتروني الجزائرية الرسمية.</span></p>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="payment-option">
+                                <input type="radio" id="bank-transfer" name="payment-method" value="bank-transfer">
+                                <label for="bank-transfer">
+                                    <div class="payment-option-icon bank">
+                                        <i class="fas fa-university"></i>
+                                    </div>
+                                    <div class="payment-option-content">
+                                        <div class="payment-option-header">
+                                            <strong><span data-i18n="checkout.ccp_title">تحويل بريدي / بنكي (CCP / BaridiMob)</span></strong>
+                                        </div>
+                                        <p style="margin: 0; font-size: 0.85rem; color: var(--light-text);"><span data-i18n="checkout.ccp_desc">إرسال المبلغ إلى الحساب البريدي وتأكيد الطلب بإرسال الوصل.</span></p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Bank transfer details -->
+                        <div class="payment-details" id="bank-transfer-details" style="display: none; background: var(--card-bg); padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid var(--border-color);">
+                            <h3 style="margin-top: 0; color: var(--text-color);"><span data-i18n="checkout.ccp_info_title">معلومات الحساب البريدي (CCP / BaridiMob)</span></h3>
+                            <p><span data-i18n="checkout.ccp_info_desc">يرجى تحويل إجمالي الطلب إلى الحساب التالي وإرسال صورة الوصل عبر واتساب أو البريد:</span></p>
+                            <div class="bank-info" style="font-size: 0.95rem; line-height: 1.8;">
+                                <div><strong><span data-i18n="checkout.ccp_account_number">رقم الحساب البريدي (CCP):</span></strong> 0012345678 <span data-i18n="checkout.ccp_key">المفتاح</span> 90</div>
+                                <div><strong>RIP:</strong> 00799999001234567890</div>
+                                <div><strong><span data-i18n="checkout.ccp_name">الاسم:</span></strong> <span data-i18n="footer.brand">المتجر الإلكتروني</span></div>
+                            </div>
+                        </div>
+
+                        <div class="step-buttons" style="margin-top: 25px;">
+                            <button type="button" class="prev-step-btn" data-action="goToShippingStep" data-args=""><i class="fas fa-chevron-right"></i> <span data-i18n="checkout.prev_shipping">السابق: معلومات الشحن</span></button>
+                            <button type="button" class="next-step-btn" data-action="proceedToReview" data-args=""><span data-i18n="checkout.next_review">التالي: مراجعة الطلب</span> <i class="fas fa-chevron-left"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Order Review -->
+                    <div class="checkout-step" id="order-review">
+                        <h2><span data-i18n="checkout.review_title">مراجعة وتأكيد الطلب</span></h2>
+
+                        <div class="order-summary">
+                            <h3><span data-i18n="checkout.summary_title">ملخص المنتجات والتوصيل</span></h3>
+
+                            <div class="order-items" id="reviewOrderItems">
+                                <!-- Loaded dynamically from cart -->
+                            </div>
+
+                            <div class="order-totals" style="margin: 20px 0; background: var(--card-bg); padding: 15px; border-radius: 8px;">
+                                <div class="total-item" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span><span data-i18n="checkout.subtotal">المجموع الفرعي للمنتجات:</span>
+                                    <strong id="reviewSubtotal">0 <span data-i18n="common.currency">دج</span></strong>
+                                </div>
+                                <div class="total-item" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span>تكلفة الشحن والتوصيل (<span id="reviewWilayaName"><span data-i18n="checkout.wilaya_fallback">الولاية</span>):</span>
+                                    <strong id="reviewShippingCost">0 <span data-i18n="common.currency">دج</span></strong>
+                                </div>
+                                <div class="total-item" id="reviewDiscountRow" style="display: none; justify-content: space-between; margin-bottom: 8px; color: var(--success-color);">
+                                    <span><span data-i18n="checkout.discount">الخصم المطبق:</span>
+                                    <strong id="reviewDiscount">-0 <span data-i18n="common.currency">دج</span></strong>
+                                </div>
+                                <div class="total-item final-total" style="display: flex; justify-content: space-between; font-size: 1.25rem; color: var(--primary-color); font-weight: bold; border-top: 2px solid var(--border-color); padding-top: 10px;">
+                                    <span><span data-i18n="checkout.total">المبلغ الإجمالي المستحق:</span>
+                                    <span id="reviewGrandTotal">0 <span data-i18n="common.currency">دج</span></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group checkbox-group" style="margin: 20px 0;">
+                                <input type="checkbox" id="terms" name="terms" checked required>
+                                <label for="terms"><span data-i18n="checkout.agree">أوافق على</span> <a href="#"><span data-i18n="checkout.tos">شروط الخدمة</span></a> <span data-i18n="checkout.and_policy">وسياسة الاسترجاع الخاصة بالمتجر.</span></label>
+                            </div>
+
+                            <div class="step-buttons">
+                                <button type="button" class="prev-step-btn" data-action="goToPaymentStep" data-args=""><i class="fas fa-chevron-right"></i> <span data-i18n="checkout.prev_payment">السابق: طريقة الدفع</span></button>
+                                <button type="button" class="submit-order-btn" id="confirmOrderBtn" data-action="placeOrderNow" data-args="">
+                                    <i class="fas fa-check-circle"></i> <span data-i18n="checkout.confirm_btn">تأكيد الطلب الآن</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Footer -->
+    <footer id="site-footer"></footer>
+
+    <script src="js/layout.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/i18n.js"></script>
+</body>
+</html>

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل التوثيق والتثبيت الشامل | MyShop E-Commerce Platform</title>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #eef2ff;
+            --dark: #0f172a;
+            --sidebar-bg: #1e293b;
+            --sidebar-text: #94a3b8;
+            --sidebar-active: #ffffff;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --code-bg: #0f172a;
+            --code-color: #f1f5f9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --radius: 12px;
+            --shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0b0f19;
+            --card-bg: #111827;
+            --border: #1f2937;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary-light: rgba(79, 70, 229, 0.15);
+            --shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        aside.sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: -4px 0 25px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            padding: 28px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-logo {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--bg-color, #fff)fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo i {
+            color: #6366f1;
+        }
+
+        .version-badge {
+            background: rgba(99, 102, 241, 0.25);
+            color: #818cf8;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            padding: 20px 14px;
+            flex: 1;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--light-text);
+            font-weight: 800;
+            padding: 12px 14px 6px;
+        }
+
+        .nav-list {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .nav-item a:hover {
+            color: var(--sidebar-active);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(-4px);
+        }
+
+        .nav-item a.active {
+            color: var(--bg-color, #fff)fff;
+            background: var(--primary);
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+        }
+
+        .nav-item a i {
+            width: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        /* Main Content Container */
+        main.main-content {
+            flex: 1;
+            margin-right: 300px;
+            padding: 40px 60px 80px;
+            max-width: 1200px;
+        }
+
+        /* Top Header Bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .breadcrumbs {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-toggle-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        /* Hero Header */
+        .hero-doc {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+            color: var(--bg-color, #fff)fff;
+            padding: 44px 40px;
+            border-radius: 20px;
+            margin-bottom: 44px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -10px rgba(49, 46, 129, 0.4);
+        }
+
+        .hero-doc h1 {
+            font-size: 2.3rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .hero-doc p {
+            font-size: 1.05rem;
+            color: #c7d2fe;
+            max-width: 760px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .hero-pill {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: var(--bg-color, #fff)fff;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Doc Content Sections */
+        .doc-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 36px 32px;
+            margin-bottom: 36px;
+            box-shadow: var(--shadow);
+            scroll-margin-top: 40px;
+        }
+
+        .doc-section h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .doc-section h2 i {
+            color: var(--primary);
+        }
+
+        .doc-section h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 24px 0 12px;
+            color: var(--text);
+        }
+
+        .doc-section p {
+            margin-bottom: 16px;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Callouts / Alerts */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .alert i {
+            font-size: 1.25rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .alert-info {
+            background: #eff6ff;
+            border-right: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+        [data-theme="dark"] .alert-info { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
+
+        .alert-success {
+            background: #ecfdf5;
+            border-right: 4px solid #10b981;
+            color: #065f46;
+        }
+        [data-theme="dark"] .alert-success { background: rgba(16, 185, 129, 0.15); color: #a7f3d0; }
+
+        .alert-warning {
+            background: var(--card-bg)beb;
+            border-right: 4px solid #f59e0b;
+            color: #92400e;
+        }
+        [data-theme="dark"] .alert-warning { background: rgba(245, 158, 11, 0.15); color: #fde68a; }
+
+        /* Code Blocks */
+        .code-box {
+            background: var(--code-bg);
+            border-radius: 10px;
+            margin: 18px 0;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .code-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--light-text);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            direction: ltr;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #e2e8f0;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background: var(--primary);
+            color: var(--bg-color, #fff)fff;
+        }
+
+        pre code {
+            display: block;
+            padding: 16px 20px;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.9rem;
+            color: var(--code-color);
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        /* Key-Value Tables */
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.92rem;
+        }
+
+        .doc-table th, .doc-table td {
+            padding: 12px 16px;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .doc-table th {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .doc-table tr:hover td {
+            background: rgba(79, 70, 229, 0.03);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-green { background: #dcfce7; color: #166534; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-amber { background: #fef3c7; color: #92400e; }
+
+        /* Feature Cards Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .feature-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.15);
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 14px;
+        }
+
+        .feature-card h4 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .feature-card p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            aside.sidebar {
+                transform: translateX(100%);
+            }
+
+            aside.sidebar.open {
+                transform: translateX(0);
+            }
+
+            main.main-content {
+                margin-right: 0;
+                padding: 24px 20px 60px;
+            }
+
+            .mobile-menu-btn {
+                display: inline-flex;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <i class="fas fa-shopping-bag"></i>
+                <span>MyShop Docs</span>
+            </div>
+            <span class="version-badge">v1.0.0</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-title">البداية والتشغيل</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#overview" class="active"><i class="fas fa-star"></i> نظرة عامة والمميزات</a></li>
+                <li class="nav-item"><a href="#requirements"><i class="fas fa-server"></i> متطلبات السيرفر</a></li>
+                <li class="nav-item"><a href="#installation"><i class="fas fa-terminal"></i> التثبيت والتشغيل السريع</a></li>
+                <li class="nav-item"><a href="#docker"><i class="fab fa-docker"></i> التشغيل عبر Docker</a></li>
+            </ul>
+
+            <div class="nav-section-title">الإعدادات وقواعد البيانات</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#env-config"><i class="fas fa-sliders-h"></i> إعداد ملف البيئة (.env)</a></li>
+                <li class="nav-item"><a href="#database"><i class="fas fa-database"></i> ترحيلات قاعدة البيانات</a></li>
+                <li class="nav-item"><a href="#admin-panel"><i class="fas fa-user-shield"></i> لوحة التحكم وحسابات الدخول</a></li>
+            </ul>
+
+            <div class="nav-section-title">المدفوعات والشحن والتسويق</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#payment-gateways"><i class="fas fa-credit-card"></i> بوابات الدفع (Chargily & COD)</a></li>
+                <li class="nav-item"><a href="#telegram-alerts"><i class="fab fa-telegram"></i> إشعارات تيليجرام وواتساب</a></li>
+                <li class="nav-item"><a href="#shipping-labels"><i class="fas fa-shipping-fast"></i> الشحن والولايات وبوالص الشحن</a></li>
+                <li class="nav-item"><a href="#marketing-pixels"><i class="fas fa-chart-line"></i> بكسلات التتبع الإعلاني</a></li>
+            </ul>
+
+            <div class="nav-section-title">النشر والدعم</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#production-deploy"><i class="fas fa-cloud-upload-alt"></i> النشر على الاستضافة (cPanel / VPS)</a></li>
+                <li class="nav-item"><a href="#support-faq"><i class="fas fa-question-circle"></i> الأسئلة الشائعة والدعم</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Top Navigation Bar -->
+        <div class="top-bar">
+            <div class="breadcrumbs">
+                <span>الرئيسية</span>
+                <i class="fas fa-chevron-left" style="font-size: 0.75rem;"></i>
+                <span>التوثيق الفني والتعليمات</span>
+            </div>
+            <div class="top-actions">
+                <button class="theme-toggle-btn" id="themeToggleBtn" title="تبديل الوضع الليلي/النهاري">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero-doc">
+            <h1>منصة التجارة الإلكترونية الشاملة — MyShop</h1>
+            <p>دليل إرشادي تقني شامل يشرح خطوة بخطوة كيفية إعداد، وتثبيت، وتخصيص، ونشر متجرك الإلكتروني على أي سيرفر محلي أو استضافة سحابية بكل سهولة واحترافية.</p>
+            <div class="hero-badges">
+                <span class="hero-pill"><i class="fab fa-node-js"></i> Node.js & Express</span>
+                <span class="hero-pill"><i class="fas fa-database"></i> MySQL 8.0</span>
+                <span class="hero-pill"><i class="fas fa-shield-alt"></i> httpOnly & CSRF Secure</span>
+                <span class="hero-pill"><i class="fas fa-bolt"></i> 1-Click COD Direct Checkout</span>
+                <span class="hero-pill"><i class="fas fa-globe"></i> عربي (RTL) / EN / FR</span>
+            </div>
+        </div>
+
+        <!-- Section 1: Overview -->
+        <section class="doc-section" id="overview">
+            <h2><i class="fas fa-star"></i> 1. نظرة عامة والمميزات التنافسية</h2>
+            <p><strong>MyShop</strong> هو نظام تجارة إلكترونية عربي متكامل وجاهز للإنتاج التجاري، صُمم خصيصاً لتلبية احتياجات التجارة الإلكترونية الحديثة في الجزائر والعالم العربي. يجمع بين سرعة التصفح وتجربة المستخدم الخاطفة، مع أعلى معايير الحماية والأمان على مستوى السيرفر.</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h4>شراء فوري بضغطة زر</h4>
+                    <p>نموذج الشراء المباشر (1-Click COD) في صفحة كل منتج لمضاعفة مبيعاتك وتخفيض التخلي عن السلة.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-credit-card"></i></div>
+                    <h4>دفع محلي عبر البطاقة الذهبية / CIB</h4>
+                    <p>تكامل آمن بالكامل مع بوابة Chargily Pay V2 مع تأكيد دفع تلقائي عبر Webhook مشفر.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fab fa-telegram"></i></div>
+                    <h4>إشعارات فورية عبر Telegram و WhatsApp</h4>
+                    <p>استلام تنبيه صوتي وتفاصيل كل طلب فورياً على هاتفك مع زر تواصل مباشر بواتساب الزبون.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h4>لوحة تحكم وحساب صافي الأرباح</h4>
+                    <p>إحصائيات متقدمة، تتبع سعر تكلفة المنتج (Cost Price)، وحساب صافي أرباح المتجر بدقة متناهية.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-print"></i></div>
+                    <h4>بوالص الشحن وتصدير التوصيل</h4>
+                    <p>طباعة بوالص الشحن الحرارية مباشرة، وتصدير الطلبات CSV بضغطة زر لشركات الشحن (Yalidine, ZR).</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-moon"></i></div>
+                    <h4>وضع داكن وليلي سلس (Dark Mode)</h4>
+                    <p>تصميم عصري فائق الجمال يتكيف تلقائياً مع تفضيلات الزبون بدون أي رمشة شاشة (Anti-Flicker).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Requirements -->
+        <section class="doc-section" id="requirements">
+            <h2><i class="fas fa-server"></i> 2. متطلبات السيرفر والاستضافة</h2>
+            <p>لضمان استقرار وسرعة المنصة، تأكد من توفر المتطلبات التالية في بيئة التشغيل لديك:</p>
+            
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>المكون</th>
+                        <th>الإصدار الموصى به</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Node.js</strong></td>
+                        <td>الإصدار 18.x أو 20.x أو 22.x LTS</td>
+                        <td><span class="badge badge-green">مطلوب أساسي</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>MySQL Database</strong></td>
+                        <td>الإصدار 8.0+ أو MariaDB 10.5+</td>
+                        <td><span class="badge badge-green">مطلوب أساسي</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>مدير الحزم (npm)</strong></td>
+                        <td>الإصدار 9.x أو أعلى</td>
+                        <td><span class="badge badge-green">مطلوب</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Docker & Compose</strong></td>
+                        <td>الإصدار 20+ (اختياري للتشغيل السحابي السريع)</td>
+                        <td><span class="badge badge-blue">اختياري</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 3: Installation -->
+        <section class="doc-section" id="installation">
+            <h2><i class="fas fa-terminal"></i> 3. خطوات التثبيت والتشغيل المحلي السريع</h2>
+            <p>اتبع هذه الخطوات البسيطة لتشغيل المتجر محلياً على جهازك خلال أقل من دقيقتين:</p>
+
+            <h3>الخطوة 1: تثبيت الحزم والمكتبات</h3>
+            <div class="code-box">
+                <div class="code-header">
+                    <span>Terminal / Command Prompt</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> نسخ</button>
+                </div>
+                <pre><code>npm install</code></pre>
+            </div>
+
+            <h3>الخطوة 2: إنشاء وضبط ملف البيئة (.env)</h3>
+            <p>قم بنسخ ملف <code>.env.example</code> إلى ملف جديد باسم <code>.env</code> وضع بيانات الاتصال بقاعدة بيانات MySQL الخاصة بك:</p>
+            <div class="code-box">
+                <div class="code-header">
+                    <span>Terminal</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> نسخ</button>
+                </div>
+                <pre><code>cp .env.example .env</code></pre>
+            </div>
+
+            <h3>الخطوة 3: ترحيل جداول قاعدة البيانات وملء البيانات التجريبية</h3>
+            <div class="code-box">
+                <div class="code-header">
+                    <span>Terminal</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> نسخ</button>
+                </div>
+                <pre><code>npm run migrate
+npm run seed:demo</code></pre>
+            </div>
+
+            <h3>الخطوة 4: تشغيل خادم المتجر</h3>
+            <div class="code-box">
+                <div class="code-header">
+                    <span>Terminal</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> نسخ</button>
+                </div>
+                <pre><code>npm start</code></pre>
+            </div>
+
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <strong>رائع! المتجر يعمل الآن:</strong><br>
+                    يمكنك فتح المتصفح والدخول إلى المتجر عبر: <code>http://localhost:3000</code><br>
+                    ولوحة التحكم الإدارية عبر: <code>http://localhost:3000/admin/index.html</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Docker -->
+        <section class="doc-section" id="docker">
+            <h2><i class="fab fa-docker"></i> 4. التشغيل الفوري عبر Docker</h2>
+            <p>إذا كنت تفضل استخدام حاويات Docker المعزولة، فإن المشروع مجهز مسبقاً بملف <code>docker-compose.yml</code> يقوم بإعداد كل من خادم Node.js وقاعدة بيانات MySQL تلقائياً:</p>
+
+            <div class="code-box">
+                <div class="code-header">
+                    <span>Docker Command</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> نسخ</button>
+                </div>
+                <pre><code>docker compose up --build -d</code></pre>
+            </div>
+            <p>يقوم Docker بإنشاء قاعدة البيانات وتنفيذ الترحيلات تلقائياً، ويعمل الموقع فوراً على المنفذ <code>3000</code>.</p>
+        </section>
+
+        <!-- Section 5: Admin Panel & Credentials -->
+        <section class="doc-section" id="admin-panel">
+            <h2><i class="fas fa-user-shield"></i> 5. لوحة التحكم وحسابات الدخول</h2>
+            <p>يُنشئ المسؤول الحقيقي عبر متغيرات البيئة أو أمر <code>npm run create-admin</code>، ولا تُترك حسابات تجريبية مفوحة في النسخة المقدمة للمراجعة.</p>
+
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>هام جداً قبل إطلاق متجرك الفعلي:</strong><br>
+                    يرجى تغيير كلمة مرور الأدمن عبر لوحة التحكم في صفحة الإعدادات، أو استخدام أمر الإنشاء السريع لتوليد حساب أدمن خاص بك:
+                    <div style="margin-top: 8px;"><code>npm run create-admin</code></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Payment Gateways -->
+        <section class="doc-section" id="payment-gateways">
+            <h2><i class="fas fa-credit-card"></i> 6. إعداد بوابات الدفع الإلكتروني (Chargily Pay & COD)</h2>
+            <p>يدعم المتجر طريقتين للدفع مهيئتين للتجارة الإلكترونية:</p>
+
+            <h3>1. الدفع عند الاستلام (Cash On Delivery - COD)</h3>
+            <p>مفعل افتراضياً ولا يتطلب أي إعدادات خارجية. يستطيع الزبون الطلب بضغطة زر واحدة من خلال نموذج الشراء السريع، ويتم حفظ الطلب فوراً بحالة <code>معلق (pending)</code> وتنبيهك بتفاصيله.</p>
+
+            <h3>2. الدفع بالبطاقة الذهبية / CIB عبر بوابة Chargily Pay V2</h3>
+            <p>لربط بوابة شارجيلي، افتح ملف <code>.env</code> وقم بوضع مفاتيح الربط التي تحصل عليها مجاناً من لوحة تحكم Chargily Pay:</p>
+
+            <div class="code-box">
+                <div class="code-header">
+                    <span>.env</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> نسخ</button>
+                </div>
+                <pre><code>CHARGILY_PUBLIC_KEY=ed_pk_live_xxxxxxxxxxxxxxxxxxxxxxxx
+CHARGILY_SECRET_KEY=ed_sk_live_xxxxxxxxxxxxxxxxxxxxxxxx
+CHARGILY_MODE=live
+CHARGILY_WEBHOOK_URL=https://yourdomain.com/api/payment/chargily/webhook</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 7: Telegram & WhatsApp -->
+        <section class="doc-section" id="telegram-alerts">
+            <h2><i class="fab fa-telegram"></i> 7. إشعارات تيليجرام وواتساب الفورية</h2>
+            <p>وداعاً لفقدان الطلبات! يتضمن MyShop نظام تنبيه فوري يرسل لك تفاصيل كل طلب إلى هاتفك لحظة بلحظة:</p>
+
+            <h3>إعداد بوت تيليجرام (Telegram Bot):</h3>
+            <ol style="margin-right: 24px; color: var(--text-muted); margin-bottom: 16px;">
+                <li>أنشئ بوتاً جديداً عبر <strong>@BotFather</strong> على تيليجرام واحصل على الـ <code>Bot Token</code>.</li>
+                <li>احصل على معرف الشات الخاص بك (Chat ID) عبر بوت <strong>@userinfobot</strong>.</li>
+                <li>أضف البيانات في ملف <code>.env</code>:</li>
+            </ol>
+
+            <div class="code-box">
+                <div class="code-header">
+                    <span>.env</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> نسخ</button>
+                </div>
+                <pre><code>TELEGRAM_BOT_TOKEN=123456789:ABCdefGhIJKlmNoPQRstuVWXyz
+TELEGRAM_CHAT_ID=987654321</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 8: Production Deployment -->
+        <section class="doc-section" id="production-deploy">
+            <h2><i class="fas fa-cloud-upload-alt"></i> 8. النشر على الاستضافة (cPanel / VPS)</h2>
+            <p>يمكن نشر المنصة على أي استضافة سحابية VPS (مثل Hetzner, DigitalOcean, Contabo) أو استضافات مشتركة تدعم Node.js (مثل cPanel Node.js Selector):</p>
+
+            <h3>النشر على سيرفر VPS (Ubuntu / Debian):</h3>
+            <div class="code-box">
+                <div class="code-header">
+                    <span>Ubuntu VPS Setup</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> نسخ</button>
+                </div>
+                <pre><code># 1. تثبيت مدير العمليات PM2 لضمان استمرار عمل الموقع دون توقف
+npm install -g pm2
+
+# 2. تشغيل التطبيق في الخلفية
+pm2 start server.js --name "myshop"
+
+# 3. تفعيل التشغيل التلقائي عند إعادة إقلاع السيرفر
+pm2 startup
+pm2 save</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 9: FAQ -->
+        <section class="doc-section" id="support-faq">
+            <h2><i class="fas fa-question-circle"></i> 9. الأسئلة الشائعة والدعم الفني</h2>
+            
+            <h3>س: هل يدعم السكربت تعديل العملة وأسعار الشحن لجميع الولايات؟</h3>
+            <p>ج: نعم، يمكنك تغيير العملة الافتراضية، وضبط أسعار التوصيل الخاصة بكل ولاية (توصيل للمنزل أو توصيل للمكتب) مباشرة وبكل سهولة من خلال لوحة التحكم في صفحة الإعدادات.</p>
+
+            <h3>س: كيف يمكنني إضافة أكواد التتبع مثل Meta Pixel و TikTok Pixel؟</h3>
+            <p>ج: لا حاجة لتعديل أي كود برمجي! توجه إلى لوحة التحكم > الإعدادات > قسم التسويق، وأدخل معرفات البيكسل الخاصة بك، وسيقوم النظام بتضمينها وتتبع أحداث الشراء (Purchase, AddToCart) تلقائياً.</p>
+
+            <div class="alert alert-info">
+                <i class="fas fa-headset"></i>
+                <div>
+                    <strong>هل تحتاج إلى مساعدة أو تخصيص إضافي؟</strong><br>
+                    يمكنك التواصل مع فريق الدعم الفني مباشرة عبر منصة بيكاليكا، وسنكون سعداء بالإجابة على استفساراتك ومساعدتك في تثبيت المشروع.
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Copy to clipboard helper
+        function copyCode(btn) {
+            const code = btn.closest('.code-box').querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> تم النسخ!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+
+        // Dark / Light Mode Toggle
+        const themeBtn = document.getElementById('themeToggleBtn');
+        const currentTheme = localStorage.getItem('doc_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const activeTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = activeTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('doc_theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeBtn.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        if (mobileBtn && sidebar) {
+            mobileBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        // Smooth scroll & active navigation tracking
+        const navLinks = document.querySelectorAll('.nav-item a');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('.doc-section');
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 120) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

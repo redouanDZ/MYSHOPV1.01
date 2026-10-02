@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="لوحة التحكم الخاصة بإدارة المتجر الإلكتروني - متابعة المبيعات، الطلبات، والمنتجات">
+    <title>لوحة التحكم والإحصائيات - المتجر الإلكتروني</title>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.min.css">
+    <link rel="stylesheet" href="css/dashboard.min.css">
+
+    <!-- Theme Anti-Flicker -->
+    <script src="/js/theme-init.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">المتجر الإلكتروني</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">زيارة المتجر</a></li>
+                    <li><a href="index.html" class="active">لوحة التحكم</a></li>
+                    <li><a href="orders.html">الطلبات</a></li>
+                    <li><a href="products.html">المنتجات</a></li>
+                    <li><a href="users.html">العملاء</a></li>
+                    <li><a href="coupons.html">الكوبونات</a></li>
+                    <li><a href="reviews.html">التقييمات</a></li>
+                    <li><a href="settings.html">الإعدادات</a></li>
+                    <li><a href="../documentation/index.html" target="_blank" style="color: #6366f1;"><i class="fas fa-book-open"></i> التوثيق</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions" style="display: flex; gap: 15px; align-items: center;">
+                <a href="../account.html" class="user-icon" title="حساب الأدمن">
+                    <i class="fas fa-user-shield"></i>
+                </a>
+                <a href="#" class="admin-logout-btn text-danger" title="تسجيل الخروج" >
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>لوحة الإدارة</h2>
+                <p id="adminUserTag">مدير النظام</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html" class="active"><i class="fas fa-tachometer-alt"></i> الإحصائيات العامة</a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-bag"></i> إدارة الطلبات</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> المنتجات والمخزون</a></li>
+                <li><a href="users.html"><i class="fas fa-users"></i> إدارة المستخدمين</a></li>
+                <li><a href="coupons.html"><i class="fas fa-ticket-alt"></i> قسائم الخصم</a></li>
+                <li><a href="reviews.html"><i class="fas fa-star"></i> تقييمات المنتجات</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات والبكسلات</a></li>
+                <li><a href="../index.html"><i class="fas fa-store"></i> واجهة المتجر</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <a href="#" id="adminLogoutBtn" class="text-danger"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h1>نظرة عامة على المبيعات والمخزون</h1>
+                <div>
+                    <span id="currentDateDisplay" style="color: var(--light-text, #64748b); font-size: 0.95rem;"></span>
+                </div>
+            </div>
+
+            <!-- Stats Cards Grid -->
+            <div class="stats-container" style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 25px;">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3 id="statTotalRevenue">0 دج</h3>
+                        <p>إجمالي المبيعات المحققة</p>
+                    </div>
+                    <div class="stat-icon green">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3 id="statNetProfit" style="color: var(--success-color);">0 دج</h3>
+                        <p>صافي الأرباح التقديرية 📈</p>
+                    </div>
+                    <div class="stat-icon green-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3 id="statTotalOrders">0</h3>
+                        <p>إجمالي عدد الطلبات</p>
+                    </div>
+                    <div class="stat-icon blue">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3 id="statNewOrders">0</h3>
+                        <p>طلبات جديدة قيد المعالجة</p>
+                    </div>
+                    <div class="stat-icon orange">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3 id="statLowStock">0</h3>
+                        <p>تنبيه: منتجات قاربت على النفاد</p>
+                    </div>
+                    <div class="stat-icon red">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Charts -->
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h2>نمو المبيعات (شهرياً)</h2>
+                    <div style="position: relative; height: 300px; width: 100%;"><canvas id="ordersChart"></canvas></div>
+                </div>
+                <div class="chart-box">
+                    <h2>توزيع حالات الطلبات</h2>
+                    <div style="position: relative; height: 300px; width: 100%;"><canvas id="statusChart"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Low Stock & Top Products Grid -->
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h2 style="margin-top: 0; font-size: 1.15rem; color: var(--danger-color);"><i class="fas fa-exclamation-circle"></i> تنبيهات المخزون الحرج (أقل من 3 قطع)</h2>
+                    <div id="lowStockItemsList">
+                        <p class="text-slate">جاري فحص المخزون...</p>
+                    </div>
+                </div>
+
+                <div class="chart-box">
+                    <h2 style="margin-top: 0; font-size: 1.15rem; color: var(--primary-color);"><i class="fas fa-fire"></i> المنتجات الأكثر طلباً ومبيعاً</h2>
+                    <div id="topSoldItemsList">
+                        <p class="text-slate">جاري جلب إحصائيات المبيعات...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.js"></script>
+    <script src="../js/api-client.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/pages/index.js" defer></script>
+</body>
+</html>

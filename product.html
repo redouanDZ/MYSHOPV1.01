@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="product.meta_title">تفاصيل المنتج - متجر الإلكتروني</title>
+    <!-- Preload Primary Font for LCP / Text Performance -->
+    <link rel="preload" href="/fonts/font-1.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Local Fonts & Icons -->
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
+    <style>
+        /* Product Variants Styling with Dark Mode & Responsive Layout */
+        .product-options {
+            margin-bottom: 22px;
+        }
+        .variant-options {
+            margin-bottom: 18px;
+        }
+        .variant-select {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .variant-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 2px solid var(--border-color, #e2e8f0);
+            background: var(--card-bg, #ffffff);
+            color: var(--text-color, #1e293b);
+            border-radius: 10px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            min-height: 42px;
+        }
+        .variant-btn:hover:not(.out-of-stock) {
+            border-color: var(--primary-color, #4f46e5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+        }
+        .variant-btn.active {
+            border-color: var(--primary-color, #4f46e5);
+            background: #eff6ff;
+            color: var(--primary-color, #4f46e5);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+        [data-theme="dark"] .variant-btn {
+            background: #1e293b;
+            border-color: #334155;
+            color: #f1f5f9;
+        }
+        [data-theme="dark"] .variant-btn:hover:not(.out-of-stock) {
+            border-color: var(--primary-color, #6366f1);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+        }
+        [data-theme="dark"] .variant-btn.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary-color, #6366f1);
+            color: #a5b4fc;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        }
+        .variant-btn.out-of-stock {
+            opacity: 0.45;
+            cursor: not-allowed;
+            background: rgba(148, 163, 184, 0.08);
+            border-style: dashed;
+        }
+        .variant-btn.out-of-stock .variant-name {
+            text-decoration: line-through;
+        }
+        .variant-price-mod {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary-color, #4f46e5);
+            background: rgba(79, 70, 229, 0.1);
+            padding: 2px 7px;
+            border-radius: 6px;
+        }
+        [data-theme="dark"] .variant-price-mod {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+        }
+        .variant-badge.out {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.12);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        @media (max-width: 640px) {
+            .variant-btn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                flex: 1 1 calc(50% - 10px);
+                justify-content: center;
+            }
+        }
+        .thumbnail-images {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+        .thumbnail-images img {
+            width: 72px;
+            height: 72px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--border-color, #e2e8f0);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--card-bg, #fff);
+        }
+        .thumbnail-images img:hover {
+            border-color: var(--primary-color, #4f46e5);
+            transform: translateY(-2px);
+        }
+        .thumbnail-images img.active {
+            border-color: var(--primary-color, #4f46e5);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+        }
+        [data-theme="dark"] .thumbnail-images img {
+            border-color: #334155;
+            background: #1e293b;
+        }
+        [data-theme="dark"] .thumbnail-images img.active {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+        }
+        html[dir="ltr"] .breadcrumb i.fa-chevron-left {
+            transform: scaleX(-1);
+            display: inline-block;
+        }
+    </style>
+  <meta name="theme-color" content="#2563eb">
+  <link rel="manifest" href="/manifest.json">
+      <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+
+    <!-- Theme Anti-Flicker -->
+    <script src="/js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+</head>
+<body>
+    <!-- رأس الموقع الموحد -->
+    <header id="site-header"></header>
+
+    <div class="page-title">
+        <div class="container">
+            <h1 id="product-title" data-i18n="product.page_title">تفاصيل المنتج</h1>
+            <div class="breadcrumb">
+                <a href="index.html" data-i18n="footer.link_home">الرئيسية</a> <i class="fas fa-chevron-left"></i> <a href="shop.html" data-i18n="shop.title">التسوق</a> <i class="fas fa-chevron-left"></i> <span id="product-breadcrumb" data-i18n="product.page_title">تفاصيل المنتج</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="product-details">
+        <div class="container">
+            <div class="product-container">
+                <div class="product-images">
+                    <div class="main-image"><img id="main-image" src="images/product-placeholder.jpg" srcset="images/product-placeholder.jpg 1x, images/product-placeholder.jpg 2x" width="600" height="600" loading="eager" data-i18n="product.main_image_alt" alt="المنتج الرئيسي"></div>
+                    <div class="thumbnail-images" id="thumbnail-images"></div>
+                </div>
+                <div class="product-info">
+                    <h2 id="product-name" data-i18n="product.loading_name">اسم المنتج هنا</h2>
+                    <div class="product-rating" id="product-rating"><div class="rating-stars" id="product-rating-stars" style="color: #f59e0b; display: inline-flex; gap: 3px; font-size: 0.95rem;"></div><span id="rating-score" style="font-size: 0.88rem; color: var(--light-text); margin-inline-start: 8px;"></span></div>
+                    <div class="product-price"><span class="price" id="product-price"></span><span class="old-price" id="old-price" hidden></span><span class="discount" id="discount" hidden></span></div>
+                    <div id="product-stock-badge-wrap" style="margin: 8px 0 14px 0;"></div>
+                    <div class="product-description" id="product-description"><p data-i18n="product.loading_desc">وصف المنتج...</p></div>
+                    <div class="product-options" id="product-options"></div>
+                    <div class="product-actions">
+                        <div class="quantity"><button type="button" class="quantity-btn decrease" data-action="changeQuantity" data-change="-1">-</button><input type="number" id="quantity" value="1" min="1" max="10" data-action="updateExpressCalculations"><button type="button" class="quantity-btn increase" data-action="changeQuantity" data-change="1">+</button></div>
+                        <button type="button" class="add-to-cart" data-action="addToCartFromProduct" data-i18n="common.add_to_cart"><i class="fas fa-cart-plus"></i> أضف إلى السلة</button>
+                        <button type="button" class="add-to-wishlist" data-action="addToWishlist" data-i18n-title="product.add_wishlist_title" title="أضف للمفضلة"><i class="far fa-heart"></i></button>
+                    </div>
+
+                    <!-- ===== ⚡ 1-Click Direct COD Checkout Box ===== -->
+                    <div class="express-checkout-box" id="express-checkout-box" style="background: var(--card-bg, #fff); border: 2px solid var(--primary-color, #2563eb); border-radius: 12px; padding: 20px; margin-top: 24px; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.08);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                            <h3 style="margin: 0; font-size: 1.12rem; color: var(--text-color, #1e293b); display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-bolt" style="color: #f59e0b;"></i> <span data-i18n="product.quick_buy_title">الشراء السريع (الدفع عند الاستلام)</span>
+                            </h3>
+                            <span style="background: rgba(14, 165, 233, 0.1); color: var(--primary-color, #0284c7); font-size: 0.78rem; font-weight: bold; padding: 3px 8px; border-radius: 20px;">
+                                <i class="fas fa-shield-alt"></i> <span data-i18n="product.direct_order">طلب مباشر</span>
+                            </span>
+                        </div>
+
+                        <form id="express-order-form" data-action="handleExpressOrder" style="display: grid; gap: 12px;">
+                            <div>
+                                <label style="display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 4px; color: var(--text-color, #334155);"><span data-i18n="checkout.full_name">الاسم الكامل</span> <span style="color:var(--danger-color);">*</span></label>
+                                <input type="text" id="express-name" required data-i18n-placeholder="product.name_placeholder" placeholder="مثال: أحمد بن علي" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color, #cbd5e1); border-radius: 8px; font-size: 0.95rem; background: var(--card-bg, #fff);">
+                            </div>
+
+                            <div>
+                                <label style="display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 4px; color: var(--text-color, #334155);"><span data-i18n="checkout.phone">رقم الهاتف</span> <span style="color:var(--danger-color);">*</span></label>
+                                <input type="tel" id="express-phone" required placeholder="05 / 06 / 07 XX XX XX XX" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color, #cbd5e1); border-radius: 8px; font-size: 0.95rem; background: var(--card-bg, #fff);" dir="ltr">
+                            </div>
+
+                            <div class="express-grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div>
+                                    <label style="display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 4px; color: var(--text-color, #334155);"><span data-i18n="checkout.wilaya">الولاية</span> <span style="color:var(--danger-color);">*</span></label>
+                                    <select id="express-wilaya" required data-action="onExpressWilayaChange" style="width: 100%; padding: 10px 10px; border: 1px solid var(--border-color, #cbd5e1); border-radius: 8px; font-size: 0.9rem; background: var(--card-bg, #fff);">
+                                        <option value="" data-i18n="product.select_wilaya">-- اختر الولاية --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 4px; color: var(--text-color, #334155);" data-i18n="checkout.address">البلدية / العنوان</label>
+                                    <input type="text" id="express-address" data-i18n-placeholder="product.address_placeholder" placeholder="البلدية أو العنوان" style="width: 100%; padding: 10px 10px; border: 1px solid var(--border-color, #cbd5e1); border-radius: 8px; font-size: 0.9rem; background: var(--card-bg, #fff);">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label style="display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 4px; color: var(--text-color, #334155);" data-i18n="product.delivery_type">نوع التوصيل</label>
+                                <div class="express-grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                    <label style="display: flex; align-items: center; gap: 6px; background: var(--card-bg, #fff); padding: 8px 10px; border: 1px solid var(--border-color, #cbd5e1); border-radius: 8px; cursor: pointer; font-size: 0.84rem;">
+                                        <input type="radio" name="express-delivery" value="home" checked data-action="updateExpressCalculations">
+                                        <span>🏠 <span data-i18n="product.home_delivery">للمنزل</span> (<span id="express-home-price">500</span> <span data-i18n="common.currency">دج</span>)</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 6px; background: var(--card-bg, #fff); padding: 8px 10px; border: 1px solid var(--border-color, #cbd5e1); border-radius: 8px; cursor: pointer; font-size: 0.84rem;">
+                                        <input type="radio" name="express-delivery" value="desk" data-action="updateExpressCalculations">
+                                        <span>🏢 <span data-i18n="product.desk_delivery">للمكتب</span> (<span id="express-desk-price">350</span> <span data-i18n="common.currency">دج</span>)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- ملخص السعر المباشر -->
+                            <div style="background: var(--card-bg, #fff); border: 1px solid var(--border-color, #e2e8f0); border-radius: 8px; padding: 12px; margin-top: 2px; font-size: 0.9rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--light-text, #64748b);">
+                                    <span><span data-i18n="product.products_price">سعر المنتجات:</span> (<span id="express-qty-display">1</span>x)</span>
+                                    <span id="express-subtotal-display" style="font-weight: 600; color: var(--text-color, #1e293b);">0 <span data-i18n="common.currency">دج</span></span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--light-text, #64748b);">
+                                    <span data-i18n="product.delivery_cost">تكلفة التوصيل:</span>
+                                    <span id="express-shipping-display" style="font-weight: 600; color: var(--text-color, #1e293b);">500 <span data-i18n="common.currency">دج</span></span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; border-top: 1px dashed var(--border-color); padding-top: 8px; font-size: 1.05rem; font-weight: 800; color: var(--primary-color, #2563eb);">
+                                    <span data-i18n="product.total_price">المجموع الإجمالي:</span>
+                                    <span id="express-total-display">0 <span data-i18n="common.currency">دج</span></span>
+                                </div>
+                            </div>
+
+                            <!-- زر الإرسال -->
+                            <button type="submit" id="express-submit-btn" style="width: 100%; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: var(--bg-color, #fff); border: none; border-radius: 10px; padding: 14px 20px; font-size: 1.08rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: all 0.2s ease;">
+                                <i class="fas fa-check-circle"></i> <span data-i18n="product.confirm_order_now">اضغط هنا لتأكيد الطلب الآن ⚡</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- مزايا الشراء والضمان -->
+                    <div class="product-guarantees" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color, #e2e8f0);">
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.86rem; color: var(--text-color);">
+                            <i class="fas fa-truck" style="color: var(--primary-color); font-size: 1.1rem;"></i>
+                            <span data-i18n="product.shipping_58_wilayas">شحن متوفر لـ 58 ولاية</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.86rem; color: var(--text-color);">
+                            <i class="fas fa-money-bill-wave" style="color: var(--success-color); font-size: 1.1rem;"></i>
+                            <span data-i18n="product.cod_available">الدفع نقداً عند الاستلام</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.86rem; color: var(--text-color);">
+                            <i class="fas fa-shield-alt" style="color: var(--secondary-color); font-size: 1.1rem;"></i>
+                            <span data-i18n="product.authentic_guarantee">منتج أصلي ومضمون 100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="description" data-i18n="product.desc_tab">الوصف</button>
+                    <button class="tab-btn" data-tab="specifications" data-i18n="product.specs_tab">المواصفات</button>
+                    <button class="tab-btn" data-tab="reviews" data-i18n="product.reviews_tab">المراجعات</button>
+                    <button class="tab-btn" data-tab="shipping" data-i18n="cart.shipping">الشحن والتوصيل</button>
+                </div>
+                <div class="tabs-content">
+                    <div class="tab-panel active" id="description"><h3 data-i18n="product.desc_tab">وصف المنتج</h3><div id="description-content"><p>وصف المنتج...</p></div></div>
+                    <div class="tab-panel" id="specifications"><h3 data-i18n="product.specs_tab">مواصفات المنتج</h3><table class="spec-table" id="spec-table"><tr><td data-i18n="product.brand">العلامة التجارية</td><td data-i18n="product.certified_product">منتج معتمد</td></tr><tr><td data-i18n="product.warranty">الضمان</td><td data-i18n="product.warranty_desc">ضمان الجودة ضد عيوب الصناعة</td></tr></table></div>
+                    <div class="tab-panel" id="reviews"><h3 data-i18n="product.reviews_tab">المراجعات</h3><div class="reviews-container" id="reviews-container"></div><div class="add-review"><h4 data-i18n="product.add_review">أضف مراجعة</h4><div class="review-form"><div class="rating-input"><span data-i18n="product.rating_label">التقييم:</span><div class="stars" id="review-stars"><i class="far fa-star" data-rating="1"></i><i class="far fa-star" data-rating="2"></i><i class="far fa-star" data-rating="3"></i><i class="far fa-star" data-rating="4"></i><i class="far fa-star" data-rating="5"></i></div><input type="hidden" id="review-rating" value="0"></div><div class="comment-input"><textarea id="review-comment" data-i18n-placeholder="product.review_placeholder" placeholder="اكتب مراجعتك هنا..."></textarea></div><button type="button" class="submit-review" data-action="submitReview" data-i18n="product.submit_review">إرسال المراجعة</button></div></div></div>
+                    <div class="tab-panel" id="shipping"><h3 data-i18n="cart.shipping">سياسة الشحن والتوصيل</h3><p data-i18n="product.shipping_policy">نوفر خدمة التوصيل السريع والآمن إلى كافة ولايات الجزائر (58 ولاية). يتم حساب سعر الشحن تلقائياً عند الدفع بناءً على الولاية المختارة ونوع التوصيل (منزلي أو مكتب استلام).</p></div>
+                </div>
+            </div>
+            <div class="similar-products"><h2 data-i18n="product.similar_products">منتجات مشابهة</h2><div class="products-grid" id="similar-products"></div></div>
+        </div>
+    </section>
+
+    <!-- ===== Modern Standardized Footer ===== -->
+    <footer id="site-footer"></footer>
+
+    <script src="js/pages/product.js" defer></script>
+    <script src="js/layout.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/user-system.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
+</body>
+</html>

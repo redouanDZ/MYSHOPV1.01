@@ -1,0 +1,36 @@
+﻿name: 🐛 تقرير عن خطأ (Bug Report)
+description: أنشئ تقريراً لمساعدتنا في تحسين النظام وحل المشاكل
+title: "[BUG]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        شكراً لإبلاغك عن المشكلة! يرجى تقديم أكبر قدر ممكن من التفاصيل لتسهيل إعادة إنتاجها وحلها.
+  - type: textarea
+    id: description
+    attributes:
+      label: وصف المشكلة
+      description: اشرح المشكلة بوضوح وما كان متوقعاً حدوثه.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: خطوات إعادة إنتاج المشكلة
+      description: 1. اذهب إلى '...' / 2. انقر على '...'
+      placeholder: |
+        1. الذهاب إلى صفحة المنتجات
+        2. إضافة المنتج إلى السلة
+        3. محاولة الدفع
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: معلومات البيئة
+      description: المتصفح، نظام التشغيل، إصدار Node.js
+      placeholder: |
+        - المتصفح: Chrome 120
+        - نظام التشغيل: Windows 11
+        - Node.js: v20.x

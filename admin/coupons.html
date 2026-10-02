@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة قسائم الخصم والكوبونات - لوحة التحكم</title>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.min.css">
+    <link rel="stylesheet" href="css/dashboard.min.css">
+    <style>
+        .coupon-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: var(--light-color, #f1f5f9);
+            color: var(--text-color, #334155);
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 4px;
+            transition: all 0.2s;
+        }
+        .coupon-action-btn:hover { background: var(--primary-color); color: var(--bg-color, #fff); }
+        .coupon-action-btn.delete-btn:hover { background: #dc2626; color: var(--bg-color, #fff); }
+        .coupon-action-btn.toggle-btn:hover { background: var(--success-color); color: var(--bg-color, #fff); }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .status-active { background: #d1fae5; color: #065f46; }
+        .status-inactive { background: #fee2e2; color: #991b1b; }
+        .status-expired { background: var(--light-color, #f1f5f9); color: var(--light-text, #64748b); }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--card-bg, #fff);
+            border-radius: 8px;
+            border: 1px solid var(--border-color, #e2e8f0);
+        }
+    </style>
+
+    <!-- Theme Anti-Flicker -->
+    <script src="../js/theme-init.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">المتجر الإلكتروني</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">زيارة المتجر</a></li>
+                    <li><a href="index.html">لوحة التحكم</a></li>
+                    <li><a href="orders.html">الطلبات</a></li>
+                    <li><a href="products.html">المنتجات</a></li>
+                    <li><a href="users.html">العملاء</a></li>
+                    <li><a href="coupons.html" class="active">الكوبونات</a></li>
+                    <li><a href="reviews.html">التقييمات</a></li>
+                    <li><a href="settings.html">الإعدادات</a></li>
+                    <li><a href="../documentation/index.html" target="_blank" class="text-indigo fw-600"><i class="fas fa-book-open"></i> التوثيق</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions" style="display: flex; gap: 15px; align-items: center;">
+                <a href="../account.html" class="user-icon" title="حساب الأدمن">
+                    <i class="fas fa-user-shield"></i>
+                </a>
+                <a href="#" class="admin-logout-btn text-danger" title="تسجيل الخروج" >
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>لوحة الإدارة</h2>
+                <p id="adminUserTag">مدير النظام</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> الإحصائيات العامة</a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-bag"></i> إدارة الطلبات</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> المنتجات والمخزون</a></li>
+                <li><a href="users.html"><i class="fas fa-users"></i> إدارة المستخدمين</a></li>
+                <li><a href="coupons.html" class="active"><i class="fas fa-ticket-alt"></i> قسائم الخصم</a></li>
+                <li><a href="reviews.html"><i class="fas fa-star"></i> تقييمات المنتجات</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات والبكسلات</a></li>
+                <li><a href="../index.html"><i class="fas fa-store"></i> واجهة المتجر</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <a href="#" id="adminLogoutBtn" class="text-danger"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h1>إدارة قسائم الخصم الترويجية</h1>
+                <button type="button" data-action="openAddCouponModal" data-args="" class="btn btn-success flex-btn-lg">
+                    <i class="fas fa-plus-circle"></i> إضافة كوبون جديد
+                </button>
+            </div>
+
+            <!-- Filters Bar -->
+            <div class="filters-bar surface-card">
+                <div style="flex: 1; min-width: 200px;">
+                    <input type="text" id="searchInput" placeholder="البحث برمز الكوبون..." class="admin-input">
+                </div>
+                <div>
+                    <select id="statusFilter" class="admin-select">
+                        <option value="all">جميع الحالات</option>
+                        <option value="active">نشط</option>
+                        <option value="inactive">غير نشط</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="button" data-action="loadAdminCoupons" data-args="" class="btn btn-primary">
+                        <i class="fas fa-filter"></i> تصفية
+                    </button>
+                </div>
+            </div>
+
+            <!-- Coupons Table -->
+            <div class="table-responsive">
+                <table class="data-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr class="table-header-row">
+                            <th style="padding: 12px 15px;">#</th>
+                            <th style="padding: 12px 15px;">رمز الكوبون</th>
+                            <th style="padding: 12px 15px;">قيمة الخصم</th>
+                            <th style="padding: 12px 15px;">الحد الأدنى للطلب</th>
+                            <th style="padding: 12px 15px; text-align: center;">الاستخدامات / الحد</th>
+                            <th style="padding: 12px 15px; text-align: center;">تاريخ الانتهاء</th>
+                            <th style="padding: 12px 15px; text-align: center;">الحالة</th>
+                            <th style="padding: 12px 15px; text-align: center;">إجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="coupons-tbody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 30px; color: var(--light-text, #64748b);">
+                                <i class="fas fa-spinner fa-spin"></i> جاري تحميل قسائم الخصم...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Coupon Modal -->
+    <div id="couponModal" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; overflow-y: auto; padding: 20px;">
+        <div class="modal-surface">
+            <button type="button" data-action="closeCouponModal" data-args="" class="btn-close-modal" style="position: absolute; left: 20px; top: 20px; font-size: 1.2rem;">&times;</button>
+            <h2 id="modalCouponTitle" style="margin-top: 0; color: var(--text-color, #1e293b); border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">إضافة قسيمة خصم جديدة</h2>
+            
+            <form id="couponForm" data-action="handleSaveCoupon" data-args="event" style="margin-top: 15px;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 6px;">رمز الكوبون (Code) *</label>
+                    <input type="text" id="couponCode" required placeholder="مثال: SUMMER25" class="admin-input">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; font-weight: bold; margin-bottom: 6px;">نسبة الخصم (%)</label>
+                        <input type="number" id="couponPercent" min="0" max="100" placeholder="مثال: 15" class="admin-input">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: bold; margin-bottom: 6px;">أو خصم ثابت (دج)</label>
+                        <input type="number" id="couponAmount" min="0" placeholder="مثال: 500" class="admin-input">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; font-weight: bold; margin-bottom: 6px;">الحد الأدنى لقيمة الطلب (دج)</label>
+                        <input type="number" id="couponMinOrder" min="0" value="0" class="admin-input">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: bold; margin-bottom: 6px;">أقصى عدد استخدامات</label>
+                        <input type="number" id="couponMaxUses" min="1" value="100" class="admin-input">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <label style="display: block; font-weight: bold; margin-bottom: 6px;">تاريخ انتهاء الصلاحية</label>
+                        <input type="date" id="couponExpiry" class="admin-input">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: bold; margin-bottom: 6px;">الحالة</label>
+                        <select id="couponStatus" class="admin-select">
+                            <option value="active">نشط</option>
+                            <option value="inactive">غير نشط</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" data-action="closeCouponModal" data-args="" class="btn btn-outline">إلغاء</button>
+                    <button type="submit" class="btn btn-success">حفظ الكوبون</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/api-client.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/pages/coupons.js" defer></script>
+</body>
+</html>

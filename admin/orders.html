@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة ومتابعة الطلبات - لوحة التحكم</title>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.min.css">
+    <link rel="stylesheet" href="css/dashboard.min.css">
+    <style>
+        .status-select {
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: 1.5px solid var(--border-color, #cbd5e1);
+            background: var(--card-bg, #fff);
+            color: var(--text-color, #334155);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .status-select.pending { background: #fef3c7; color: #d97706; border-color: #fde68a; }
+        .status-select.processing { background: #e0f2fe; color: #0284c7; border-color: #bae6fd; }
+        .status-select.shipped { background: #ede9fe; color: #7c3aed; border-color: #ddd6fe; }
+        .status-select.delivered { background: #d1fae5; color: var(--success-color); border-color: #a7f3d0; }
+        .status-select.cancelled { background: #fee2e2; color: var(--danger-color); border-color: #fecaca; }
+        
+        .order-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: var(--light-color, #f1f5f9);
+            color: var(--text-color, #334155);
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 4px;
+            transition: all 0.2s;
+        }
+        .order-action-btn:hover { background: var(--primary-color, #2563eb); color: var(--bg-color, #fff); }
+        .order-action-btn.view-btn:hover { background: #0284c7; color: var(--bg-color, #fff); }
+        .order-action-btn.invoice-btn:hover { background: var(--success-color); color: var(--bg-color, #fff); }
+        .order-action-btn.whatsapp-btn:hover { background: #25d366; color: var(--bg-color, #fff); }
+        .order-action-btn.delete-btn:hover { background: #dc2626; color: var(--bg-color, #fff); }
+        
+        .status-tab-btn {
+            padding: 6px 14px;
+            border: 1px solid var(--border-color, #cbd5e1);
+            background: var(--card-bg, #fff);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-color, #475569);
+            transition: all 0.2s;
+        }
+        .status-tab-btn.active {
+            background: var(--primary-color, #2563eb);
+            color: var(--bg-color, #fff);
+            border-color: var(--primary-color, #2563eb);
+        }
+    </style>
+
+    <!-- Theme Anti-Flicker -->
+    <script src="../js/theme-init.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">المتجر الإلكتروني</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">زيارة المتجر</a></li>
+                    <li><a href="index.html">لوحة التحكم</a></li>
+                    <li><a href="orders.html" class="active">الطلبات</a></li>
+                    <li><a href="products.html">المنتجات</a></li>
+                    <li><a href="users.html">العملاء</a></li>
+                    <li><a href="coupons.html">الكوبونات</a></li>
+                    <li><a href="reviews.html">التقييمات</a></li>
+                    <li><a href="settings.html">الإعدادات</a></li>
+                    <li><a href="../documentation/index.html" target="_blank" class="text-indigo fw-600"><i class="fas fa-book-open"></i> التوثيق</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions" style="display: flex; gap: 15px; align-items: center;">
+                <a href="../account.html" class="user-icon" title="حساب الأدمن">
+                    <i class="fas fa-user-shield"></i>
+                </a>
+                <a href="#" class="admin-logout-btn text-danger" title="تسجيل الخروج" >
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>لوحة الإدارة</h2>
+                <p id="adminUserTag">مدير النظام</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> الإحصائيات العامة</a></li>
+                <li><a href="orders.html" class="active"><i class="fas fa-shopping-bag"></i> إدارة الطلبات</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> المنتجات والمخزون</a></li>
+                <li><a href="users.html"><i class="fas fa-users"></i> إدارة المستخدمين</a></li>
+                <li><a href="coupons.html"><i class="fas fa-ticket-alt"></i> قسائم الخصم</a></li>
+                <li><a href="reviews.html"><i class="fas fa-star"></i> تقييمات المنتجات</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات والبكسلات</a></li>
+                <li><a href="../index.html"><i class="fas fa-store"></i> واجهة المتجر</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <a href="#" id="adminLogoutBtn" class="text-danger"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h1>إدارة وتجهيز الطلبات</h1>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button type="button" data-action="exportOrdersToCsv" data-args="" class="btn btn-success flex-btn">
+                        <i class="fas fa-file-excel"></i> تصدير الطلبات (CSV / Excel)
+                    </button>
+                    <span id="ordersCountBadge" class="badge badge-primary">0 طلب</span>
+                </div>
+            </div>
+
+            <div class="orders-container surface-card" >
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 15px; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" class="status-tab-btn active" data-action="filterByStatus" data-args="'all', this">الكل</button>
+                        <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'pending', this">قيد المراجعة</button>
+                        <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'processing', this">قيد التجهيز</button>
+                        <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'shipped', this">تم الشحن</button>
+                        <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'delivered', this">تم التسليم</button>
+                        <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'cancelled', this">ملغي</button>
+                    </div>
+                    <div style="position: relative; min-width: 280px;">
+                        <input type="text" id="orderSearchInput" data-action="filterOrders" data-args="" placeholder="بحث برقم الطلب، العميل، الهاتف، الولاية..." class="admin-input">
+                        <i class="fas fa-search" style="position: absolute; left: 12px; top: 11px; color: var(--light-text);"></i>
+                    </div>
+                </div>
+
+                <table class="cards-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr class="table-header-row">
+                            <th style="padding: 12px 10px;">رقم الطلب</th>
+                            <th style="padding: 12px 10px;">العميل والهاتف</th>
+                            <th style="padding: 12px 10px;">الولاية والتوصيل</th>
+                            <th style="padding: 12px 10px;">الإجمالي</th>
+                            <th style="padding: 12px 10px;">طريقة الدفع</th>
+                            <th style="padding: 12px 10px;">التاريخ</th>
+                            <th style="padding: 12px 10px; width: 170px;">حالة الطلب والتجهيز</th>
+                            <th style="padding: 12px 10px; text-align: center;">إجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-orders-tbody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 30px; color: var(--light-text, #64748b);">جاري جلب قائمة الطلبات...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة منبثقة لتفاصيل ومحتويات الطلب -->
+    <div class="modal" id="orderDetailsModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
+        <div class="modal-content">
+            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color, #e2e8f0); padding-bottom: 15px; margin-bottom: 20px;">
+                <h2 id="modalOrderTitle" style="margin: 0; font-size: 1.3rem; color: var(--text-color, #1e293b);">تفاصيل الطلب</h2>
+                <button type="button" class="close-modal btn-close-modal" data-action="closeOrderDetailsModal" data-args="" >
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalOrderContent">
+                <p style="text-align: center; padding: 20px; color: var(--light-text, #64748b);">جاري جلب بيانات الطلب...</p>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 20px;">
+                <button type="button" class="btn btn-primary" data-action="closeOrderDetailsModal" data-args="" >إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api-client.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/pages/orders.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+npm-debug.log*
+
+# secrets / environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.txt
+
+# logs & OS files
+*.log
+.DS_Store
+Thumbs.db
+
+# tool-generated diff dumps
+diff_*.txt

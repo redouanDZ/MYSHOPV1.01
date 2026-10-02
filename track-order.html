@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="track.meta_title">تتبع طلبي - المتجر الإلكتروني</title>
+    <!-- Preload Primary Font for LCP / Text Performance -->
+    <link rel="preload" href="/fonts/font-1.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Local Fonts & Icons -->
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
+    <style>
+        .track-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: var(--bg-color, #fff);
+            padding: 50px 0 35px;
+            text-align: center;
+        }
+        .track-hero h1 { margin: 0 0 10px 0; font-size: 2.2rem; }
+        .track-hero p { margin: 0; opacity: 0.9; font-size: 1.1rem; }
+        
+        .track-container {
+            max-width: 850px;
+            margin: -30px auto 50px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 30px;
+        }
+        .track-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
+            align-items: flex-end;
+            margin-bottom: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .track-form-grid { grid-template-columns: 1fr; }
+            
+            /* Responsive Stepper for Mobile */
+            .timeline-stepper { flex-direction: column; align-items: stretch; margin: 30px 0 20px; padding-inline: 4px; }
+            .timeline-stepper::before { top: 0; bottom: 0; left: auto; right: auto; inset-inline-start: 22px; width: 4px; height: auto; }
+            .timeline-progress-bar { top: 0; left: auto; right: auto; inset-inline-start: 22px; width: 4px !important; height: var(--progress-perc, 0%); transition: height 0.4s ease; }
+            .step-node { display: flex; align-items: center; gap: 14px; width: 100%; margin-bottom: 25px; text-align: start; flex: 0 0 auto; }
+            .step-node > *:not(.step-icon) { min-width: 0; overflow-wrap: anywhere; white-space: normal; }
+            .step-icon { margin: 0; flex-shrink: 0; }
+            
+            .order-header-info { flex-direction: column; }
+            .order-result-box { overflow-x: auto; }
+        }
+
+        /* Dark Mode Support */
+        [data-theme="dark"] .track-container { background: var(--card-bg, #1e293b); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        [data-theme="dark"] .form-field label { color: var(--border-color); }
+        [data-theme="dark"] .form-field input { background: #0f172a; border-color: var(--text-color); color: #f1f5f9; }
+        [data-theme="dark"] .timeline-stepper::before { background: #334155; }
+        [data-theme="dark"] .step-icon { background: var(--text-color); border-color: var(--text-color); }
+        [data-theme="dark"] .step-label { color: var(--light-text); }
+        [data-theme="dark"] .order-header-info { background: #0f172a; }
+        [data-theme="dark"] .order-info-item span { color: var(--light-text); }
+        [data-theme="dark"] .order-info-item strong { color: #f1f5f9; }
+        [data-theme="dark"] .order-items-table th { background: #0f172a; color: var(--border-color); border-color: var(--text-color); }
+        [data-theme="dark"] .order-items-table td { border-color: var(--text-color); color: #f1f5f9; }
+        [data-theme="dark"] .order-items-table .product-cell span { color: #f1f5f9; }
+
+        .form-field { display: flex; flex-direction: column; text-align: right; }
+        .form-field label { font-weight: bold; margin-bottom: 8px; color: var(--text-color); }
+        .form-field input {
+            padding: 12px 15px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-field input:focus { border-color: var(--primary-color); }
+        .btn-track {
+            background: var(--primary-color);
+            color: var(--bg-color, #fff);
+            border: none;
+            padding: 13px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-track:hover { background: #1d4ed8; }
+        
+        /* Timeline Stepper */
+        .timeline-stepper {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 45px 0 35px;
+        }
+        .timeline-stepper::before {
+            content: '';
+            position: absolute;
+            top: 22px;
+            right: 40px;
+            left: 40px;
+            height: 4px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+        .timeline-progress-bar {
+            width: var(--progress-perc, 0%);
+            position: absolute;
+            top: 22px;
+            right: 40px;
+            height: 4px;
+            background: var(--success-color);
+            z-index: 2;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+        .step-node {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            flex: 1;
+        }
+        .step-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            color: var(--light-text);
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        .step-node.completed .step-icon {
+            background: var(--success-color);
+            border-color: var(--success-color);
+            color: var(--bg-color, #fff);
+        }
+        .step-node.active .step-icon {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: var(--bg-color, #fff);
+            box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.2);
+        }
+        .step-label { font-size: 0.9rem; font-weight: bold; color: var(--light-text); }
+        .step-node.completed .step-label { color: var(--success-color); }
+        .step-node.active .step-label { color: var(--primary-color); }
+
+        /* Order Details Card */
+        .order-result-box { display: none; margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 25px; }
+        .order-header-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background: var(--card-bg);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        .order-info-item span { display: block; font-size: 0.85rem; color: var(--light-text); }
+        .order-info-item strong { font-size: 1.05rem; color: var(--text-color); }
+        
+        .order-items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .order-items-table th { background: var(--card-bg); padding: 12px; text-align: right; color: #475569; border-bottom: 1px solid var(--border-color); }
+        .order-items-table td { padding: 12px; border-bottom: 1px solid var(--border-color); }
+        .product-cell { display: flex; align-items: center; gap: 12px; }
+        .product-cell img { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; }
+        
+        .order-actions-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-outline:hover { background: var(--light-color); }
+
+        .status-badge-custom {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-processing { background: #e0f2fe; color: #0284c7; }
+        .status-shipped { background: #ede9fe; color: #7c3aed; }
+        .status-delivered { background: #d1fae5; color: var(--success-color); }
+        .status-cancelled { background: #fee2e2; color: #dc2626; }
+        
+        /* Sticky Footer Fix */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+    </style>
+  <meta name="theme-color" content="#2563eb">
+  <link rel="manifest" href="/manifest.json">
+      <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+
+    <!-- Theme Anti-Flicker -->
+    <script src="/js/theme-init.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header id="site-header"></header>
+
+    <!-- Track Hero -->
+    <section class="track-hero">
+        <div class="container">
+            <h1><span data-i18n="track.page_title">تتبّع مسار شحنتك</span></h1>
+            <p><span data-i18n="track.form_desc">أدخل رقم الطلب ورقم هاتفك للاطلاع على آخر مستجدات حالة الطلب وموعد التوصيل</span></p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="container" style="flex: 1 0 auto;">
+        <div class="track-container">
+            <form id="trackingForm">
+                <div class="track-form-grid">
+                    <div class="form-field">
+                        <label for="orderInput"><span data-i18n="track.order_id_label">رقم الطلب (Order ID / DZ-xxxx)</span></label>
+                        <input type="text" id="orderInput" data-i18n-placeholder="track.order_id_placeholder" placeholder="مثال: DZ-2026-12345 أو 1001" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="phoneInput"><span data-i18n="track.phone_label">رقم الهاتف المسجل في الطلب</span></label>
+                        <input type="tel" id="phoneInput" data-i18n-placeholder="track.phone_placeholder" placeholder="مثال: 0550000000" required>
+                    </div>
+                    <button type="submit" class="btn-track" id="trackSubmitBtn">
+                        <i class="fas fa-search"></i> <span data-i18n="track.submit_btn">تتبع الطلب</span>
+                    </button>
+                </div>
+            </form>
+
+            <div id="trackingMessage" style="display: none; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;"></div>
+
+            <!-- Order Result Box -->
+            <div class="order-result-box" id="orderResultBox">
+                <!-- Timeline Stepper -->
+                <div class="timeline-stepper">
+                    <div class="timeline-progress-bar" id="timelineProgressBar"></div>
+                    <div class="step-node" id="stepNode1">
+                        <div class="step-icon"><i class="fas fa-file-invoice"></i></div>
+                        <div class="step-label"><span data-i18n="track.status_pending">تم استلام الطلب</span></div>
+                    </div>
+                    <div class="step-node" id="stepNode2">
+                        <div class="step-icon"><i class="fas fa-box-open"></i></div>
+                        <div class="step-label"><span data-i18n="track.status_processing">قيد التجهيز والتأكيد</span></div>
+                    </div>
+                    <div class="step-node" id="stepNode3">
+                        <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
+                        <div class="step-label"><span data-i18n="track.status_shipped">تم الشحن للتوصيل</span></div>
+                    </div>
+                    <div class="step-node" id="stepNode4">
+                        <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="step-label"><span data-i18n="track.status_delivered">تم التسليم بنجاح</span></div>
+                    </div>
+                </div>
+
+                <!-- Order Header Info -->
+                <div class="order-header-info">
+                    <div class="order-info-item">
+                        <span><span data-i18n="account.col_order_num">رقم الطلب</span>
+                        <strong id="resOrderNumber">-</strong>
+                    </div>
+                    <div class="order-info-item">
+                        <span><span data-i18n="account.col_date">تاريخ الطلب</span>
+                        <strong id="resOrderDate">-</strong>
+                    </div>
+                    <div class="order-info-item">
+                        <span><span data-i18n="track.wilaya_address">الولاية والعنوان</span>
+                        <strong id="resWilaya">-</strong>
+                    </div>
+                    <div class="order-info-item">
+                        <span><span data-i18n="conf.payment_method">طريقة الدفع</span>
+                        <strong id="resPaymentMethod">-</strong>
+                    </div>
+                    <div class="order-info-item">
+                        <span><span data-i18n="account.col_status">حالة الطلب</span>
+                        <span id="resStatusBadge" class="status-badge-custom status-pending">-</span>
+                    </div>
+                </div>
+
+                <!-- Items Table -->
+                <table class="order-items-table">
+                    <thead>
+                        <tr>
+                            <th><span data-i18n="track.product">المنتج</span></th>
+                            <th style="text-align: center;"><span data-i18n="invoice.col_qty">الكمية</span></th>
+                            <th style="text-align: left;"><span data-i18n="track.total_price">السعر الإجمالي</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="resOrderItemsBody">
+                        <!-- Filled by JS -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" style="font-weight: bold; text-align: right; padding-top: 15px;"><span data-i18n="track.grand_total">المبلغ الإجمالي (شامل التوصيل):</span></td>
+                            <td style="font-weight: bold; text-align: left; color: var(--primary-color); font-size: 1.15rem; padding-top: 15px;" id="resOrderTotal">0 <span data-i18n="common.currency">دج</span></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="order-actions-bar">
+                    <a href="#" id="viewInvoiceBtn" target="_blank" class="btn-outline">
+                        <i class="fas fa-file-pdf"></i> <span data-i18n="track.open_invoice">فتح الفاتورة</span>
+                    </a>
+                    <a href="shop.html" class="btn-outline">
+                        <i class="fas fa-shopping-bag"></i> <span data-i18n="conf.continue_shopping">مواصلة التسوق</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/layout.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/user-system.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/pages/track-order.js"></script>
+
+    <!-- Modern Footer -->
+    <footer id="site-footer"></footer>
+</body>
+</html>

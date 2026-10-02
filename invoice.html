@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="invoice.title">فاتورة الطلب</title>
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            margin: 0;
+            padding: 30px 15px;
+            color: var(--text-color);
+            direction: rtl;
+        }
+        .invoice-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg)fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+            border: 1px solid var(--border-color);
+        }
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 25px;
+            margin-bottom: 25px;
+        }
+        .store-brand h1 {
+            margin: 0 0 5px 0;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+        .store-brand p {
+            margin: 0;
+            color: var(--light-text);
+            font-size: 0.95rem;
+        }
+        .invoice-meta {
+            text-align: left;
+        }
+        .invoice-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0f172a;
+            margin: 0 0 8px 0;
+        }
+        .invoice-meta-item {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 4px;
+        }
+        .invoice-meta-item strong {
+            color: var(--text-color);
+        }
+
+        .party-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .party-col h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.05rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+        .party-col p {
+            margin: 0 0 5px 0;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .invoice-table th {
+            background: var(--primary-color);
+            color: var(--bg-color, #fff)fff;
+            padding: 12px 15px;
+            text-align: right;
+            font-size: 0.95rem;
+        }
+        .invoice-table th:last-child {
+            text-align: left;
+        }
+        .invoice-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+        .invoice-table td:last-child {
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .summary-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+        .payment-status-box {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px 20px;
+        }
+        .payment-status-box h4 {
+            margin: 0 0 8px 0;
+            color: var(--text-color);
+        }
+        .totals-table {
+            width: 320px;
+            border-collapse: collapse;
+        }
+        .totals-table tr td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+        .totals-table tr td:last-child {
+            text-align: left;
+            font-weight: bold;
+        }
+        .totals-table tr.grand-total td {
+            border-top: 2px solid #2563eb;
+            border-bottom: none;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            padding-top: 12px;
+        }
+
+        .invoice-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+
+        .actions-bar {
+            max-width: 800px;
+            margin: 20px auto 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+        }
+        .btn-primary { background: var(--primary-color); color: var(--bg-color, #fff); }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-secondary { background: #e2e8f0; color: var(--text-color); }
+        .btn-secondary:hover { background: #cbd5e1; }
+
+        @media print {
+            body { background: var(--card-bg); padding: 0; }
+            .invoice-wrapper { box-shadow: none; border: none; padding: 0; width: 100%; max-width: 100%; }
+            .actions-bar { display: none !important; }
+        }
+
+        /* Responsive: the table/columns below assumed a wide (print-like) page
+           and overflowed the viewport on phones. */
+        @media (max-width: 640px) {
+            body { padding: 12px; }
+            .invoice-wrapper { padding: 18px; }
+            .invoice-header { flex-direction: column; gap: 14px; }
+            .invoice-meta { text-align: right; }
+            .party-details { grid-template-columns: 1fr; gap: 16px; padding: 14px; }
+            .invoice-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -18px 30px; padding: 0 18px; }
+            .invoice-table { margin-bottom: 0; min-width: 480px; }
+            .summary-container { flex-direction: column; }
+            .payment-status-box, .totals-table { width: 100%; }
+        }
+    </style>
+  <meta name="theme-color" content="#2563eb">
+  <link rel="manifest" href="/manifest.json">
+      <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+
+    <!-- Theme Anti-Flicker -->
+    <script src="js/theme-init.js"></script>
+</head>
+<body>
+
+    <div class="invoice-wrapper" id="invoiceArea">
+        <div class="invoice-header">
+            <div class="store-brand">
+                <h1 id="invStoreName">...</h1>
+                <p id="invStoreTagline"><span data-i18n="invoice.store_tagline">خدمة تسوق موثوقة في الجزائر</span></p>
+                <p style="margin-top: 5px; font-size: 0.85rem; color: var(--light-text);" id="invStoreContact"><span data-i18n="invoice.store_contact">هاتف: 0550000000 | بريد: contact@myshop.dz</span></p>
+            </div>
+            <div class="invoice-meta">
+                <div class="invoice-title"><span data-i18n="invoice.title">فاتورة بيع</span></div>
+                <div class="invoice-meta-item"><span data-i18n="invoice.invoice_num">رقم الفاتورة:</span> <strong id="invNumber">INV-2026-0000</strong></div>
+                <div class="invoice-meta-item"><span data-i18n="invoice.order_num">رقم الطلب:</span> <strong id="invOrderNum">-</strong></div>
+                <div class="invoice-meta-item"><span data-i18n="invoice.date">التاريخ:</span> <strong id="invDate">-</strong></div>
+            </div>
+        </div>
+
+        <div class="party-details">
+            <div class="party-col">
+                <h3><span data-i18n="invoice.customer_info">معلومات المشتري (العميل):</span></h3>
+                <p><strong><span data-i18n="invoice.name">الاسم:</span></strong> <span id="custName">-</span></p>
+                <p><strong><span data-i18n="invoice.phone">الهاتف:</span></strong> <span id="custPhone">-</span></p>
+                <p><strong><span data-i18n="invoice.email">البريد:</span></strong> <span id="custEmail">-</span></p>
+            </div>
+            <div class="party-col">
+                <h3><span data-i18n="invoice.address_info">عنوان وجهة التوصيل:</span></h3>
+                <p><strong><span data-i18n="invoice.wilaya">الولاية:</span></strong> <span id="custWilaya">-</span></p>
+                <p><strong><span data-i18n="invoice.full_address">العنوان الكامل:</span></strong> <span id="custAddress">-</span></p>
+                <p><strong><span data-i18n="invoice.delivery_type">نوع التوصيل:</span></strong> <span id="custDeliveryType">توصيل للمنزل</span></p>
+            </div>
+        </div>
+
+        <div class="invoice-table-scroll">
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th style="width: 50px;">#</th>
+                    <th><span data-i18n="invoice.col_product">المنتج / الوصف</span></th>
+                    <th style="text-align: center; width: 100px;"><span data-i18n="invoice.col_qty">الكمية</span></th>
+                    <th style="text-align: left; width: 120px;"><span data-i18n="invoice.col_price">السعر الفردي</span></th>
+                    <th style="text-align: left; width: 140px;"><span data-i18n="invoice.col_total">الإجمالي</span></th>
+                </tr>
+            </thead>
+            <tbody id="invoiceItemsBody">
+                <!-- Loaded dynamically -->
+            </tbody>
+        </table>
+        </div>
+
+        <div class="summary-container">
+            <div class="payment-status-box">
+                <h4><span data-i18n="invoice.payment_info">طريقة وحالة الدفع:</span></h4>
+                <p style="margin: 0 0 5px 0;"><strong><span data-i18n="invoice.method">الطريقة:</span></strong> <span id="invPayMethod">الدفع عند الاستلام (COD)</span></p>
+                <p style="margin: 0;"><strong><span data-i18n="invoice.status">حالة الدفع:</span></strong> <span id="invPayStatus" style="color: #b45309; font-weight: bold;">قيد التحصيل عند التسليم</span></p>
+            </div>
+
+            <table class="totals-table">
+                <tr>
+                    <td><span data-i18n="invoice.subtotal">المجموع الفرعي للمنتجات:</span></td>
+                    <td id="invSubtotal">0 <span data-i18n="common.currency">دج</span></td>
+                </tr>
+                <tr id="invDiscountRow" style="display: none; color: #16a34a; font-weight: bold;">
+                    <td><span data-i18n="checkout.discount">الخصم:</span></td>
+                    <td id="invDiscount">0 <span data-i18n="common.currency">دج</span></td>
+                </tr>
+                <tr>
+                    <td><span data-i18n="invoice.shipping_fee">رسوم الشحن والتوصيل:</span></td>
+                    <td id="invShipping">0 <span data-i18n="common.currency">دج</span></td>
+                </tr>
+                <tr class="grand-total">
+                    <td><span data-i18n="invoice.grand_total">المبلغ الإجمالي المستحق:</span></td>
+                    <td id="invGrandTotal">0 <span data-i18n="common.currency">دج</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="invoice-footer">
+            <p><span data-i18n="invoice.thank_you">شكراً لثقتكم وتسوّقكم معنا! إذا كان لديكم أي استفسار يرجى التواصل معنا عبر الهاتف أو البريد الإلكتروني الموضح أعلاه.</span></p>
+            <p data-i18n="footer.copyright">&copy; 2026 جميع الحقوق محفوظة.</p>
+        </div>
+    </div>
+
+    <div class="actions-bar">
+        <a href="index.html" class="btn btn-secondary"><i class="fas fa-arrow-right"></i> <span data-i18n="invoice.back_to_shop">العودة للمتجر</span></a>
+        <div>
+            <a href="#" id="trackLinkBtn" class="btn btn-secondary" style="margin-left: 10px;"><i class="fas fa-truck"></i> <span data-i18n="footer.link_track">تتبع الطلب</span></a>
+            <button type="button" data-action="windowPrint" class="btn btn-primary"><i class="fas fa-print"></i> <span data-i18n="invoice.print_btn">طباعة / تحميل PDF</span></button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/pages/invoice.js" defer></script>
+</body>
+</html>

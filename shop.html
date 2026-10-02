@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="shop.meta_title">التسوق - متجر الإلكتروني</title>
+  <!-- Preload Primary Font for LCP / Text Performance -->
+  <link rel="preload" href="/fonts/font-1.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Local Fonts & Icons -->
+  <link rel="stylesheet" href="/fonts/fonts.css">
+  <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="css/style.min.css">
+  <style>
+    .shop-section { padding: 40px 0; }
+    .shop-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+    .shop-sidebar {
+      background: var(--card-bg, white);
+      border: 1px solid var(--border-color, #edf2f7);
+      border-radius: var(--border-radius, 12px);
+      padding: 24px;
+      box-shadow: var(--box-shadow);
+      position: sticky;
+      top: 20px;
+    }
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border-color, #f1f5f9);
+    }
+    .sidebar-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark-color, #1e293b);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .reset-filters-btn {
+      background: none;
+      border: none;
+      color: var(--danger-color);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .reset-filters-btn:hover { opacity: 0.8; text-decoration: underline; }
+    .filter-group {
+      margin-bottom: 24px;
+    }
+    .filter-group:last-child { margin-bottom: 0; }
+    .filter-group h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--dark-color, #334155);
+      margin-bottom: 12px;
+    }
+    .filter-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .filter-option-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--light-text, #475569);
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.2s;
+    }
+    .filter-option-label:hover { color: var(--primary-color); }
+    .filter-option-label input[type="radio"],
+    .filter-option-label input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary-color);
+      cursor: pointer;
+    }
+    .price-range-box {
+      background: var(--light-color, #f8fafc);
+      padding: 15px;
+      border-radius: var(--border-radius-sm, 8px);
+      border: 1px solid var(--border-color, #e2e8f0);
+    }
+    .price-slider-container input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary-color);
+      cursor: pointer;
+    }
+    .price-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--light-text, #64748b);
+      margin-top: 8px;
+      font-weight: 600;
+    }
+    .products-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 15px; background: var(--card-bg, white); padding: 16px; border-radius: var(--border-radius, 12px); border: 1px solid var(--border-color, #edf2f7); }
+    .search-box { position: relative; flex: 1; min-width: 260px; }
+    .search-box input { width: 100%; padding: 10px 15px 10px 40px; border: 1px solid var(--border-color, #cbd5e1); border-radius: var(--border-radius-sm, 8px); font-family: inherit; font-size: 0.95rem; }
+    .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--light-text, #94a3b8); }
+    .filter-box { display: flex; gap: 10px; align-items: center; }
+    .filter-box select { padding: 9px 14px; border: 1px solid var(--border-color, #cbd5e1); border-radius: var(--border-radius-sm, 8px); background: var(--card-bg, white); cursor: pointer; font-family: inherit; font-size: 0.9rem; color: var(--text-color, #334155); }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+    @media (max-width: 992px) {
+      .shop-layout { grid-template-columns: 1fr; }
+      .shop-sidebar { position: static; }
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: var(--success-color);
+      color: white;
+      padding: 15px 25px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 300px;
+      transform: translateX(150%);
+      transition: transform 0.3s ease;
+    }
+    .notification.error { background-color: var(--danger-color); }
+    .close-notification { margin-left: 15px; cursor: pointer; font-size: 20px; font-weight: bold; }
+    .notification.show { transform: translateX(0); }
+  </style>
+  <meta name="theme-color" content="#2563eb">
+  <link rel="manifest" href="/manifest.json">
+      <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+
+    <!-- Theme Anti-Flicker -->
+    <script src="js/theme-init.js"></script>
+</head>
+<body>
+  <!-- رأس الموقع الموحد -->
+  <header id="site-header"></header>
+
+  <!-- عنوان الصفحة -->
+  <div class="page-title">
+    <div class="container">
+      <h1 data-i18n="shop.title">التسوق</h1>
+      <div class="breadcrumb">
+        <a href="index.html" data-i18n="footer.link_home">الرئيسية</a> <i class="fas fa-chevron-left"></i> <span data-i18n="nav.shop">التسوق</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- قسم المنتجات -->
+  <section class="shop-section">
+    <div class="container">
+      <div class="shop-layout">
+        
+        <!-- الشريط الجانبي (Sidebar) للفلاتر -->
+        <aside class="shop-sidebar">
+          <div class="sidebar-header">
+            <h3><i class="fas fa-sliders-h"></i> <span data-i18n="shop.filters_title">فلاتر المنتجات</span></h3>
+            <button type="button" class="reset-filters-btn" data-action="resetFilters" data-args=""><i class="fas fa-redo-alt"></i> <span data-i18n="shop.reset_filters">إعادة ضبط</span></button>
+          </div>
+
+          <!-- تصنيفات المنتجات -->
+          <div class="filter-group">
+            <h4><i class="fas fa-tags" style="color:#0284c7;"></i> <span data-i18n="shop.categories_title">التصنيفات</span></h4>
+            <div class="filter-options" id="categoryFilterContainer">
+              <label class="filter-option-label">
+                <input type="radio" name="categoryFilter" value="" checked data-action="onCategoryChange" data-args="">
+                <span data-i18n="shop.cat_all">الكل</span>
+                <span class="category-count" id="count-all" style="margin-inline-start:auto; font-size:0.8rem; font-weight:600; color:#94a3b8;">(8)</span>
+              </label>
+              <label class="filter-option-label">
+                <input type="radio" name="categoryFilter" value="أزياء وملابس" data-action="onCategoryChange" data-args="">
+                <span data-i18n="categories.fashion">أزياء وملابس</span>
+                <span class="category-count" id="count-fashion" style="margin-inline-start:auto; font-size:0.8rem; font-weight:600; color:#94a3b8;">(4)</span>
+              </label>
+              <label class="filter-option-label">
+                <input type="radio" name="categoryFilter" value="ساعات وإكسسوارات" data-action="onCategoryChange" data-args="">
+                <span data-i18n="categories.watches">ساعات وإكسسوارات</span>
+                <span class="category-count" id="count-watches" style="margin-inline-start:auto; font-size:0.8rem; font-weight:600; color:#94a3b8;">(1)</span>
+              </label>
+              <label class="filter-option-label">
+                <input type="radio" name="categoryFilter" value="عطور ومستحضرات تجميل" data-action="onCategoryChange" data-args="">
+                <span data-i18n="categories.beauty">عطور ومستحضرات تجميل</span>
+                <span class="category-count" id="count-beauty" style="margin-inline-start:auto; font-size:0.8rem; font-weight:600; color:#94a3b8;">(1)</span>
+              </label>
+              <label class="filter-option-label">
+                <input type="radio" name="categoryFilter" value="منزل وديكور" data-action="onCategoryChange" data-args="">
+                <span data-i18n="categories.home">منزل وديكور</span>
+                <span class="category-count" id="count-home" style="margin-inline-start:auto; font-size:0.8rem; font-weight:600; color:#94a3b8;">(1)</span>
+              </label>
+              <label class="filter-option-label">
+                <input type="radio" name="categoryFilter" value="هواتف وإلكترونيات" data-action="onCategoryChange" data-args="">
+                <span data-i18n="categories.electronics">هواتف وإلكترونيات</span>
+                <span class="category-count" id="count-electronics" style="margin-inline-start:auto; font-size:0.8rem; font-weight:600; color:#94a3b8;">(1)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- فلتر نطاق السعر -->
+          <div class="filter-group">
+            <h4><i class="fas fa-coins" style="color:var(--primary-color);"></i> <span data-i18n="shop.max_price_title">أقصى سعر (دج)</span></h4>
+            <div class="price-range-box">
+              <div class="price-slider-container">
+                <input type="range" id="priceRange" min="0" max="200000" step="5000" value="200000" data-action="updatePriceRange">
+              </div>
+              <div class="price-labels">
+                <span>0 <span data-i18n="common.currency">دج</span></span>
+                <span><span data-i18n="shop.price_up_to">حتى:</span> <strong id="priceRangeValue" style="color:var(--primary-color);">200,000 <span data-i18n="common.currency">دج</span></strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- فلتر تقييم النجوم -->
+          <div class="filter-group">
+            <h4><i class="fas fa-star" style="color:var(--warning-color);"></i> <span data-i18n="shop.rating_title">التقييم</span></h4>
+            <div class="filter-options">
+              <label class="filter-option-label">
+                <input type="radio" name="ratingFilter" value="0" checked data-action="applyFilters" data-args="">
+                <span data-i18n="shop.all_ratings">جميع التقييمات</span>
+                <span class="category-count" id="count-rating-0" style="margin-inline-start:auto; font-size:0.8rem; font-weight:600; color:#94a3b8;">(8)</span>
+              </label>
+              <label class="filter-option-label">
+                <input type="radio" name="ratingFilter" value="4.5" data-action="applyFilters" data-args="">
+                <span data-i18n="shop.stars_4_5">⭐ 4.5 فما فوق (ممتاز)</span>
+                <span class="category-count" id="count-rating-4-5" style="margin-inline-start:auto; font-size:0.8rem; font-weight:600; color:#94a3b8;">(4)</span>
+              </label>
+              <label class="filter-option-label">
+                <input type="radio" name="ratingFilter" value="4.0" data-action="applyFilters" data-args="">
+                <span data-i18n="shop.stars_4_0">⭐ 4.0 فما فوق (جيد جداً)</span>
+                <span class="category-count" id="count-rating-4-0" style="margin-inline-start:auto; font-size:0.8rem; font-weight:600; color:#94a3b8;">(7)</span>
+              </label>
+              <label class="filter-option-label">
+                <input type="radio" name="ratingFilter" value="3.0" data-action="applyFilters" data-args="">
+                <span data-i18n="shop.stars_3_0">⭐ 3.0 فما فوق</span>
+                <span class="category-count" id="count-rating-3-0" style="margin-inline-start:auto; font-size:0.8rem; font-weight:600; color:#94a3b8;">(8)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- فلتر حالة المخزون -->
+          <div class="filter-group">
+            <h4><i class="fas fa-boxes" style="color:var(--success-color);"></i> <span data-i18n="shop.availability_title">التوفر في المتجر</span></h4>
+            <div class="filter-options">
+              <label class="filter-option-label">
+                <input type="checkbox" id="inStockOnly" data-action="applyFilters" data-args="">
+                <span data-i18n="shop.in_stock_only">المتوفر في المخزون فقط</span>
+              </label>
+            </div>
+          </div>
+        </aside>
+
+        <!-- المحتوى الرئيسي للمنتجات -->
+        <main class="shop-main">
+          <div class="products-header">
+            <div class="search-box" style="position:relative; display:flex; align-items:center;">
+              <i class="fas fa-search"></i>
+              <input type="text" id="searchInput" data-i18n-placeholder="shop.search_placeholder" placeholder="ابحث عن منتج بالاسم..." data-action="onSearchInput" data-args="" style="width:100%;">
+              <button type="button" id="clearSearchBtn" data-action="clearSearch" data-args="" style="display:none; background:none; border:none; color:#94a3b8; cursor:pointer; font-size:1rem; padding:0 8px; margin-inline-start:-32px; z-index:2;" title="مسح البحث" data-i18n-title="shop.clear_search" aria-label="مسح البحث" data-i18n-aria-label="shop.clear_search">
+                <i class="fas fa-times-circle"></i>
+              </button>
+            </div>
+            <div class="filter-box">
+              <span id="resultsCount" style="font-weight: 600; color: var(--light-text, #64748b); font-size: 0.9rem;"></span>
+              <select id="sortFilter" data-action="applyFilters" data-args="">
+                <option value="newest" data-i18n="shop.sort_newest">الأحدث أولاً</option>
+                <option value="rating-desc" data-i18n="shop.sort_rating">التقييم: الأعلى تقييماً ⭐</option>
+                <option value="price-asc" data-i18n="shop.sort_price_asc">السعر: الأقل إلى الأعلى</option>
+                <option value="price-desc" data-i18n="shop.sort_price_desc">السعر: الأعلى إلى الأقل</option>
+                <option value="name-asc" data-i18n="shop.sort_name_asc">الاسم: أ-ي</option>
+                <option value="name-desc" data-i18n="shop.sort_name_desc">الاسم: ي-أ</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="products-container" class="products-grid">
+            <!-- Animated Skeleton Loading Placeholders -->
+            <div class="product-skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-price"></div>
+              <div class="skeleton-actions">
+                <div class="skeleton skeleton-btn"></div>
+                <div class="skeleton skeleton-btn"></div>
+              </div>
+            </div>
+            <div class="product-skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-price"></div>
+              <div class="skeleton-actions">
+                <div class="skeleton skeleton-btn"></div>
+                <div class="skeleton skeleton-btn"></div>
+              </div>
+            </div>
+            <div class="product-skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-price"></div>
+              <div class="skeleton-actions">
+                <div class="skeleton skeleton-btn"></div>
+                <div class="skeleton skeleton-btn"></div>
+              </div>
+            </div>
+            <div class="product-skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-price"></div>
+              <div class="skeleton-actions">
+                <div class="skeleton skeleton-btn"></div>
+                <div class="skeleton skeleton-btn"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pagination" id="pagination"></div>
+        </main>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- التذييل الموحد -->
+  <footer id="site-footer"></footer>
+
+<script src="js/layout.js"></script>
+  <script src="js/api-client.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/user-system.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/pages/shop.js" defer></script>
+</body>
+</html>

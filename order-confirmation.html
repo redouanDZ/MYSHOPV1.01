@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="conf.meta_title">تأكيد استلام الطلب - المتجر الإلكتروني</title>
+    <!-- Preload Primary Font for LCP / Text Performance -->
+    <link rel="preload" href="/fonts/font-1.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Local Fonts & Icons -->
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
+    <style>
+        .confirmation-section { padding: 40px 0; }
+        .confirmation-container { max-width: 800px; margin: 0 auto; }
+        .success-message { text-align: center; margin-bottom: 30px; padding: 35px; background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 12px; }
+        .success-icon i { font-size: 3.8rem; color: var(--success-color); margin-bottom: 15px; }
+        .success-message h2 { color: #065f46; margin-bottom: 8px; font-size: 1.8rem; }
+        .success-message p { color: #047857; margin: 0; font-size: 1.05rem; }
+        
+        .order-details-box { background: white; border-radius: 10px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; background: var(--card-bg); padding: 15px; border-radius: 8px; }
+        @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+        
+        .info-row { display: flex; justify-content: space-between; font-size: 0.95rem; }
+        .info-label { color: var(--light-text); }
+        .info-value { font-weight: bold; color: var(--text-color); }
+        
+        .order-items-list { margin-bottom: 20px; }
+        .order-item-card { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+        .item-info-wrapper { display: flex; align-items: center; gap: 12px; }
+        .item-info-wrapper img { width: 55px; height: 55px; object-fit: cover; border-radius: 6px; }
+        
+        .summary-totals-box { border-top: 1.5px solid #e2e8f0; padding-top: 15px; }
+        .summary-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
+        .summary-line.grand-total { font-size: 1.25rem; font-weight: bold; color: var(--primary-color); border-top: 1.5px solid #e2e8f0; padding-top: 10px; margin-top: 10px; }
+        
+        .action-buttons-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+        .btn-action { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1rem; transition: background 0.2s; }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-invoice { background: var(--success-color); color: white; }
+        .btn-invoice:hover { background: var(--success-color); }
+        .btn-outline { background: var(--card-bg); color: var(--text-color); border: 1.5px solid #cbd5e1; }
+        .btn-outline:hover { background: #e2e8f0; }
+
+        .status-badge-custom { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-processing { background: #e0f2fe; color: #0284c7; }
+        .status-shipped { background: #ede9fe; color: #7c3aed; }
+        .status-delivered { background: #d1fae5; color: var(--success-color); }
+    </style>
+  <meta name="theme-color" content="#2563eb">
+  <link rel="manifest" href="/manifest.json">
+      <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+
+    <!-- Theme Anti-Flicker -->
+    <script src="/js/theme-init.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header id="site-header"></header>
+
+    <!-- Page title -->
+    <div class="page-title">
+        <div class="container">
+            <h1><span data-i18n="conf.page_title">تأكيد الطلب</span></h1>
+            <div class="breadcrumb">
+                <a href="index.html"><span data-i18n="footer.link_home">الرئيسية</span></a> <i class="fas fa-chevron-left"></i> <span data-i18n="conf.page_title">تأكيد الطلب</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Section -->
+    <section class="confirmation-section">
+        <div class="container">
+            <div class="confirmation-container">
+                <div class="success-message">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2><span data-i18n="conf.success_title">تم تسجيل طلبك بنجاح!</span></h2>
+                    <p id="confirmMessageText"><span data-i18n="conf.success_desc">شكراً لتسوقك معنا. سنتصل بك قريباً لتأكيد تفاصيل الشحن والتوصيل.</span></p>
+                </div>
+
+                <div class="order-details-box">
+                    <h3 style="margin-top: 0; color: var(--text-color); border-bottom: 1.5px solid #f1f5f9; padding-bottom: 10px;"><span data-i18n="conf.order_details">تفاصيل الطلب</span></h3>
+
+                    <div class="info-grid">
+                        <div class="info-row">
+                            <span class="info-label"><span data-i18n="conf.order_number">رقم الطلب:</span></span>
+                            <span class="info-value" id="confOrderNumber">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><span data-i18n="account.col_date">تاريخ الطلب:</span></span>
+                            <span class="info-value" id="confOrderDate">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><span data-i18n="conf.payment_method">طريقة الدفع:</span></span>
+                            <span class="info-value" id="confPaymentMethod" data-i18n="conf.cod">الدفع عند الاستلام</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><span data-i18n="account.col_status">حالة الطلب:</span></span>
+                            <span id="confStatusBadge" class="status-badge-custom status-pending"><span data-i18n="conf.status_pending">قيد المعالجة</span></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><span data-i18n="conf.customer_name">المستلم:</span></span>
+                            <span class="info-value" id="confCustomerName">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><span data-i18n="conf.delivery_address">الولاية والتوصيل:</span></span>
+                            <span class="info-value" id="confWilaya">-</span>
+                        </div>
+                    </div>
+
+                    <h4 style="margin: 20px 0 10px 0; color: var(--text-color);"><span data-i18n="conf.ordered_products">المنتجات المطلوبة</span></h4>
+                    <div class="order-items-list" id="confOrderItemsList">
+                        <!-- Loaded dynamically -->
+                    </div>
+
+                    <div class="summary-totals-box">
+                        <div class="summary-line">
+                            <span><span data-i18n="cart.total_products">إجمالي المنتجات:</span></span>
+                            <span id="confSubtotal">0 <span data-i18n="common.currency">دج</span></span>
+                        </div>
+                        <div class="summary-line" id="confDiscountRow" style="display: none; color: #16a34a; font-weight: bold;">
+                            <span><span data-i18n="checkout.discount">الخصم:</span></span>
+                            <span id="confDiscount">0 <span data-i18n="common.currency">دج</span></span>
+                        </div>
+                        <div class="summary-line">
+                            <span><span data-i18n="checkout.shipping_cost">تكلفة الشحن والتوصيل:</span></span>
+                            <span id="confShipping">0 <span data-i18n="common.currency">دج</span></span>
+                        </div>
+                        <div class="summary-line grand-total">
+                            <span><span data-i18n="checkout.total">المبلغ الإجمالي للدفع:</span></span>
+                            <span id="confTotal">0 <span data-i18n="common.currency">دج</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons-group">
+                    <a href="#" id="trackOrderBtn" class="btn-action btn-primary">
+                        <i class="fas fa-truck"></i> <span data-i18n="conf.track_shipment">تتبع مسار الشحنة</span>
+                    </a>
+                    <a href="#" id="viewInvoiceBtn" target="_blank" class="btn-action btn-invoice">
+                        <i class="fas fa-file-invoice-dollar"></i> <span data-i18n="conf.view_invoice">عرض وطباعة الفاتورة</span>
+                    </a>
+                    <a href="shop.html" class="btn-action btn-outline">
+                        <i class="fas fa-shopping-bag"></i> <span data-i18n="cart.continue_shopping">مواصلة التسوق</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Footer -->
+    <footer id="site-footer"></footer>
+
+    <script src="js/layout.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/pages/order-confirmation.js" defer></script>
+</body>
+</html>

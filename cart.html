@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="cart.meta_title">عربة التسوق - متجر الإلكتروني</title>
+  <!-- Preload Primary Font for LCP / Text Performance -->
+  <link rel="preload" href="/fonts/font-1.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Local Fonts & Icons -->
+  <link rel="stylesheet" href="/fonts/fonts.css">
+  <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="css/style.min.css">
+  <style>
+    /* CSS محسن لصفحة العربة مع نظام التصميم الموحد */
+    .cart-section { padding: 36px 0 60px; }
+    .cart-container { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 32px; align-items: start; margin-top: 24px; }
+    .cart-items h2 { margin-bottom: 20px; color: var(--dark-color, #1e293b); font-size: 1.3rem; font-weight: 800; }
+    .cart-container > * { min-width: 0; }
+    .cart-items-grid { display: flex; flex-direction: column; gap: 16px; }
+    .item-total { white-space: nowrap; }
+    .cart-item {
+      display: grid;
+      grid-template-columns: 90px 1fr auto auto auto;
+      gap: 20px;
+      align-items: center;
+      border: 1px solid var(--border-color, #e2e8f0);
+      padding: 16px 20px;
+      border-radius: 14px;
+      background: var(--card-bg, #fff);
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .cart-item:hover {
+      border-color: var(--border-color);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .cart-item img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+      background: var(--light-color, #f8fafc);
+      border: 1px solid var(--border-color);
+    }
+    .item-details h3 {
+      margin: 0 0 4px 0;
+      color: var(--dark-color, #1e293b);
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .item-price { font-weight: 700; color: var(--primary-color); font-size: 1.05rem; }
+    .item-quantity {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--light-color, #f8fafc);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    .item-quantity input {
+      width: 44px;
+      height: 32px;
+      text-align: center;
+      border: none;
+      background: transparent;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--dark-color, #1e293b);
+      outline: none;
+    }
+    .quantity-btn {
+      width: 30px;
+      height: 30px;
+      border: none;
+      background: var(--card-bg, #fff);
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 1rem;
+      color: var(--dark-color, #1e293b);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .quantity-btn:hover { background: var(--primary-color); color: var(--bg-color, #fff); }
+    .item-total { font-size: 1.15rem; font-weight: 800; color: var(--dark-color, #1e293b); min-width: 90px; text-align: left; }
+    .remove-item {
+      background: #fee2e2;
+      color: var(--danger-color);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .remove-item:hover { background: var(--danger-color); color: var(--bg-color, #fff); }
+    .cart-summary {
+      background: var(--card-bg, #fff);
+      padding: 24px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color, #e2e8f0);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      position: sticky;
+      top: 90px;
+    }
+    .cart-summary h2 { margin-bottom: 18px; color: var(--dark-color, #1e293b); font-size: 1.2rem; font-weight: 800; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+    .summary-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 0.95rem; color: var(--text-color, #1e293b); }
+    .summary-total { font-weight: 800; border-top: 1px solid var(--border-color, #e2e8f0); padding-top: 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; }
+    .promo-code { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+    .promo-code input { flex: 1 1 140px; min-width: 0; padding: 10px 14px; border: 1px solid var(--border-color, #cbd5e1); border-radius: 8px; outline: none; font-size: 0.9rem; }
+    .promo-code .apply-promo { flex: 0 0 auto; white-space: nowrap; }
+    .promo-code input:focus { border-color: var(--primary-color); }
+    .apply-promo { background: var(--light-color, #f1f5f9); color: var(--text-color, #1e293b); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: var(--transition); }
+    .apply-promo:hover { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+    .checkout-btn { width: 100%; background: var(--primary-gradient); color: white; border: none; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 1.05rem; margin-bottom: 10px; font-weight: 800; transition: var(--transition); box-shadow: 0 4px 14px rgba(79,70,229,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .checkout-btn:hover { background: var(--primary-hover-gradient); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(79,70,229,0.4); }
+    .continue-shopping { text-align: center; color: var(--light-text, #64748b); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .continue-shopping:hover { text-decoration: underline; color: var(--primary-color); }
+    .empty-cart { text-align: center; padding: 60px 20px; background: var(--card-bg, #fff); border-radius: 16px; border: 1px dashed var(--border-color, #cbd5e1); }
+    .empty-cart i { font-size: 4rem; margin-bottom: 18px; color: var(--border-color); }
+    @media (max-width: 768px) {
+      .cart-container { grid-template-columns: minmax(0, 1fr); margin-top: 15px; }
+      .cart-item {
+        grid-template-columns: 85px minmax(0, 1fr) auto;
+        grid-template-areas: "img details remove" "qty qty total";
+        padding: 14px 12px;
+        gap: 10px 12px;
+        align-items: center;
+      }
+      .cart-item img { grid-area: img; width: 85px; height: 85px; align-self: start; }
+      .item-details { grid-area: details; align-self: start; min-width: 0; text-align: start; }
+      .item-details h3 { font-size: 0.95rem; }
+      .remove-item { grid-area: remove; align-self: start; justify-self: end; width: 34px; height: 34px; }
+      .item-quantity { grid-area: qty; justify-self: start; }
+      .item-total { grid-area: total; justify-self: end; font-size: 1rem; min-width: auto; }
+      .cart-summary { position: relative; top: 0; padding: 18px 16px; margin-top: 10px; }
+    }
+  </style>
+  <meta name="theme-color" content="#2563eb">
+  <link rel="manifest" href="/manifest.json">
+      <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+
+    <!-- Theme Anti-Flicker -->
+    <script src="/js/theme-init.js"></script>
+</head>
+<body>
+  <!-- رأس الموقع الموحد -->
+  <header id="site-header"></header>
+
+  <!-- عنوان الصفحة -->
+  <div class="page-title">
+    <div class="container">
+      <h1 data-i18n="cart.title">عربة التسوق</h1>
+      <div class="breadcrumb">
+        <a href="index.html" ><span data-i18n="footer.link_home">الرئيسية</span></a> <i class="fas fa-chevron-left"></i> <span data-i18n="cart.title">عربة التسوق</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- قسم عربة التسوق -->
+  <section class="cart-section">
+    <div class="container">
+      <div class="cart-container">
+        <div class="cart-items">
+          <h2><span data-i18n="cart.added_products">المنتجات المضافة</span></h2>
+          <div class="cart-items-grid" id="cart-items-grid">
+            <!-- سيتم ملؤها ديناميكيًا من MySQL عبر API -->
+          </div>
+          <div class="empty-state" id="empty-cart" style="display: none;">
+            <div class="empty-state-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h3 class="empty-state-title"><span data-i18n="cart.empty_title">عربة التسوق فارغة حالياً</span></h3>
+            <p class="empty-state-desc"><span data-i18n="cart.empty_desc">لم تقم بإضافة أي منتجات إلى سلتك بعد. استكشف تشكيلتنا الواسعة وابدأ التسوق الآن.</span></p>
+            <a href="shop.html" class="btn btn-primary">
+              <i class="fas fa-shopping-bag"></i> <span data-i18n="cart.browse_shop">تصفح متجر المنتجات</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="cart-summary" id="cart-summary">
+          <!-- ملخص الطلب سيتم توليده ديناميكيًا -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- التذييل الموحد -->
+  <footer id="site-footer"></footer>
+
+  <script src="js/layout.js"></script>
+  <script src="js/api-client.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/user-system.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/pages/cart.js" defer></script>
+</body>
+</html>

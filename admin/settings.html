@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعدادات المتجر العامة والتخزين السحابي - لوحة الإدارة</title>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.min.css">
+    <link rel="stylesheet" href="css/dashboard.min.css">
+    <style>
+        .settings-section-card {
+            background: var(--card-bg, #fff);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.05));
+            border: 1px solid var(--border-color, #e2e8f0);
+            margin-bottom: 24px;
+        }
+        .settings-section-card h3 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: var(--text-color, #1e293b);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.15rem;
+            border-bottom: 1px solid var(--border-color, #f1f5f9);
+            padding-bottom: 12px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color, #334155);
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 10px 14px;
+            border: 1px solid var(--border-color, #cbd5e1);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s, background-color 0.2s;
+            background-color: var(--card-bg, #fff);
+            color: var(--text-color, #1e293b);
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color, #2563eb);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        .upload-field-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .upload-btn {
+            background: var(--light-color, #f1f5f9);
+            color: var(--text-color, #334155);
+            border: 1px solid var(--border-color, #cbd5e1);
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .upload-btn:hover {
+            background: var(--border-color, #e2e8f0);
+        }
+        .media-preview-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color, #e2e8f0);
+            object-fit: contain;
+            background: var(--light-color, #f8fafc);
+            display: none;
+        }
+        .toggle-switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--light-color, #f8fafc);
+            padding: 14px 18px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color, #e2e8f0);
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border-color, #cbd5e1);
+            transition: .3s;
+            border-radius: 26px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--card-bg, #fff);
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--success-color, #10b981);
+        }
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+        /* Dark mode specifics */
+        [data-theme="dark"] .toggle-switch-container {
+            background: var(--light-color);
+            border-color: var(--border-color);
+        }
+        [data-theme="dark"] .toggle-switch-container strong {
+            color: var(--text-color) !important;
+        }
+        [data-theme="dark"] .toggle-switch-container small {
+            color: var(--light-text) !important;
+        }
+        [data-theme="dark"] .settings-section-card {
+            background: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+        }
+        [data-theme="dark"] .form-group input,
+        [data-theme="dark"] .form-group textarea,
+        [data-theme="dark"] .form-group select {
+            background-color: var(--light-color) !important;
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+        [data-theme="dark"] .upload-btn {
+            background: var(--light-color) !important;
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+        [data-theme="dark"] .success-card {
+            background: rgba(16, 185, 129, 0.08) !important;
+            border-color: rgba(16, 185, 129, 0.2) !important;
+        }
+    </style>
+
+    <!-- Theme Anti-Flicker -->
+    <script src="../js/theme-init.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">المتجر الإلكتروني</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">زيارة المتجر</a></li>
+                    <li><a href="index.html">لوحة التحكم</a></li>
+                    <li><a href="orders.html">الطلبات</a></li>
+                    <li><a href="products.html">المنتجات</a></li>
+                    <li><a href="users.html">العملاء</a></li>
+                    <li><a href="coupons.html">الكوبونات</a></li>
+                    <li><a href="reviews.html">التقييمات</a></li>
+                    <li><a href="settings.html" class="active">الإعدادات</a></li>
+                    <li><a href="../documentation/index.html" target="_blank" class="text-indigo fw-600"><i class="fas fa-book-open"></i> التوثيق</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions" style="display: flex; gap: 15px; align-items: center;">
+                <a href="../account.html" class="user-icon" title="حساب الأدمن">
+                    <i class="fas fa-user-shield"></i>
+                </a>
+                <a href="#" class="admin-logout-btn text-danger" title="تسجيل الخروج" >
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>لوحة الإدارة</h2>
+                <p id="adminUserTag">مدير النظام</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> الإحصائيات العامة</a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-bag"></i> إدارة الطلبات</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> المنتجات والمخزون</a></li>
+                <li><a href="users.html"><i class="fas fa-users"></i> إدارة المستخدمين</a></li>
+                <li><a href="coupons.html"><i class="fas fa-ticket-alt"></i> قسائم الخصم</a></li>
+                <li><a href="reviews.html"><i class="fas fa-star"></i> تقييمات المنتجات</a></li>
+                <li><a href="settings.html" class="active"><i class="fas fa-cog"></i> الإعدادات والبكسلات</a></li>
+                <li><a href="../index.html"><i class="fas fa-store"></i> واجهة المتجر</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <a href="#" id="adminLogoutBtn" class="text-danger"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header" style="margin-bottom: 25px;">
+                <h1>⚙️ التخصيص العام وإدارة المتجر والسحابة</h1>
+                <p style="color: var(--light-text, #64748b); margin-top: 5px;">تحكم بهوية متجرك، الشعار، أرقام التواصل، روابط الشبكات الاجتماعية، السياسات، بكسلات التتبع الإعلاني، والتخزين السحابي للوسائط.</p>
+            </div>
+
+            <form id="settingsForm" data-action="saveSettings" data-args="event" style="max-width: 950px;">
+                <!-- 1. Identity & Branding -->
+                <div class="settings-section-card">
+                    <h3><i class="fas fa-palette text-blue" ></i> هوية وشعار المتجر (Branding & Logo)</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>اسم المتجر الرسمي</label>
+                            <input type="text" id="setting_store_name" placeholder="مثال: متجر الهواتف الذكية">
+                        </div>
+                        <div class="form-group">
+                            <label>رمز العملة المعروضة</label>
+                            <input type="text" id="setting_store_currency" placeholder="دج">
+                        </div>
+                    </div>
+
+                    <div class="form-grid" style="margin-top: 16px;">
+                        <!-- Logo Upload -->
+                        <div class="form-group">
+                            <label>شعار المتجر الرئيسي (Logo)</label>
+                            <div class="upload-field-row">
+                                <img id="logoPreview" class="media-preview-box" alt="Logo Preview">
+                                <input type="text" id="setting_store_logo" placeholder="/images/logo.png أو رابط CDN" style="flex: 1;">
+                                <label class="upload-btn">
+                                    <i class="fas fa-cloud-upload-alt"></i> رفع شعار
+                                    <input type="file" id="logoFileInput" accept="image/*" style="display: none;" data-action="uploadSingleMedia" data-args="this, 'setting_store_logo', 'logoPreview'">
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Favicon Upload -->
+                        <div class="form-group">
+                            <label>أيقونة المتصفح المصغرة (Favicon)</label>
+                            <div class="upload-field-row">
+                                <img id="faviconPreview" class="media-preview-box" alt="Favicon Preview">
+                                <input type="text" id="setting_store_favicon" placeholder="/favicon.ico أو رابط CDN" style="flex: 1;">
+                                <label class="upload-btn">
+                                    <i class="fas fa-cloud-upload-alt"></i> رفع أيقونة
+                                    <input type="file" id="faviconFileInput" accept="image/*" style="display: none;" data-action="uploadSingleMedia" data-args="this, 'setting_store_favicon', 'faviconPreview'">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Contact & Social Links -->
+                <div class="settings-section-card">
+                    <h3><i class="fas fa-headset text-green" ></i> معلومات التواصل والشبكات الاجتماعية</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-phone-alt"></i> هاتف خدمة العملاء</label>
+                            <input type="text" id="setting_store_phone" placeholder="0550000000" dir="ltr">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-whatsapp text-whatsapp" ></i> رقم الواتساب المباشر (مع كود الدولة)</label>
+                            <input type="text" id="setting_store_whatsapp" placeholder="213550000000" dir="ltr">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> البريد الإلكتروني الرسمي</label>
+                            <input type="email" id="setting_store_email" placeholder="contact@myshop.dz" dir="ltr">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> عنوان ومقر المتجر</label>
+                            <input type="text" id="setting_store_address" placeholder="الجزائر العاصمة، الجزائر">
+                        </div>
+                    </div>
+
+                    <div class="form-grid" style="margin-top: 16px;">
+                        <div class="form-group">
+                            <label><i class="fab fa-facebook text-facebook" ></i> رابط صفحة الفيسبوك</label>
+                            <input type="url" id="setting_facebook_url" placeholder="https://facebook.com/yourpage" dir="ltr">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-instagram text-instagram" ></i> رابط حساب الإنستغرام</label>
+                            <input type="url" id="setting_instagram_url" placeholder="https://instagram.com/yourprofile" dir="ltr">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-tiktok"></i> رابط حساب التيك توك</label>
+                            <input type="url" id="setting_tiktok_url" placeholder="https://tiktok.com/@youraccount" dir="ltr">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Store Policies & Announcement Bar -->
+                <div class="settings-section-card">
+                    <h3><i class="fas fa-shield-alt text-purple" ></i> سياسات المتجر وشريط الإعلانات</h3>
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label><i class="fas fa-bullhorn text-amber" ></i> نص شريط الإعلانات العلوي (Announcement Bar)</label>
+                        <input type="text" id="setting_announcement_bar_text" placeholder="توصيل سريع لـ 58 ولاية والدفع عند الاستلام!">
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-truck"></i> سياسة الشحن والتوصيل (Shipping Policy)</label>
+                            <textarea id="setting_shipping_policy" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-undo"></i> سياسة الاسترجاع والاستبدال (Return Policy)</label>
+                            <textarea id="setting_return_policy" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-certificate"></i> سياسة الضمان والجودة (Warranty Policy)</label>
+                            <textarea id="setting_warranty_policy" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Payment Gateways Control -->
+                <div class="settings-section-card">
+                    <h3><i class="fas fa-credit-card text-amber" ></i> تفعيل / تعطيل بوابات وطرق الدفع</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                        <div class="toggle-switch-container">
+                            <div>
+                                <strong class="text-slate-900 block"><i class="fas fa-money-bill-wave text-green" ></i> الدفع عند الاستلام (COD)</strong>
+                                <small class="text-slate">تمكين الزبائن من الدفع نقداً عند استلام الطرد</small>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="setting_enable_cod" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="toggle-switch-container">
+                            <div>
+                                <strong class="text-slate-900 block"><i class="fas fa-credit-card text-primary" ></i> الدفع الإلكتروني (Chargily Pay)</strong>
+                                <small class="text-slate">الدفع بالبطاقة الذهبية وبطاقات CIB البنكية</small>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="setting_enable_chargily" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Marketing & Analytics Pixels -->
+                <div class="settings-section-card">
+                    <h3><i class="fas fa-chart-line text-pink" ></i> بكسلات التتبع الإعلاني (Marketing & Ad Pixels)</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fab fa-facebook text-facebook" ></i> Meta / Facebook Pixel ID</label>
+                            <input type="text" id="setting_facebook_pixel_id" placeholder="مثال: 123456789012345" dir="ltr">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-tiktok"></i> TikTok Pixel ID</label>
+                            <input type="text" id="setting_tiktok_pixel_id" placeholder="مثال: C6XXXXXXXXXXXXX" dir="ltr">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-google text-google" ></i> Google Analytics 4 (GA4 ID)</label>
+                            <input type="text" id="setting_google_analytics_id" placeholder="مثال: G-XXXXXXXXXX" dir="ltr">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-snapchat-ghost text-snapchat" ></i> Snapchat Pixel ID</label>
+                            <input type="text" id="setting_snapchat_pixel_id" placeholder="مثال: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" dir="ltr">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-google text-google-blue" ></i> Google OAuth Client ID (تسجيل الدخول عبر قوقل)</label>
+                            <input type="text" id="setting_google_client_id" placeholder="مثال: xxxxx.apps.googleusercontent.com" dir="ltr">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Telegram Instant Order Alerts -->
+                <div class="settings-section-card">
+                    <h3><i class="fab fa-telegram text-telegram" ></i> إشعارات تيليجرام الفورية للطلبات (Telegram Instant Order Alerts)</h3>
+                    <p style="color: var(--light-text, #64748b); font-size: 0.9rem; margin-top: -8px; margin-bottom: 16px;">
+                        استلم إشعاراً فورياً على هاتفك عبر تطبيق Telegram مع رنة تنبيه وتفاصيل العميل بمجرد تسجيل أي طلب شراء جديد.
+                    </p>
+                    <div class="toggle-switch-container" style="margin-bottom: 16px;">
+                        <div>
+                            <strong class="text-slate-900 block"><i class="fas fa-bell text-telegram" ></i> تفعيل إشعارات التيليجرام</strong>
+                            <small class="text-slate">إرسال تفاصيل كل طلب شراء جديد فور تسجيله إلى حساب التيليجرام الخاص بك</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="setting_telegram_notifications_enabled" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-key"></i> رمز توكن البوت (Telegram Bot Token)</label>
+                            <input type="password" id="setting_telegram_bot_token" placeholder="مثال: 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" dir="ltr">
+                            <small class="text-slate">يمكنك إنشاء بوت مجاني والحصول على التوكن من <strong>@BotFather</strong></small>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-id-badge"></i> معرّف المحادثة (Telegram Chat ID)</label>
+                            <input type="text" id="setting_telegram_chat_id" placeholder="مثال: 123456789 أو -100xxxxxxx" dir="ltr">
+                            <small class="text-slate">يمكنك معرفة الـ ID الخاص بك عبر مراسلة <strong>@userinfobot</strong></small>
+                        </div>
+                    </div>
+                    <div style="margin-top: 14px; display: flex; gap: 10px;">
+                        <button type="button" data-action="testTelegramNotification" data-args="" id="testTelegramBtn" class="btn btn-telegram">
+                            <i class="fas fa-paper-plane"></i> اختبار الإرسال الفوري للتيليجرام
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 7. Cloud Media Storage Info -->
+                <div class="settings-section-card success-card">
+                    <h3 style="border-bottom: none; margin-bottom: 8px; color: #166534;">
+                        <i class="fas fa-cloud text-green-dark" ></i> حالة التخزين السحابي للوسائط (Cloud Media Storage)
+                    </h3>
+                    <p style="color: #15803d; font-size: 0.9rem; line-height: 1.6; margin: 0;">
+                        ☁️ <strong>جاهز للنشر السحابي:</strong> يدعم المتجر تلقائياً التخزين السحابي الدائم لصور المنتجات والشعارات عبر <strong>Cloudinary</strong> و <strong>AWS S3 / Cloudflare R2</strong>. عند توفير متغيرات البيئة <code>CLOUDINARY_CLOUD_NAME</code> و <code>CLOUDINARY_API_KEY</code> و <code>CLOUDINARY_API_SECRET</code> في الخادم السحابي، سيتم رفع الصور مباشرة إلى شبكة CDN السحابية لضمان بقائها وعدم فقدانها عند إعادة تشغيل الخادم.
+                    </p>
+                </div>
+
+                <!-- Save Button -->
+                <div style="margin-top: 10px; margin-bottom: 40px;">
+                    <button type="submit" id="saveSettingsBtn" class="btn-primary btn-save">
+                        <i class="fas fa-save"></i> حفظ كافة التغييرات والإعدادات
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/api-client.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/pages/settings.js" defer></script>
+</body>
+</html>

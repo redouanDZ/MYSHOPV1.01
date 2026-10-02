@@ -1,0 +1,17 @@
+﻿name: 🚀 اقتراح ميزة جديدة (Feature Request)
+description: اقترح فكرة جديدة لتطوير متجر MYSHOP
+title: "[FEATURE]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: feature
+    attributes:
+      label: الميزة المقترحة
+      description: اشرح الميزة أو الإضافة التي ترغب برؤيتها.
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: القيمة التجارية / الفائدة
+      description: كيف ستساعد هذه الميزة التجار أو المتسوقين؟

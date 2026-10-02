@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="account.title">حسابي - متجر التجارة الإلكترونية</title>
+    <!-- Preload Primary Font for LCP / Text Performance -->
+    <link rel="preload" href="/fonts/font-1.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Local Fonts & Icons -->
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
+    <style>
+        /* Account Dashboard Custom Styles */
+        .account-page-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .account-page-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .account-sidebar {
+            background: var(--card-bg)fff;
+            border-radius: 12px;
+            padding: 24px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            height: fit-content;
+        }
+
+        .user-card-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .user-avatar-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: var(--bg-color, #fff)fff;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            box-shadow: var(--box-shadow-hover);
+        }
+
+        .user-card-header h3 {
+            font-size: 1.2rem;
+            margin: 0 0 4px;
+            color: var(--dark-color, #1e293b);
+        }
+
+        .user-card-header p {
+            font-size: 0.9rem;
+            color: var(--light-text, #64748b);
+            margin: 0;
+        }
+
+        .account-nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .account-nav-list li {
+            margin-bottom: 8px;
+        }
+
+        .account-nav-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-radius: var(--border-radius-sm, 8px);
+            color: var(--text-color, #1e293b);
+            font-size: 0.98rem;
+            font-weight: 500;
+            text-align: right;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .account-nav-btn i {
+            font-size: 1.1rem;
+            width: 20px;
+            color: var(--light-text, #64748b);
+            transition: color 0.25s ease;
+        }
+
+        .account-nav-btn:hover {
+            background-color: rgba(79, 70, 229, 0.08);
+            color: var(--primary-color);
+        }
+
+        .account-nav-btn.active {
+            background: var(--primary-gradient);
+            color: var(--bg-color, #fff)fff;
+        }
+
+        .account-nav-btn.active i {
+            color: var(--bg-color, #fff)fff;
+        }
+
+        .account-content-card {
+            background: var(--card-bg)fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            min-height: 500px;
+        }
+
+        .tab-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--dark-color, #2c3e50);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #333333;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 12px 14px;
+            border: 1px solid #dcdde1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        /* Address Cards Grid */
+        .addresses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .address-card {
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: var(--border-radius-sm, 10px);
+            padding: 20px;
+            position: relative;
+            background: var(--card-bg, #ffffff);
+            transition: var(--transition);
+        }
+
+        .address-card.default-address {
+            border-color: var(--primary-color);
+            background: rgba(79, 70, 229, 0.03);
+        }
+
+        .address-badge {
+            display: inline-block;
+            background: var(--primary-gradient);
+            color: var(--bg-color, #fff);
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .address-card h4 {
+            margin: 0 0 8px;
+            font-size: 1.1rem;
+        }
+
+        .address-card p {
+            margin: 4px 0;
+            color: var(--light-text, #64748b);
+            font-size: 0.9rem;
+        }
+
+        .address-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-sm-danger {
+            background: var(--danger-color);
+            color: var(--bg-color, #fff);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-sm-danger:hover {
+            opacity: 0.9;
+        }
+
+        /* Orders Table */
+        .order-history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .order-item-card {
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: var(--border-radius-sm, 10px);
+            padding: 18px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: var(--card-bg, #ffffff);
+        }
+
+        .order-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color, #f0f0f0);
+        }
+
+        .order-id-tag {
+            font-weight: bold;
+            font-size: 1.05rem;
+            color: var(--dark-color, #1e293b);
+        }
+
+        .order-status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: bold;
+        }
+
+        .status-pending { background: var(--warning-color); color: var(--bg-color, #fff); }
+        .status-processing { background: var(--secondary-color); color: var(--bg-color, #fff); }
+        .status-shipped { background: var(--primary-color); color: var(--bg-color, #fff); }
+        .status-delivered { background: var(--success-color); color: var(--bg-color, #fff); }
+
+        .order-details-btn {
+            background: var(--light-color);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #333;
+            transition: background 0.2s ease;
+        }
+
+        .order-details-btn:hover {
+            background: #e4e7eb;
+        }
+
+        /* Modal Styles */
+        .account-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .account-modal.show {
+            display: flex;
+        }
+
+        .account-modal-content {
+            background: var(--card-bg);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: transparent;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        /* Dark mode overrides for account page */
+        [data-theme="dark"] .account-sidebar,
+        [data-theme="dark"] .account-content-card,
+        [data-theme="dark"] .account-modal-content,
+        body.dark-mode .account-sidebar,
+        body.dark-mode .account-content-card,
+        body.dark-mode .account-modal-content {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        [data-theme="dark"] .user-card-header h3,
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] .address-card h4,
+        [data-theme="dark"] .order-id-tag,
+        body.dark-mode .user-card-header h3,
+        body.dark-mode .section-title,
+        body.dark-mode .address-card h4,
+        body.dark-mode .order-id-tag {
+            color: var(--text-color) !important;
+        }
+
+        [data-theme="dark"] .account-nav-btn,
+        body.dark-mode .account-nav-btn {
+            color: var(--light-text);
+        }
+
+        [data-theme="dark"] .account-nav-btn:hover,
+        body.dark-mode .account-nav-btn:hover {
+            background-color: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+        }
+
+        [data-theme="dark"] .account-nav-btn.active,
+        body.dark-mode .account-nav-btn.active {
+            background-color: var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .address-card,
+        [data-theme="dark"] .order-item-card,
+        body.dark-mode .address-card,
+        body.dark-mode .order-item-card {
+            background-color: rgba(255, 255, 255, 0.03) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        [data-theme="dark"] .form-group label,
+        [data-theme="dark"] .checkbox-group label,
+        body.dark-mode .form-group label,
+        body.dark-mode .checkbox-group label {
+            color: var(--text-color) !important;
+        }
+
+        [data-theme="dark"] .form-group input,
+        [data-theme="dark"] .form-group select,
+        [data-theme="dark"] .form-group textarea,
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group select,
+        body.dark-mode .form-group textarea {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+    </style>
+  <meta name="theme-color" content="#2563eb">
+  <link rel="manifest" href="/manifest.json">
+      <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+
+    <!-- Theme Anti-Flicker -->
+    <script src="js/theme-init.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header id="site-header"></header>
+
+    <!-- Main Content Area -->
+    <main class="account-page-container">
+        <!-- Sidebar Navigation -->
+        <aside class="account-sidebar">
+            <div class="user-card-header">
+                <div class="user-avatar-circle" id="avatar-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 id="sidebar-user-name">...</h3>
+                <p id="sidebar-user-email" style="font-size:0.85rem;">...</p>
+            </div>
+
+            <ul class="account-nav-list">
+                <li>
+                    <button type="button" class="account-nav-btn active" data-tab="profile">
+                        <i class="fas fa-user-cog"></i>
+                        <span data-i18n="account.profile">الملف الشخصي</span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="account-nav-btn" data-tab="addresses">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span data-i18n="account.addresses">عناوين الشحن</span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="account-nav-btn" data-tab="orders">
+                        <i class="fas fa-box"></i>
+                        <span data-i18n="account.orders">طلباتي</span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="account-nav-btn" data-tab="wishlist">
+                        <i class="fas fa-heart"></i>
+                        <span><span data-i18n="account.wishlist_tab">قائمة المفضلة</span></span>
+                    </button>
+                </li>
+                <li style="margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 15px;">
+                    <button type="button" class="account-nav-btn" id="logout-sidebar-btn" style="color: var(--danger-color);">
+                        <i class="fas fa-sign-out-alt" style="color: var(--danger-color);"></i>
+                        <span data-i18n="account.sidebar_logout">تسجيل الخروج</span>
+                    </button>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Dashboard View Area -->
+        <section class="account-content-card">
+            <!-- TAB 1: Profile -->
+            <div class="tab-section active" id="tab-profile">
+                <div class="section-title">
+                    <span><i class="fas fa-user-edit" style="color: var(--primary-color); margin-left: 8px;"></i><span data-i18n="account.profile_data">بيانات الملف الشخصي</span></span>
+                </div>
+
+                <form id="profile-update-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="profile-name" data-i18n="checkout.full_name">الاسم الكامل</label>
+                            <input type="text" id="profile-name" required data-i18n-placeholder="account.profile_name_placeholder" placeholder="مثال: أحمد محمد">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-phone" data-i18n="checkout.phone">رقم الهاتف</label>
+                            <input type="tel" id="profile-phone" placeholder="0550000000">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profile-email" data-i18n="checkout.email_label">البريد الإلكتروني</label>
+                        <input type="email" id="profile-email" required placeholder="name@example.com">
+                    </div>
+
+                    <div style="margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                        <h4 style="margin-bottom: 15px; font-size: 1.1rem;" data-i18n="account.change_password">تغيير كلمة المرور</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="profile-new-pass" data-i18n="account.new_pass">كلمة المرور الجديدة</label>
+                                <input type="password" id="profile-new-pass" data-i18n-placeholder="account.new_pass_placeholder" placeholder="اتركه فارغاً إذا لم ترد التغيير">
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-confirm-pass" data-i18n="account.confirm_new_pass">تأكيد كلمة المرور الجديدة</label>
+                                <input type="password" id="profile-confirm-pass" data-i18n-placeholder="account.confirm_pass_placeholder" placeholder="تأكيد كلمة المرور">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 25px; text-align: left;">
+                        <button type="submit" class="btn" style="padding: 12px 30px; font-weight: bold;">
+                            <i class="fas fa-save" style="margin-left: 8px;"></i><span data-i18n="account.save_changes_btn">حفظ التغيرات</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 2: Addresses -->
+            <div class="tab-section" id="tab-addresses">
+                <div class="section-title">
+                    <span><i class="fas fa-map-marked-alt" style="color: var(--primary-color); margin-left: 8px;"></i><span data-i18n="account.saved_addresses">عناوين الشحن المكتوبة</span></span>
+                    <button type="button" class="btn" id="open-add-address-btn" style="font-size: 0.88rem; padding: 8px 16px;">
+                        <i class="fas fa-plus" style="margin-left: 6px;"></i><span data-i18n="account.add_address">إضافة عنوان جديد</span>
+                    </button>
+                </div>
+
+                <div class="addresses-grid" id="addresses-container">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- TAB 3: Orders -->
+            <div class="tab-section" id="tab-orders">
+                <div class="section-title">
+                    <span><i class="fas fa-shopping-bag" style="color: var(--primary-color); margin-left: 8px;"></i><span data-i18n="account.order_history">سجل الطلبات</span></span>
+                </div>
+
+                <div class="order-history-list" id="orders-container">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- TAB 4: Wishlist -->
+            <div class="tab-section" id="tab-wishlist">
+                <div class="section-title">
+                    <span><i class="fas fa-heart" style="color: var(--danger-color); margin-left: 8px;"></i><span data-i18n="account.wishlist_tab">قائمة المفضلة</span></span>
+                </div>
+
+                <div class="products-grid" id="wishlist-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Adding Address -->
+    <div class="account-modal" id="add-address-modal">
+        <div class="account-modal-content">
+            <button class="close-modal-btn" id="close-address-modal">&times;</button>
+            <h3 style="margin-bottom: 20px;"><i class="fas fa-map-marker-alt" style="color:var(--primary-color); margin-left:8px;"></i><span data-i18n="account.add_new_address">إضافة عنوان شحن جديد</span></h3>
+            <form id="add-address-form">
+                <div class="form-group">
+                    <label for="addr-title"><span data-i18n="account.address_title">اسم العنوان (مثال: المنزل، العمل)</span></label>
+                    <input type="text" id="addr-title" required data-i18n-placeholder="account.address_title_placeholder" placeholder="المنزل">
+                </div>
+                <div class="form-group">
+                    <label for="addr-fullname"><span data-i18n="account.recipient_name">الاسم الكامل للمستلم</span></label>
+                    <input type="text" id="addr-fullname" required data-i18n-placeholder="account.recipient_name_placeholder" placeholder="الاسم الكامل">
+                </div>
+                <div class="form-group">
+                    <label for="addr-phone" data-i18n="checkout.phone">رقم الهاتف</label>
+                    <input type="tel" id="addr-phone" required placeholder="0550000000">
+                </div>
+                <div class="form-group">
+                    <label for="addr-city"><span data-i18n="account.city_wilaya">المدينة / الولاية</span></label>
+                    <input type="text" id="addr-city" required data-i18n-placeholder="account.algiers_placeholder" placeholder="الجزائر العاصمة">
+                </div>
+                <div class="form-group">
+                    <label for="addr-street"><span data-i18n="account.detailed_address">العنوان التفصيلي</span></label>
+                    <textarea id="addr-street" rows="3" required data-i18n-placeholder="account.detailed_address_placeholder" placeholder="اسم الشارع، رقم العمارة، الشقة..."></textarea>
+                </div>
+                <div style="margin-top: 10px;">
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                        <input type="checkbox" id="addr-default"> <span data-i18n="account.set_default">تعيين كعنوان افتراضي</span>
+                    </label>
+                </div>
+                <div style="margin-top: 25px; display:flex; justify-content:flex-end; gap:10px;">
+                    <button type="button" class="btn" style="background:#95a5a6;" id="cancel-address-btn"><span data-i18n="common.cancel">إلغاء</span></button>
+                    <button type="submit" class="btn"><span data-i18n="account.save_address">حفظ العنوان</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modern Footer -->
+    <footer id="site-footer"></footer>
+
+    <!-- Scripts -->
+    <script src="js/layout.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/user-system.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/i18n.js"></script>
+  <script src="js/pages/account.js" defer></script>
+</body>
+</html>
+

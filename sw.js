@@ -1,0 +1,146 @@
+const CACHE_NAME = 'myshop-pwa-vf62f852412';
+const STATIC_ASSETS = [
+  '/',
+  '/index.html',
+  '/shop.html',
+  '/product.html',
+  '/cart.html',
+  '/checkout.html',
+  '/account.html',
+  '/wishlist.html',
+  '/track-order.html',
+  '/order-confirmation.html',
+  '/invoice.html',
+  '/css/style.min.css',
+  '/fonts/fonts.css',
+  '/vendor/fontawesome/css/all.min.css',
+  '/vendor/fontawesome/webfonts/fa-solid-900.woff2',
+  '/vendor/fontawesome/webfonts/fa-regular-400.woff2',
+  '/vendor/fontawesome/webfonts/fa-brands-400.woff2',
+  '/fonts/font-1.woff2',
+  '/fonts/font-2.woff2',
+  '/fonts/font-3.woff2',
+  '/js/layout.js',
+  '/js/api-client.js',
+  '/js/main.js',
+  '/js/cart.js',
+  '/js/wishlist.js',
+  '/js/checkout.js',
+  '/js/user-system.js',
+  '/js/i18n.js',
+  '/locales/ar.json',
+  '/locales/fr.json',
+  '/locales/en.json',
+  '/manifest.json'
+];
+
+// Install Event
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(STATIC_ASSETS);
+    }).then(() => self.skipWaiting())
+  );
+});
+
+// Activate Event - purge all old caches immediately
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
+// Fetch Event
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+
+  // 1. Ignore non-HTTP/HTTPS schemes (e.g. chrome-extension://)
+  if (!url.protocol.startsWith('http')) {
+    return;
+  }
+
+  // 2. Only intercept same-origin requests!
+  // Cross-origin requests (Google Fonts, cdnjs, external analytics, antivirus like Kaspersky, etc.)
+  // must NOT be intercepted by the service worker to prevent cross-world preload mismatches and CSP blocks.
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
+  // 3. For modifying API requests (POST/PUT/DELETE) -> strictly Network Only
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  // 4. For GET API requests (e.g. /api/products, /api/wilayas) -> Network first, fallback to cache
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => {
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+
+  // 5. For HTML navigation and page requests -> Network First, fallback to cache if offline
+  if (event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html') || url.pathname.endsWith('.html') || url.pathname === '/') {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(event.request).then((cached) => cached || caches.match('/index.html'));
+        })
+    );
+    return;
+  }
+
+  // 6. For Same-Origin Static Assets (CSS, JS, images) -> Cache-first with background revalidation
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        // Return cached version immediately, fetch update in background
+        fetch(event.request)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              const copy = networkResponse.clone();
+              caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+            }
+          })
+          .catch(() => {
+            // Background update failure is safe to ignore
+          });
+        return cachedResponse;
+      }
+
+      // Not in cache yet: fetch from network
+      return fetch(event.request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const copy = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+        return networkResponse;
+      });
+    })
+  );
+});
