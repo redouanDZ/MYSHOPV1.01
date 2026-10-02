@@ -170,6 +170,41 @@
             background: rgba(245, 158, 11, 0.15);
             color: #fbbf24;
         }
+        .prev-step-btn {
+            background-color: var(--card-bg, #f9f9f9);
+            color: var(--text-color);
+            border: 1px solid var(--border-color, #ddd);
+        }
+        .prev-step-btn:hover {
+            background-color: var(--border-color, #f0f0f0);
+            color: var(--text-color);
+        }
+        [data-theme="dark"] .prev-step-btn {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            border-color: #334155 !important;
+        }
+        [data-theme="dark"] .prev-step-btn:hover {
+            background-color: #334155 !important;
+            color: #ffffff !important;
+            border-color: #475569 !important;
+        }
+        [data-theme="dark"] .delivery-card {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+        }
+        [data-theme="dark"] .delivery-card.active,
+        [data-theme="dark"] .delivery-card:hover {
+            background-color: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary-color);
+        }
+        [data-theme="dark"] .checkout-steps:before {
+            background-color: var(--border-color, #334155);
+        }
+        [data-theme="dark"] .step-number {
+            background-color: #334155;
+            color: #cbd5e1;
+        }
         @media (max-width: 640px) {
             .payment-options {
                 grid-template-columns: 1fr;
