@@ -48,7 +48,9 @@ class MailService {
 
         const orderNum = order.order_number || `#ORD-${order.id}`;
         const trackingUrl = `${storeConfig.baseUrl}/track-order.html?orderId=${order.id}&phone=${encodeURIComponent(order.phone || '')}`;
-        const invoiceUrl = `${storeConfig.baseUrl}/invoice.html?id=${order.id}`;
+        const tokenParam = order.tracking_token ? `&token=${encodeURIComponent(order.tracking_token)}` : '';
+        const phoneParam = order.phone ? `&phone=${encodeURIComponent(order.phone)}` : '';
+        const invoiceUrl = `${storeConfig.baseUrl}/invoice.html?id=${order.id}${tokenParam}${phoneParam}`;
 
         const itemsRows = (items || []).map(item => `
             <tr>

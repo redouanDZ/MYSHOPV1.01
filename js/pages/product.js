@@ -290,8 +290,24 @@ let currentProduct = null;
                     }).join('');
                 }
                 if (mainImage) {
+                    const wrap = document.getElementById('main-image-wrap') || mainImage.parentElement;
+                    const revealImage = () => {
+                        mainImage.style.opacity = '1';
+                        if (wrap) wrap.classList.remove('skeleton');
+                    };
+
+                    mainImage.onload = revealImage;
+                    mainImage.onerror = () => {
+                        mainImage.src = '/images/product-placeholder.jpg';
+                        revealImage();
+                    };
+
                     mainImage.src = images[0];
                     mainImage.srcset = `${images[0]} 1x, ${images[0]} 2x`;
+
+                    if (mainImage.complete && mainImage.naturalWidth > 0) {
+                        revealImage();
+                    }
                 }
 
                 renderProductUI(currentProduct, window.I18n ? window.I18n.currentLang : 'ar');

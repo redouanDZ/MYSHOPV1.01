@@ -73,7 +73,10 @@ async function submitTrack() {
         `}).join('');
 
         // Invoice button link
-        document.getElementById('viewInvoiceBtn').href = `invoice.html?id=${order.id}&phone=${encodeURIComponent(order.phone)}`;
+        const invoicePhone = order.phone || phone || '';
+        const tokenParam = order.tracking_token ? `&token=${encodeURIComponent(order.tracking_token)}` : '';
+        const phoneParam = invoicePhone ? `&phone=${encodeURIComponent(invoicePhone)}` : '';
+        document.getElementById('viewInvoiceBtn').href = `invoice.html?id=${order.id}${tokenParam}${phoneParam}`;
 
         resBox.style.display = 'block';
     } catch (err) {

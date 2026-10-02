@@ -88,44 +88,50 @@ async function checkOrderAuthorization(req, order) {
 
     // 1. Registered Customer Order (order.user_id !== null)
     if (order.user_id !== null && order.user_id !== undefined) {
-        if (!authUserId) return false;
-        const user = await db.findUserById(authUserId);
-        if (!user) return false;
-        if (user.role === 'admin' || Number(order.user_id) === Number(authUserId)) {
-            return true;
-        }
-        return false;
-    }
-
-    // 2. Guest Order (order.user_id === null)
-    if (order.user_id === null) {
-        // Admin authorization
         if (authUserId) {
             const user = await db.findUserById(authUserId);
-            if (user && user.role === 'admin') {
+            if (user && (user.role === 'admin' || Number(order.user_id) === Number(authUserId))) {
                 return true;
             }
         }
+    }
 
-        // Tracking Token Verification (Header 'x-tracking-token', query 'token', or body 'token')
-        const token = req.headers['x-tracking-token'] || (req.query && req.query.token) || (req.body && req.body.token);
-        if (token && order.tracking_token) {
-            const cleanToken = String(token).trim();
-            const cleanOrderToken = String(order.tracking_token).trim();
-            if (cleanToken.length === cleanOrderToken.length) {
-                try {
-                    const bufA = Buffer.from(cleanToken, 'utf8');
-                    const bufB = Buffer.from(cleanOrderToken, 'utf8');
-                    if (bufA.length === bufB.length && crypto.timingSafeEqual(bufA, bufB)) {
-                        return true;
-                    }
-                } catch (e) {}
+    // 2. Admin authorization for any order
+    if (authUserId) {
+        const user = await db.findUserById(authUserId);
+        if (user && user.role === 'admin') {
+            return true;
+        }
+    }
+
+    // 3. Tracking Token Verification (Header 'x-tracking-token', query 'token', or body 'token')
+    const token = req.headers['x-tracking-token'] || (req.query && req.query.token) || (req.body && req.body.token);
+    if (token && order.tracking_token) {
+        const cleanToken = String(token).trim();
+        const cleanOrderToken = String(order.tracking_token).trim();
+        if (cleanToken && cleanToken !== 'undefined' && cleanToken !== 'null' && cleanToken.length === cleanOrderToken.length) {
+            try {
+                const bufA = Buffer.from(cleanToken, 'utf8');
+                const bufB = Buffer.from(cleanOrderToken, 'utf8');
+                if (bufA.length === bufB.length && crypto.timingSafeEqual(bufA, bufB)) {
+                    return true;
+                }
+            } catch (e) {}
+        }
+    }
+
+    // 4. Phone Verification (Header 'x-verification-phone', query 'phone', or body 'phone')
+    const phone = req.headers['x-verification-phone'] || (req.query && req.query.phone) || (req.body && req.body.phone);
+    if (phone && order.phone) {
+        const cleanReqPhone = String(phone).replace(/\D/g, '');
+        const cleanOrderPhone = String(order.phone).replace(/\D/g, '');
+        if (cleanReqPhone.length >= 8 && cleanOrderPhone.length >= 8) {
+            if (cleanReqPhone === cleanOrderPhone ||
+                cleanReqPhone.endsWith(cleanOrderPhone.slice(-8)) ||
+                cleanOrderPhone.endsWith(cleanReqPhone.slice(-8))) {
+                return true;
             }
         }
-
-        // Phone Verification removed per security requirements
-        
-        return false;
     }
 
     return false;
@@ -211,6 +217,8 @@ async function trackOrder(req, res) {
             order: {
                 id: order.id,
                 order_number: order.order_number,
+                phone: order.phone,
+                tracking_token: order.tracking_token,
                 created_at: order.created_at,
                 status: order.status,
                 payment_method: order.payment_method,

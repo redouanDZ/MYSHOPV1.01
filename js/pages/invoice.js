@@ -56,16 +56,18 @@
         async function loadInvoice() {
             await loadInvoiceStoreIdentity();
             const urlParams = new URLSearchParams(window.location.search);
-            const orderId = urlParams.get('id') || urlParams.get('orderId') || localStorage.getItem('lastOrderId');
-            const token = urlParams.get('token') || localStorage.getItem('lastOrderToken');
-            const phone = urlParams.get('phone') || localStorage.getItem('lastOrderPhone');
+            const clean = (val) => (val && val !== 'undefined' && val !== 'null') ? val.trim() : null;
 
-            if (!orderId) {
-                document.getElementById('invoiceItemsBody').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--danger-color);">' + (window.I18n ? window.I18n.t('invoice.no_order_id', 'لم يتم تحديد رقم الطلب') : 'لم يتم تحديد رقم الطلب') + '</td></tr>';
-                return;
-            }
+            const orderId = clean(urlParams.get('id')) || clean(urlParams.get('orderId')) || clean(localStorage.getItem('lastOrderId'));
+            const token = clean(urlParams.get('token')) || clean(localStorage.getItem('lastOrderToken')) || '';
+            const phone = clean(urlParams.get('phone')) || clean(localStorage.getItem('lastOrderPhone')) || '';
 
             const t = (key, fallback) => (window.I18n && typeof window.I18n.t === 'function') ? window.I18n.t(key, fallback) : fallback;
+
+            if (!orderId) {
+                document.getElementById('invoiceItemsBody').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--danger-color);">' + t('invoice.no_order_id', 'لم يتم تحديد رقم الطلب') + '</td></tr>';
+                return;
+            }
 
             try {
                 let url = `/api/orders/${orderId}`;
@@ -139,8 +141,9 @@
                 }
 
                 // Set track link
-                const custPhone = order.phone || phone || '';
-                document.getElementById('trackLinkBtn').href = `track-order.html?orderId=${order.id}&phone=${encodeURIComponent(custPhone)}`;
+                const custPhone = clean(order.phone) || clean(phone) || '';
+                const phoneTrackParam = custPhone ? `&phone=${encodeURIComponent(custPhone)}` : '';
+                document.getElementById('trackLinkBtn').href = `track-order.html?orderId=${order.id}${phoneTrackParam}`;
 
                 if (window.I18n && typeof window.I18n.translatePage === 'function') {
                     window.I18n.translatePage();
@@ -152,6 +155,12 @@
                     const errorText = getErrorMessage(err, 'messages.load_invoice_error');
                     tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--danger-color);">${t('messages.load_invoice_error', 'تعذر تحميل بيانات الفاتورة')}: ${window.escapeHtml ? window.escapeHtml(errorText) : errorText}</td></tr>`;
                 }
+                const subEl = document.getElementById('invSubtotal');
+                const shipEl = document.getElementById('invShipping');
+                const grandEl = document.getElementById('invGrandTotal');
+                if (subEl) subEl.textContent = '-';
+                if (shipEl) shipEl.textContent = '-';
+                if (grandEl) grandEl.textContent = '-';
             }
         }
 
@@ -159,6 +168,11 @@
     
 
 // Event Delegation
+function windowPrint() {
+    window.print();
+}
+window.windowPrint = windowPrint;
+
 document.addEventListener('click', (e) => {
     const actionEl = e.target.closest('[data-action]');
     if (!actionEl) return;

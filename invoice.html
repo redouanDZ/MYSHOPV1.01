@@ -4,12 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="invoice.title">فاتورة الطلب</title>
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
     <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #06b6d4;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-color: #1e293b;
+            --light-text: #64748b;
+        }
+        [data-theme="dark"] {
+            --primary-color: #6366f1;
+            --primary-hover: #818cf8;
+            --dark-color: #f8fafc;
+            --light-color: #090d16;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --text-color: #f1f5f9;
+            --light-text: #94a3b8;
+        }
         *, *::before, *::after { box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--light-color);
             margin: 0;
             padding: 30px 15px;
@@ -19,7 +42,7 @@
         .invoice-wrapper {
             max-width: 800px;
             margin: 0 auto;
-            background: var(--card-bg)fff;
+            background: var(--card-bg, #ffffff);
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             padding: 40px;
@@ -49,12 +72,12 @@
         .invoice-title {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #0f172a;
+            color: var(--text-color);
             margin: 0 0 8px 0;
         }
         .invoice-meta-item {
             font-size: 0.9rem;
-            color: #475569;
+            color: var(--light-text);
             margin-bottom: 4px;
         }
         .invoice-meta-item strong {
@@ -69,6 +92,7 @@
             background: var(--card-bg);
             padding: 20px;
             border-radius: 8px;
+            border: 1px solid var(--border-color);
         }
         .party-col h3 {
             margin: 0 0 10px 0;
@@ -90,7 +114,7 @@
         }
         .invoice-table th {
             background: var(--primary-color);
-            color: var(--bg-color, #fff)fff;
+            color: #ffffff;
             padding: 12px 15px;
             text-align: right;
             font-size: 0.95rem;
@@ -102,6 +126,7 @@
             padding: 12px 15px;
             border-bottom: 1px solid var(--border-color);
             font-size: 0.95rem;
+            color: var(--text-color);
         }
         .invoice-table td:last-child {
             text-align: left;
@@ -134,13 +159,14 @@
             padding: 8px 10px;
             border-bottom: 1px solid var(--border-color);
             font-size: 0.95rem;
+            color: var(--text-color);
         }
         .totals-table tr td:last-child {
             text-align: left;
             font-weight: bold;
         }
         .totals-table tr.grand-total td {
-            border-top: 2px solid #2563eb;
+            border-top: 2px solid var(--primary-color);
             border-bottom: none;
             font-size: 1.2rem;
             color: var(--primary-color);
@@ -158,35 +184,102 @@
 
         .actions-bar {
             max-width: 800px;
-            margin: 20px auto 0;
+            margin: 24px auto 40px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .actions-bar-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
         }
         .btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            padding: 10px 22px;
-            border-radius: 6px;
-            font-weight: bold;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 700;
             text-decoration: none;
             cursor: pointer;
             border: none;
             font-size: 0.95rem;
+            transition: all 0.2s ease;
         }
-        .btn-primary { background: var(--primary-color); color: var(--bg-color, #fff); }
-        .btn-primary:hover { background: #1d4ed8; }
-        .btn-secondary { background: #e2e8f0; color: var(--text-color); }
-        .btn-secondary:hover { background: #cbd5e1; }
+        .btn-primary {
+            background-color: var(--primary-color, #4f46e5) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-hover, #4338ca) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(79, 70, 229, 0.45);
+        }
+        .btn-secondary {
+            background-color: var(--card-bg, #ffffff);
+            color: var(--text-color, #1e293b);
+            border: 1px solid var(--border-color, #cbd5e1);
+        }
+        .btn-secondary:hover {
+            background-color: var(--border-color, #e2e8f0);
+            transform: translateY(-2px);
+        }
+        [data-theme="dark"] .btn-secondary {
+            background-color: #1e293b;
+            color: #f1f5f9;
+            border-color: #334155;
+        }
+        [data-theme="dark"] .btn-secondary:hover {
+            background-color: #334155;
+        }
 
         @media print {
-            body { background: var(--card-bg); padding: 0; }
-            .invoice-wrapper { box-shadow: none; border: none; padding: 0; width: 100%; max-width: 100%; }
-            .actions-bar { display: none !important; }
+            body {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .invoice-wrapper {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+            }
+            .actions-bar {
+                display: none !important;
+            }
+            .party-details, .payment-status-box {
+                background: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+                color: #0f172a !important;
+            }
+            .party-col p, .party-col h3, .invoice-title, .invoice-meta-item, .invoice-meta-item strong, .totals-table tr td, .totals-table tr.grand-total td, .store-brand h1 {
+                color: #0f172a !important;
+            }
+            .invoice-table th {
+                background-color: #2563eb !important;
+                color: #ffffff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .invoice-table td {
+                color: #0f172a !important;
+                border-bottom: 1px solid #e2e8f0 !important;
+            }
         }
 
-        /* Responsive: the table/columns below assumed a wide (print-like) page
-           and overflowed the viewport on phones. */
+        /* Responsive */
         @media (max-width: 640px) {
             body { padding: 12px; }
             .invoice-wrapper { padding: 18px; }
@@ -197,6 +290,9 @@
             .invoice-table { margin-bottom: 0; min-width: 480px; }
             .summary-container { flex-direction: column; }
             .payment-status-box, .totals-table { width: 100%; }
+            .actions-bar { flex-direction: column; align-items: stretch; }
+            .actions-bar-buttons { flex-direction: column; width: 100%; }
+            .actions-bar .btn { width: 100%; }
         }
     </style>
   <meta name="theme-color" content="#2563eb">
@@ -293,9 +389,9 @@
 
     <div class="actions-bar">
         <a href="index.html" class="btn btn-secondary"><i class="fas fa-arrow-right"></i> <span data-i18n="invoice.back_to_shop">العودة للمتجر</span></a>
-        <div>
-            <a href="#" id="trackLinkBtn" class="btn btn-secondary" style="margin-left: 10px;"><i class="fas fa-truck"></i> <span data-i18n="footer.link_track">تتبع الطلب</span></a>
-            <button type="button" data-action="windowPrint" class="btn btn-primary"><i class="fas fa-print"></i> <span data-i18n="invoice.print_btn">طباعة / تحميل PDF</span></button>
+        <div class="actions-bar-buttons">
+            <a href="#" id="trackLinkBtn" class="btn btn-secondary"><i class="fas fa-truck"></i> <span data-i18n="footer.link_track">تتبع الطلب</span></a>
+            <button type="button" id="printInvoiceBtn" data-action="windowPrint" onclick="window.print()" class="btn btn-primary"><i class="fas fa-print"></i> <span data-i18n="invoice.print_btn">طباعة / تحميل PDF</span></button>
         </div>
     </div>
 
