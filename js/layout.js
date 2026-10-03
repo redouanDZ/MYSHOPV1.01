@@ -17,6 +17,8 @@
     if (pathname.endsWith('checkout.html')) return 'cart';
     if (pathname.endsWith('order-confirmation.html')) return 'cart';
     if (pathname.endsWith('product.html')) return 'shop';
+    if (pathname.endsWith('terms.html')) return 'terms';
+    if (pathname.endsWith('privacy.html')) return 'privacy';
     return 'home';
   }
 
