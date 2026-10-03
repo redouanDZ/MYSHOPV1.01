@@ -1,4 +1,4 @@
-const CACHE_NAME = 'myshop-pwa-vf62f852412';
+const CACHE_NAME = 'myshop-pwa-vf4014ab63c';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -11,6 +11,8 @@ const STATIC_ASSETS = [
   '/track-order.html',
   '/order-confirmation.html',
   '/invoice.html',
+  '/terms.html',
+  '/privacy.html',
   '/css/style.min.css',
   '/fonts/fonts.css',
   '/vendor/fontawesome/css/all.min.css',
@@ -28,6 +30,8 @@ const STATIC_ASSETS = [
   '/js/checkout.js',
   '/js/user-system.js',
   '/js/i18n.js',
+  '/js/pages/terms.js',
+  '/js/pages/privacy.js',
   '/locales/ar.json',
   '/locales/fr.json',
   '/locales/en.json',

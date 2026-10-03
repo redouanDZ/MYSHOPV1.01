@@ -203,7 +203,7 @@ const sendWithBaseUrl = (fileName, contentType) => (req, res, next) => {
 };
 
 // Public HTML Pages
-const publicHtmlPages = ['index.html', 'landing.html', 'shop.html', 'product.html', 'cart.html', 'checkout.html', 'order-confirmation.html', 'account.html', 'track-order.html', 'invoice.html', 'wishlist.html'];
+const publicHtmlPages = ['index.html', 'landing.html', 'shop.html', 'product.html', 'cart.html', 'checkout.html', 'order-confirmation.html', 'account.html', 'track-order.html', 'invoice.html', 'wishlist.html', 'terms.html', 'privacy.html'];
 publicHtmlPages.forEach((page) => {
     if (page === 'index.html') return;
     app.get(`/${page}`, (req, res) => res.sendFile(path.join(rootDir, page)));

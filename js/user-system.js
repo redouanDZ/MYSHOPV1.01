@@ -470,7 +470,8 @@ function showSignupForm() {
                     </div>
                     <div class="form-group" style="margin-bottom: 12px;">
                         <label style="font-size: 0.85rem; font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                            <input type="checkbox" id="agree-terms" required> <span data-i18n="auth.agree_terms">أوافق على الشروط والأحكام</span>
+                            <input type="checkbox" id="agree-terms" required>
+                            <span><span data-i18n="auth.agree_prefix">أوافق على</span> <a href="terms.html" target="_blank" rel="noopener" style="color: var(--primary-color); text-decoration: underline;"><span data-i18n="auth.terms_and_conditions">الشروط والأحكام</span></a> <span data-i18n="auth.and">و</span> <a href="privacy.html" target="_blank" rel="noopener" style="color: var(--primary-color); text-decoration: underline;"><span data-i18n="auth.privacy_policy">سياسة الخصوصية</span></a></span>
                         </label>
                     </div>
                     <button type="submit" class="btn" style="width: 100%;"><span data-i18n="auth.register_btn">إنشاء الحساب</span></button>
@@ -894,7 +895,7 @@ async function handleSignup() {
     }
 
     if (!agreeTerms) {
-        showNotification('You must agree to the terms and conditions', 'error');
+        showNotification(window.I18n ? window.I18n.t('auth.agree_terms_required', 'You must agree to the terms and privacy policy') : 'You must agree to the terms and privacy policy', 'error');
         return;
     }
 

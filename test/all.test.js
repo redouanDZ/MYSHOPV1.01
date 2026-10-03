@@ -1,4 +1,6 @@
 process.env.NODE_ENV = 'test';
+process.env.DB_NAME = process.env.DB_NAME || 'ecommerce_store_test';
+process.env.DB_PASSWORD = process.env.DB_PASSWORD || 'test';
 
 const { test } = require('node:test');
 const db = require('../src/data/db-connection');
@@ -42,3 +44,4 @@ require('./new_features.test.js');
 require('./remediation.test.js');
 require('./security.test.js');
 require('./session_ttl.test.js');
+require('./terms_privacy.test.js');

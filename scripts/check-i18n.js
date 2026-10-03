@@ -89,7 +89,9 @@ const STORE_HTML_FILES = [
     'wishlist.html',
     'track-order.html',
     'order-confirmation.html',
-    'invoice.html'
+    'invoice.html',
+    'terms.html',
+    'privacy.html'
 ];
 
 const JS_DIR = path.join(__dirname, '..', 'js');

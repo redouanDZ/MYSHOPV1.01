@@ -100,6 +100,8 @@
               <li><a href="cart.html"><i class="fas fa-chevron-left" style="font-size: 0.7rem; margin-inline-end: 6px;"></i> <span data-i18n="footer.link_cart">سلة التسوق</span></a></li>
               <li><a href="wishlist.html"><i class="fas fa-chevron-left" style="font-size: 0.7rem; margin-inline-end: 6px;"></i> <span data-i18n="footer.link_wishlist">قائمة المفضلة</span></a></li>
               <li><a href="track-order.html"><i class="fas fa-chevron-left" style="font-size: 0.7rem; margin-inline-end: 6px;"></i> <span data-i18n="footer.link_track">تتبع طلبيتك</span></a></li>
+              <li><a href="terms.html"><i class="fas fa-chevron-left" style="font-size: 0.7rem; margin-inline-end: 6px;"></i> <span data-i18n="footer.link_terms">الشروط والأحكام</span></a></li>
+              <li><a href="privacy.html"><i class="fas fa-chevron-left" style="font-size: 0.7rem; margin-inline-end: 6px;"></i> <span data-i18n="footer.link_privacy">سياسة الخصوصية</span></a></li>
             </ul>
           </div>
 
