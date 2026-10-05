@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="/css/style.min.css">
     <style>
+        [data-theme="dark"] .wishlist-count-badge { background: rgba(239,68,68,.16); color: #fca5a5; }
+        .btn-explore i { font-size: 1rem; color: inherit; margin: 0; }
         .wishlist-section { padding: 40px 0 60px; }
         .wishlist-header {
             display: flex;
@@ -24,7 +26,9 @@
         .wishlist-header h1 { margin: 0; font-size: 1.8rem; color: var(--text-color); }
         .wishlist-count-badge {
             background: #fee2e2;
-            color: var(--danger-color);
+            color: #b91c1c;
+            white-space: nowrap;
+            flex-shrink: 0;
             padding: 4px 12px;
             border-radius: var(--radius-xs, 6px);
             font-weight: 700;
@@ -181,7 +185,7 @@
             border-radius: 12px;
             border: 1px dashed var(--border-color);
         }
-        .empty-wishlist i {
+        .empty-wishlist > i {
             font-size: 4rem;
             color: var(--border-color);
             margin-bottom: 15px;
@@ -193,7 +197,7 @@
             align-items: center;
             gap: 8px;
             background: var(--primary-color);
-            color: var(--bg-color, #fff);
+            color: #fff;
             padding: 12px 28px;
             border-radius: 8px;
             font-weight: bold;

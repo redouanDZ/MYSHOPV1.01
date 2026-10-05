@@ -24,13 +24,34 @@
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            gap: 6px;
+            justify-content: flex-start;
+            text-align: start;
+            gap: 12px;
             position: relative;
             background: var(--card-bg, #ffffff);
+        }
+        .form-group .delivery-type-options .delivery-card {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            font-weight: inherit;
+        }
+        .delivery-card::before {
+            content: "";
+            flex: 0 0 20px;
+            width: 20px;
+            height: 20px;
+            box-sizing: border-box;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            background: transparent;
+            transition: all 0.2s;
+        }
+        .delivery-card.active::before {
+            border-color: var(--primary-color);
+            background: radial-gradient(circle, var(--primary-color) 0 4px, transparent 5px);
         }
         .delivery-card.active, .delivery-card:hover {
             border-color: var(--primary-color);
@@ -52,8 +73,9 @@
             overflow: hidden !important;
         }
         .delivery-card-info {
-            width: 100%;
-            text-align: center;
+            flex: 1 1 auto;
+            min-width: 0;
+            text-align: start;
         }
         .delivery-card-info strong {
             display: block;
@@ -227,7 +249,8 @@
             color: #cbd5e1;
         }
         @media (max-width: 640px) {
-            .payment-options {
+            .payment-options,
+            .delivery-type-options {
                 grid-template-columns: 1fr;
             }
         }

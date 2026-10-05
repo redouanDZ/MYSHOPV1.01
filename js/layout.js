@@ -34,13 +34,6 @@
           <span data-i18n="home.trusted_badge">🇩🇿 توصيل سريع وموثوق لـ 58 ولاية مع إمكانية الدفع عند الاستلام</span>
         </div>
         <div class="top-bar-actions">
-          <div class="lang-switcher-wrap">
-            <select class="lang-select" onchange="if(window.I18n) window.I18n.setLanguage(this.value);" aria-label="Language Selector">
-              <option value="ar" data-i18n="common.lang_ar" ${window.I18n && window.I18n.currentLang === 'ar' ? 'selected' : ''}>العربية 🇩🇿</option>
-              <option value="fr" data-i18n="common.lang_fr" ${window.I18n && window.I18n.currentLang === 'fr' ? 'selected' : ''}>Français 🇫🇷</option>
-              <option value="en" data-i18n="common.lang_en" ${window.I18n && window.I18n.currentLang === 'en' ? 'selected' : ''}>English 🇬🇧</option>
-            </select>
-          </div>
           <a href="track-order.html" class="top-track-link">
             <i class="fas fa-location-dot"></i> <span data-i18n="nav.track_order">تتبع طلبي</span>
           </a>

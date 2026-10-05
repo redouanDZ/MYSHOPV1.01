@@ -5851,3 +5851,127 @@ input[type="tel"] {
     }
 }
 
+
+
+/* =====================================================================
+   Design review fixes (v1.1) — consistent radii, search field, quantity
+   ===================================================================== */
+
+/* 1) Search fields: the dark-mode global input rule used to paint a square
+      dark box inside the rounded pill. Same-specificity, higher-weight
+      selectors keep the input transparent so only the pill is visible. */
+.header-search-form,
+.search-bar form {
+    border-radius: 999px !important;
+    overflow: hidden;
+}
+.header-search-form {
+    padding: 4px 6px 4px 16px;
+    gap: 6px;
+}
+[data-theme="dark"] .header-search-form input[type="text"],
+[data-theme="dark"] .search-bar input[type="text"],
+body.dark-mode .header-search-form input[type="text"],
+body.dark-mode .search-bar input[type="text"],
+.header-search-form input[type="text"],
+.search-bar input[type="text"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+.header-search-btn,
+.search-bar button {
+    border-radius: 999px !important;
+}
+.header-search-form input[type="text"] { padding-inline: 4px; }
+
+/* 2) Quantity stepper: one fixed layout (− value +) in every direction/theme,
+      identical button sizes, a single outer radius that clips the children. */
+.quantity {
+    display: inline-flex;
+    flex-direction: row;
+    direction: ltr;
+    align-items: stretch;
+    height: 44px;
+    margin: 0;
+    border: 1.5px solid var(--border-color, #ddd);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card-bg, #fff);
+}
+.quantity .quantity-btn {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+    background: transparent;
+    color: var(--text-color);
+}
+.quantity .quantity-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+.quantity input {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    border-inline: 1.5px solid var(--border-color, #ddd);
+    border-radius: 0;
+    background: transparent;
+    color: var(--text-color);
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+.quantity input::-webkit-outer-spin-button,
+.quantity input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+[data-theme="dark"] .quantity,
+body.dark-mode .quantity { border-color: #334155 !important; background: #0f172a; }
+[data-theme="dark"] .quantity .quantity-btn,
+body.dark-mode .quantity .quantity-btn {
+    background: transparent !important;
+    color: #f1f5f9 !important;
+    border: 0 !important;
+}
+[data-theme="dark"] .quantity .quantity-btn:hover,
+body.dark-mode .quantity .quantity-btn:hover {
+    background: var(--primary-color) !important;
+    color: #fff !important;
+}
+[data-theme="dark"] .quantity input,
+body.dark-mode .quantity input {
+    background: transparent !important;
+    border: 0 !important;
+    border-inline: 1.5px solid #334155 !important;
+}
+
+/* 3) Mobile top bar: single compact row now that the duplicate language
+      select is gone. */
+@media (max-width: 768px) {
+    .top-announcement-container { flex-wrap: nowrap; gap: 10px; justify-content: space-between; }
+    .top-announcement-container .announcement-text { min-width: 0; font-size: 0.78rem; }
+    .top-announcement-container .announcement-text span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; max-width: 100%; vertical-align: middle; }
+    .top-bar-actions { flex: 0 0 auto; }
+}
+
+/* Product action row: one radius for stepper, add-to-cart and wishlist */
+.product-details .product-actions .quantity,
+.product-details .product-actions .add-to-cart,
+.product-details .product-actions .add-to-wishlist {
+    border-radius: 12px !important;
+}

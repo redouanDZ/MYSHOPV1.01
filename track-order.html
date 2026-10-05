@@ -14,12 +14,13 @@
     <style>
         .track-hero {
             background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            color: var(--bg-color, #fff);
-            padding: 50px 0 35px;
+            color: #fff;
+            padding: 50px 0 64px;
             text-align: center;
         }
         .track-hero h1 { margin: 0 0 10px 0; font-size: 2.2rem; }
-        .track-hero p { margin: 0; opacity: 0.9; font-size: 1.1rem; }
+        .track-hero p { margin: 0; color: rgba(255,255,255,.9); font-size: 1.1rem; padding-inline: 16px; }
+        [data-theme="dark"] .track-hero { background: linear-gradient(135deg, #111c3f 0%, #1e3a8a 100%); }
         
         .track-container {
             max-width: 850px;
@@ -54,8 +55,9 @@
 
         /* Dark Mode Support */
         [data-theme="dark"] .track-container { background: var(--card-bg, #1e293b); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        [data-theme="dark"] .form-field label { color: var(--border-color); }
-        [data-theme="dark"] .form-field input { background: #0f172a; border-color: var(--text-color); color: #f1f5f9; }
+        [data-theme="dark"] .form-field label { color: #e2e8f0; }
+        [data-theme="dark"] .form-field input { background: #0f172a; border-color: #334155; color: #f1f5f9; }
+        [data-theme="dark"] .form-field input::placeholder { color: #94a3b8; }
         [data-theme="dark"] .timeline-stepper::before { background: #334155; }
         [data-theme="dark"] .step-icon { background: var(--text-color); border-color: var(--text-color); }
         [data-theme="dark"] .step-label { color: var(--light-text); }
