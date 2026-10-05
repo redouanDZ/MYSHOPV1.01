@@ -1,5 +1,7 @@
 process.env.NODE_ENV = 'test';
-process.env.DB_NAME = process.env.DB_NAME || 'ecommerce_store_test';
+if (!process.env.DB_NAME || !process.env.DB_NAME.endsWith('_test')) {
+    process.env.DB_NAME = (process.env.DB_NAME || 'ecommerce_store') + '_test';
+}
 process.env.DB_PASSWORD = process.env.DB_PASSWORD || 'test';
 
 const { test } = require('node:test');
@@ -16,23 +18,29 @@ let baselineOrderIds = [];
 
 test.before(async () => {
     await db.initializeDatabase();
-    const [rows] = await db.pool.query('SELECT id FROM orders');
-    baselineOrderIds = rows.map(r => r.id);
+    if (db.pool && typeof db.pool.query === 'function') {
+        try {
+            const [rows] = await db.pool.query('SELECT id FROM orders');
+            baselineOrderIds = Array.isArray(rows) ? rows.map(r => r.id) : [];
+        } catch (_) {
+            baselineOrderIds = [];
+        }
+    }
 });
 
 test.after(async () => {
     try {
-        if (baselineOrderIds.length > 0) {
+        if (baselineOrderIds.length > 0 && db.pool && typeof db.pool.query === 'function') {
             const [newOrders] = await db.pool.query('SELECT id FROM orders WHERE id NOT IN (?)', [baselineOrderIds]);
-            const idsToDelete = newOrders.map(o => o.id);
+            const idsToDelete = Array.isArray(newOrders) ? newOrders.map(o => o.id) : [];
             if (idsToDelete.length > 0) {
                 await db.pool.query('DELETE FROM order_items WHERE order_id IN (?)', [idsToDelete]);
                 await db.pool.query('DELETE FROM orders WHERE id IN (?)', [idsToDelete]);
             }
         }
     } catch (e) {}
-    if (db && db.pool) {
-        await db.pool.end();
+    if (db && db.pool && typeof db.pool.end === 'function') {
+        try { await db.pool.end(); } catch (_) {}
     }
 });
 

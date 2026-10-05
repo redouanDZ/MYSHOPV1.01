@@ -42,15 +42,17 @@ let homeProductsList = [];
                     featuredContainer.innerHTML = products.map(p => {
                         const isFav = wishlistIds.includes(p.id);
                         const safeName = window.escapeHtml ? window.escapeHtml(p.name) : p.name;
-                        const safeCat = window.escapeHtml ? window.escapeHtml(window.I18n.t('categories.general', 'عام')) : (window.I18n.t('categories.general', 'عام'));
+                        const safeCat = window.escapeHtml ? window.escapeHtml(p.category || 'عام') : (p.category || 'عام');
+                        const hasDiscount = p.old_price && Number(p.old_price) > Number(p.price);
+                        const discountPct = hasDiscount ? Math.round((1 - Number(p.price) / Number(p.old_price)) * 100) : null;
                         return `
                         <div class="product-card" id="product-card-${p.id}">
-                            <span class="product-badge">${safeCat}</span>
+                            ${hasDiscount ? `<span class="product-badge">-${discountPct}%</span>` : ''}
                             <button type="button" class="product-wishlist ${isFav ? 'active' : ''}" data-wishlist-id="${p.id}" data-action="handleHomeToggleWishlist" data-id="${p.id}" data-i18n-title="common.wishlist" data-i18n-aria-label="common.wishlist" aria-label="المفضلة">
-                                <i class="${isFav ? 'fas fa-heart' : 'far fa-heart'}"></i>
+                                <i class="${isFav ? 'fas fa-heart text-danger' : 'far fa-heart'}"></i>
                             </button>
                             <a href="product.html?id=${p.id}" class="product-image">
-                                <img src="${p.image_url || '/images/product-placeholder.jpg'}" srcset="${p.image_url || '/images/product-placeholder.jpg'} 1x, ${p.image_url || '/images/product-placeholder.jpg'} 2x" width="400" height="400" alt="${safeName}" loading="lazy" >
+                                <img src="${p.image_url || '/images/product-placeholder.jpg'}" srcset="${p.image_url || '/images/product-placeholder.jpg'} 1x, ${p.image_url || '/images/product-placeholder.jpg'} 2x" width="400" height="400" alt="${safeName}" loading="lazy">
                             </a>
                             <div class="product-info">
                                 <span class="product-category">${safeCat}</span>
@@ -58,19 +60,18 @@ let homeProductsList = [];
                                     <a href="product.html?id=${p.id}">${safeName}</a>
                                 </h3>
                                 <div class="product-rating">
-                                    <div class="rating-stars" style="color: #f59e0b; font-size: 0.85rem;">
+                                    <div class="rating-stars">
                                         ${renderStars(p.rating)}
                                     </div>
-                                    <span class="rating-count" style="font-size: 0.8rem; color: var(--light-text); margin-inline-start: 6px;">(${Number(p.rating || 5).toFixed(1)})</span>
-                                </div>
-                                <div class="product-price-row" style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
-                                    <span class="product-price">${Number(p.price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>
-                                    ${(p.old_price && Number(p.old_price) > Number(p.price)) ? `<span class="product-old-price" style="text-decoration: line-through; color: var(--light-text); font-size: 0.85rem;">${Number(p.old_price).toLocaleString()} <small data-i18n="common.currency">دج</small></span> <span class="discount-badge" style="background: rgba(239, 68, 68, 0.1); color: #dc2626; font-size: 0.75rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">-${Math.round((1 - Number(p.price) / Number(p.old_price)) * 100)}%</span>` : ''}
+                                    <span class="rating-count">(${Number(p.rating || 5).toFixed(1)})</span>
                                     ${getStockBadge(p.stock)}
                                 </div>
+                                <div class="product-price-row">
+                                    <span class="product-price">${Number(p.price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>
+                                    ${hasDiscount ? `<span class="product-old-price">${Number(p.old_price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>` : ''}
+                                </div>
                                 <div class="product-card-actions">
-                                    <a href="product.html?id=${p.id}" aria-label="${window.escapeHtml ? window.escapeHtml(window.I18n.t('product.details', 'التفاصيل')) : 'التفاصيل'} ${safeName}" class="btn btn-secondary" data-i18n="product.details">التفاصيل</a>
-                                    <button type="button" data-action="quickAddToCart" data-id="${p.id}" aria-label="${window.escapeHtml ? window.escapeHtml(window.I18n.t('product.add_to_cart', 'أضف للسلة')) : 'أضف للسلة'} ${safeName}" class="btn" ${p.stock <= 0 ? 'disabled' : ''}>
+                                    <button type="button" data-action="quickAddToCart" data-id="${p.id}" aria-label="${window.escapeHtml ? window.escapeHtml(window.I18n.t('product.add_to_cart', 'أضف للسلة')) : 'أضف للسلة'} ${safeName}" class="btn btn-primary" ${p.stock <= 0 ? 'disabled' : ''}>
                                         <i class="fas fa-cart-plus"></i> <span data-i18n="product.add_to_cart">أضف للسلة</span>
                                     </button>
                                 </div>
@@ -85,30 +86,39 @@ let homeProductsList = [];
                     offersContainer.innerHTML = specialOffers.map(p => {
                         const isFav = wishlistIds.includes(p.id);
                         const safeName = window.escapeHtml ? window.escapeHtml(p.name) : p.name;
-                        const safeCat = window.escapeHtml ? window.escapeHtml(window.I18n.t('categories.exclusive_offer', 'عرض حصري')) : (window.I18n.t('categories.exclusive_offer', 'عرض حصري'));
+                        const safeCat = window.escapeHtml ? window.escapeHtml(p.category || 'عرض خاص') : (p.category || 'عرض خاص');
                         const hasDiscount = p.old_price && Number(p.old_price) > Number(p.price);
-                        const discountPct = hasDiscount ? Math.round((1 - Number(p.price) / Number(p.old_price)) * 100) : null;
+                        const discountPct = hasDiscount ? Math.round((1 - Number(p.price) / Number(p.old_price)) * 100) : 20;
                         return `
-                        <div class="product-card" id="offer-card-${p.id}">
-                            <span class="product-badge" style="background: var(--accent-gradient);"><span>${hasDiscount ? `خصم -${discountPct}% 🔥` : window.I18n.t('home.special_discount', 'تخفيض خاص 🔥')}</span></span>
+                        <div class="product-card offer-card" id="offer-card-${p.id}">
+                            <span class="product-badge">-${discountPct}%</span>
                             <button type="button" class="product-wishlist ${isFav ? 'active' : ''}" data-wishlist-id="${p.id}" data-action="handleHomeToggleWishlist" data-id="${p.id}" data-i18n-title="common.wishlist" data-i18n-aria-label="common.wishlist" aria-label="المفضلة">
-                                <i class="${isFav ? 'fas fa-heart' : 'far fa-heart'}"></i>
+                                <i class="${isFav ? 'fas fa-heart text-danger' : 'far fa-heart'}"></i>
                             </button>
                             <a href="product.html?id=${p.id}" class="product-image">
-                                <img src="${p.image_url || '/images/product-placeholder.jpg'}" srcset="${p.image_url || '/images/product-placeholder.jpg'} 1x, ${p.image_url || '/images/product-placeholder.jpg'} 2x" width="400" height="400" alt="${safeName}" loading="lazy" >
+                                <img src="${p.image_url || '/images/product-placeholder.jpg'}" srcset="${p.image_url || '/images/product-placeholder.jpg'} 1x, ${p.image_url || '/images/product-placeholder.jpg'} 2x" width="400" height="400" alt="${safeName}" loading="lazy">
                             </a>
                             <div class="product-info">
                                 <span class="product-category">${safeCat}</span>
                                 <h3 class="product-name">
                                     <a href="product.html?id=${p.id}">${safeName}</a>
                                 </h3>
-                                <div class="product-price-row" style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
-                                    <span class="product-price">${Number(p.price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>
-                                    ${hasDiscount ? `<span class="product-old-price" style="text-decoration: line-through; color: var(--light-text); font-size: 0.85rem;">${Number(p.old_price).toLocaleString()} <small data-i18n="common.currency">دج</small></span> <span class="discount-badge" style="background: rgba(239, 68, 68, 0.1); color: #dc2626; font-size: 0.75rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">-${discountPct}%</span>` : ''}
+                                <div class="product-rating">
+                                    <div class="rating-stars">
+                                        ${renderStars(p.rating)}
+                                    </div>
+                                    <span class="rating-count">(${Number(p.rating || 5).toFixed(1)})</span>
+                                    ${getStockBadge(p.stock)}
                                 </div>
-                                <button type="button" data-action="quickAddToCart" data-id="${p.id}" class="btn" style="width: 100%; padding: 11px; font-size: 0.92rem; justify-content: center;" ${p.stock <= 0 ? 'disabled' : ''}>
-                                    <i class="fas fa-bolt"></i> <span data-i18n="product.order_now_offer">اطلب الآن بالعرض</span>
-                                </button>
+                                <div class="product-price-row">
+                                    <span class="product-price">${Number(p.price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>
+                                    ${hasDiscount ? `<span class="product-old-price">${Number(p.old_price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>` : ''}
+                                </div>
+                                <div class="product-card-actions">
+                                    <button type="button" data-action="quickAddToCart" data-id="${p.id}" class="btn btn-primary" ${p.stock <= 0 ? 'disabled' : ''}>
+                                        <i class="fas fa-cart-plus"></i> <span data-i18n="product.order_now_offer">أضف للسلة الآن</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     `}).join('');
@@ -148,7 +158,34 @@ let homeProductsList = [];
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadHomeProducts);
+        function initCountdownTimer() {
+            const daysEl = document.getElementById('deal-days');
+            const hoursEl = document.getElementById('deal-hours');
+            const minutesEl = document.getElementById('deal-minutes');
+            const secondsEl = document.getElementById('deal-seconds');
+            if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+            let totalSeconds = 2 * 86400 + 14 * 3600 + 35 * 60 + 20;
+
+            function update() {
+                if (totalSeconds > 0) totalSeconds--;
+                const d = Math.floor(totalSeconds / 86400);
+                const h = Math.floor((totalSeconds % 86400) / 3600);
+                const m = Math.floor((totalSeconds % 3600) / 60);
+                const s = totalSeconds % 60;
+                daysEl.textContent = String(d).padStart(2, '0');
+                hoursEl.textContent = String(h).padStart(2, '0');
+                minutesEl.textContent = String(m).padStart(2, '0');
+                secondsEl.textContent = String(s).padStart(2, '0');
+            }
+
+            setInterval(update, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHomeProducts();
+            initCountdownTimer();
+        });
 
 // Event Delegation
 document.addEventListener('click', (e) => {

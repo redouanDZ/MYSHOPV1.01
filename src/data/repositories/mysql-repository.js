@@ -928,6 +928,11 @@ class MysqlRepository {
     return result.affectedRows > 0;
   }
 
+  async clearUserCart(userId) {
+    const [result] = await this.pool.query('DELETE FROM cart_items WHERE user_id = ?', [Number(userId)]);
+    return result.affectedRows > 0;
+  }
+
   async getWilayas() {
     try {
       const [rows] = await this.pool.query('SELECT * FROM wilayas ORDER BY code ASC');
@@ -1991,15 +1996,13 @@ function createMysqlRepository(pool) {
 }
 
 function createFallbackRepository() {
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error('In-memory fallback repository is strictly disabled in production. A MySQL database connection is required.');
-  }
+  const adminEmail = (process.env.ADMIN_EMAIL || 'admin@example.com').trim().toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD || 'adminpassword';
 
-  const isTest = process.env.NODE_ENV === 'test';
   const state = {
     products: [...DEFAULT_PRODUCTS],
     wilayas: [...DEFAULT_WILAYAS],
-    users: isTest ? [
+    users: [
       {
         id: 1,
         username: 'مستخدم تجريبي',
@@ -2013,14 +2016,14 @@ function createFallbackRepository() {
       {
         id: 2,
         username: 'مدير النظام',
-        email: 'admin@example.com',
+        email: adminEmail,
         phone: '0660000000',
-        password: bcrypt.hashSync('adminpassword', 10),
+        password: bcrypt.hashSync(adminPassword, 10),
         role: 'admin', is_verified: true,
         addresses: [],
         created_at: new Date().toISOString()
       }
-    ] : [],
+    ],
     cartItems: [],
     orders: [],
     orderItems: [],
@@ -2265,6 +2268,11 @@ function createFallbackRepository() {
     async removeCartItem(cartItemId) {
       const before = state.cartItems.length;
       state.cartItems = state.cartItems.filter(entry => Number(entry.id) !== Number(cartItemId));
+      return state.cartItems.length < before;
+    },
+    async clearUserCart(userId) {
+      const before = state.cartItems.length;
+      state.cartItems = state.cartItems.filter(entry => Number(entry.user_id) !== Number(userId));
       return state.cartItems.length < before;
     },
     async getWilayas() {

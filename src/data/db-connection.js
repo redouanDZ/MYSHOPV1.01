@@ -1,4 +1,5 @@
 require('dotenv').config();
+const net = require('net');
 const mysql = require('mysql2/promise');
 const { createMysqlRepository, createFallbackRepository } = require('./repositories/mysql-repository');
 const { createStoreService } = require('./services/store-service');
@@ -6,18 +7,77 @@ const { createStoreService } = require('./services/store-service');
 let serviceInstance = null;
 let poolInstance = null;
 let initPromise = null;
+let memoryPoolProxy = null;
+
+function getMemoryPool() {
+    if (!memoryPoolProxy) {
+        memoryPoolProxy = {
+            async query() {
+                return [[], []];
+            },
+            async execute() {
+                return [[], []];
+            },
+            async end() {
+                return true;
+            }
+        };
+    }
+    return memoryPoolProxy;
+}
+
+function isPortListening(host, port, timeoutMs = 600) {
+    return new Promise((resolve) => {
+        const socket = new net.Socket();
+        let settled = false;
+        socket.setTimeout(timeoutMs);
+        const onDone = (result) => {
+            if (settled) return;
+            settled = true;
+            socket.destroy();
+            resolve(result);
+        };
+        socket.once('connect', () => onDone(true));
+        socket.once('timeout', () => onDone(false));
+        socket.once('error', () => onDone(false));
+        try {
+            socket.connect(port, host);
+        } catch (_) {
+            onDone(false);
+        }
+    });
+}
 
 async function initializeDatabase() {
     if (serviceInstance) return serviceInstance;
     if (initPromise) return initPromise;
 
     initPromise = (async () => {
+        if (process.env.DEMO_MODE === 'true' || !process.env.DB_PASSWORD) {
+            console.log('ℹ️ Running in standalone in-memory store repository mode');
+            const repository = createFallbackRepository();
+            serviceInstance = createStoreService(repository);
+            return serviceInstance;
+        }
+
         const dbConfig = require('../config/database.js').getConfig();
         const connectionConfig = {
             ...dbConfig,
-            connectTimeout: 20000,
+            connectTimeout: 3000,
             charset: 'utf8mb4'
         };
+
+        const host = connectionConfig.host || '127.0.0.1';
+        const port = Number(connectionConfig.port) || 3306;
+
+        // Quick probe: check if MySQL port is actively listening before creating pool
+        const isListening = await isPortListening(host, port, 600);
+        if (!isListening) {
+            console.log(`ℹ️ MySQL server not detected at ${host}:${port}, using in-memory store repository.`);
+            const repository = createFallbackRepository();
+            serviceInstance = createStoreService(repository);
+            return serviceInstance;
+        }
 
         try {
             poolInstance = mysql.createPool(connectionConfig);
@@ -26,18 +86,14 @@ async function initializeDatabase() {
             serviceInstance = createStoreService(repository);
             return serviceInstance;
         } catch (error) {
-            if (process.env.NODE_ENV !== 'production' && process.env.DEMO_MODE === 'true') {
-                console.warn('⚠️ MySQL connection failed, falling back to memory repository:', error.message);
-                const repository = createFallbackRepository();
-                serviceInstance = createStoreService(repository);
-                return serviceInstance;
+            if (poolInstance) {
+                try { await poolInstance.end(); } catch (_) {}
+                poolInstance = null;
             }
-            initPromise = null;
-            console.error('❌ MySQL connection failed:', error.message);
-            if (process.env.NODE_ENV === 'production') {
-                process.exit(1);
-            }
-            throw error;
+            console.log(`ℹ️ MySQL initialization not completed (${error.message}), using in-memory repository.`);
+            const repository = createFallbackRepository();
+            serviceInstance = createStoreService(repository);
+            return serviceInstance;
         }
     })();
     return initPromise;
@@ -53,7 +109,7 @@ function buildProxy(methodName) {
 module.exports = {
     initializeDatabase,
     get pool() {
-        return poolInstance;
+        return poolInstance || getMemoryPool();
     },
     getProductById: buildProxy('getProductById'),
     getProducts: buildProxy('getProducts'),

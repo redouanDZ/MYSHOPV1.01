@@ -61,19 +61,34 @@
     <main class="container">
         <!-- ===== Hero Banner Section ===== -->
         <section class="banner">
-            <div style="max-width: 800px; margin: 0 auto; z-index: 2;">
+            <div class="banner-inner">
                 <div class="hero-badge-pill">
+                    <i class="fas fa-shield-check"></i>
                     <span data-i18n="home.trusted_badge">🇩🇿 المتجر الإلكتروني الموثوق في الجزائر</span>
                 </div>
                 <h1 data-i18n="home.hero_title">وجهتك الأولى لكل ما تحتاجه – أزياء، مستلزمات المنزل، إلكترونيات وأكثر</h1>
                 <p data-i18n="home.hero_subtitle">توصيل سريع وموثوق إلى 58 ولاية مع إمكانية الدفع عند الاستلام وضمان الجودة وأصالة المنتجات 100%.</p>
                 <div class="hero-cta-group">
                     <a href="shop.html" class="btn btn-hero-primary">
-                        <i class="fas fa-shopping-bag"></i> <span data-i18n="home.start_shopping">ابدأ التسوق الآن</span>
+                        <i class="fas fa-bag-shopping"></i> <span data-i18n="home.start_shopping">ابدأ التسوق الآن</span>
                     </a>
                     <a href="track-order.html" class="btn btn-hero-secondary">
-                        <i class="fas fa-truck"></i> <span data-i18n="home.track_order_btn">تتبع طلبك الحالي</span>
+                        <i class="fas fa-location-dot"></i> <span data-i18n="home.track_order_btn">تتبع طلبك الحالي</span>
                     </a>
+                </div>
+                <div class="hero-stats-row">
+                    <div class="hero-stat-item">
+                        <i class="fas fa-users-viewfinder"></i>
+                        <span data-i18n="home.stat_clients">+15,000 عميل راضٍ</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <i class="fas fa-map-location-dot"></i>
+                        <span data-i18n="home.stat_wilayas">شحن لـ 58 ولاية</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <i class="fas fa-badge-check"></i>
+                        <span data-i18n="home.stat_guarantee">منتجات أصلية 100%</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -123,26 +138,77 @@
             </div>
         </section>
 
-        <!-- ===== Category Pills Bar ===== -->
-        <div class="category-pills-wrap">
-            <a href="shop.html" class="category-pill active"><i class="fas fa-th-large"></i> <span data-i18n="categories.all">جميع المنتجات</span></a>
-            <a href="shop.html?category=أزياء وملابس" class="category-pill"><i class="fas fa-tshirt"></i> <span data-i18n="categories.fashion">أزياء وملابس</span></a>
-            <a href="shop.html?category=ساعات وإكسسوارات" class="category-pill"><i class="fas fa-clock"></i> <span data-i18n="categories.watches">ساعات وإكسسوارات</span></a>
-            <a href="shop.html?category=عطور ومستحضرات تجميل" class="category-pill"><i class="fas fa-spa"></i> <span data-i18n="categories.beauty">عطور وتجميل</span></a>
-            <a href="shop.html?category=منزل وديكور" class="category-pill"><i class="fas fa-couch"></i> <span data-i18n="categories.home">منزل وديكور</span></a>
-            <a href="shop.html?category=هواتف وإلكترونيات" class="category-pill"><i class="fas fa-headphones"></i> <span data-i18n="categories.electronics">إلكترونيات</span></a>
-        </div>
+        <!-- ===== Shop by Category Section ===== -->
+        <section class="categories-section">
+            <div class="section-header-row">
+                <div>
+                    <h2 class="section-main-title" data-i18n="home.categories_title">تسوق حسب التصنيف</h2>
+                    <p class="section-sub-title" data-i18n="home.categories_subtitle">استكشف تشكيلاتنا المتنوعة المختارة بعناية لأجود المنتجات</p>
+                </div>
+                <a href="shop.html" class="section-link">
+                    <span data-i18n="home.view_all">عرض كل المنتجات</span> <i class="fas fa-chevron-left"></i>
+                </a>
+            </div>
+
+            <div class="categories-cards-grid">
+                <a href="shop.html?category=fashion" class="category-card">
+                    <div class="category-card-icon">
+                        <i class="fas fa-shirt"></i>
+                    </div>
+                    <h3 data-i18n="categories.fashion">أزياء وملابس</h3>
+                    <span class="category-card-link"><span data-i18n="common.details">عرض التفاصيل</span> <i class="fas fa-arrow-left"></i></span>
+                </a>
+                <a href="shop.html?category=watches" class="category-card">
+                    <div class="category-card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 data-i18n="categories.watches">ساعات وإكسسوارات</h3>
+                    <span class="category-card-link"><span data-i18n="common.details">عرض التفاصيل</span> <i class="fas fa-arrow-left"></i></span>
+                </a>
+                <a href="shop.html?category=beauty" class="category-card">
+                    <div class="category-card-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3 data-i18n="categories.beauty">عطور وتجميل</h3>
+                    <span class="category-card-link"><span data-i18n="common.details">عرض التفاصيل</span> <i class="fas fa-arrow-left"></i></span>
+                </a>
+                <a href="shop.html?category=home" class="category-card">
+                    <div class="category-card-icon">
+                        <i class="fas fa-couch"></i>
+                    </div>
+                    <h3 data-i18n="categories.home">منزل وديكور</h3>
+                    <span class="category-card-link"><span data-i18n="common.details">عرض التفاصيل</span> <i class="fas fa-arrow-left"></i></span>
+                </a>
+                <a href="shop.html?category=electronics" class="category-card">
+                    <div class="category-card-icon">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <h3 data-i18n="categories.electronics">إلكترونيات</h3>
+                    <span class="category-card-link"><span data-i18n="common.details">عرض التفاصيل</span> <i class="fas fa-arrow-left"></i></span>
+                </a>
+            </div>
+        </section>
 
         <!-- ===== Featured Products Section ===== -->
         <section class="featured-products">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+            <div class="section-header-row">
                 <div>
-                    <h2 style="font-size: 1.8rem; font-weight: 900; margin: 0; color: var(--dark-color);" data-i18n="home.featured_title">المنتجات المميزة</h2>
-                    <p style="margin: 4px 0 0; color: var(--light-text); font-size: 0.95rem;" data-i18n="home.featured_subtitle">اخترنا لك أفضل المنتجات ذات التقييمات العالية</p>
+                    <h2 class="section-main-title" data-i18n="home.featured_title">المنتجات المميزة</h2>
+                    <p class="section-sub-title" data-i18n="home.featured_subtitle">اخترنا لك أفضل المنتجات ذات التقييمات العالية</p>
                 </div>
-                <a href="shop.html" style="font-weight: 700; color: var(--primary-color); display: inline-flex; align-items: center; gap: 6px;">
-                    <span data-i18n="home.view_all">عرض كل المنتجات</span> <i class="fas fa-chevron-left" style="font-size: 0.8rem;"></i>
+                <a href="shop.html" class="section-link">
+                    <span data-i18n="home.view_all">عرض كل المنتجات</span> <i class="fas fa-chevron-left"></i>
                 </a>
+            </div>
+
+            <!-- Category Filter Pills Bar -->
+            <div class="category-pills-wrap">
+                <a href="shop.html" class="category-pill active"><i class="fas fa-th-large"></i> <span data-i18n="categories.all">جميع المنتجات</span></a>
+                <a href="shop.html?category=أزياء وملابس" class="category-pill"><i class="fas fa-shirt"></i> <span data-i18n="categories.fashion">أزياء وملابس</span></a>
+                <a href="shop.html?category=ساعات وإكسسوارات" class="category-pill"><i class="fas fa-clock"></i> <span data-i18n="categories.watches">ساعات وإكسسوارات</span></a>
+                <a href="shop.html?category=عطور ومستحضرات تجميل" class="category-pill"><i class="fas fa-spa"></i> <span data-i18n="categories.beauty">عطور وتجميل</span></a>
+                <a href="shop.html?category=منزل وديكور" class="category-pill"><i class="fas fa-couch"></i> <span data-i18n="categories.home">منزل وديكور</span></a>
+                <a href="shop.html?category=هواتف وإلكترونيات" class="category-pill"><i class="fas fa-headphones"></i> <span data-i18n="categories.electronics">إلكترونيات</span></a>
             </div>
 
             <div class="products-grid" id="featured-products">
@@ -186,18 +252,18 @@
         </section>
 
         <!-- ===== Special Offers Section ===== -->
-        <section class="special-offers" style="margin-bottom: 60px;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <section class="special-offers">
+            <div class="section-header-row">
                 <div>
-                    <h2 style="font-size: 1.8rem; font-weight: 900; margin: 0; color: var(--dark-color);" data-i18n="home.offers_title">عروض وتخفيضات خاصة 🔥</h2>
-                    <p style="margin: 4px 0 0; color: var(--light-text); font-size: 0.95rem;" data-i18n="home.offers_subtitle">خصومات حصرية لفترة محدودة على تشكيلة مختارة</p>
+                    <h2 class="section-main-title" data-i18n="home.offers_title">عروض وتخفيضات خاصة 🔥</h2>
+                    <p class="section-sub-title" data-i18n="home.offers_subtitle">خصومات حصرية لفترة محدودة على تشكيلة مختارة</p>
                 </div>
-                <a href="shop.html" style="font-weight: 700; color: var(--primary-color); display: inline-flex; align-items: center; gap: 6px;">
-                    <span data-i18n="home.discover_offers">اكتشف جميع العروض</span> <i class="fas fa-chevron-left" style="font-size: 0.8rem;"></i>
+                <a href="shop.html" class="section-link">
+                    <span data-i18n="home.discover_offers">اكتشف جميع العروض</span> <i class="fas fa-chevron-left"></i>
                 </a>
             </div>
 
-            <div class="offers-grid" id="special-offers" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+            <div class="products-grid" id="special-offers">
                 <div class="product-skeleton-card">
                     <div class="skeleton skeleton-image"></div>
                     <div class="skeleton skeleton-title"></div>
@@ -216,6 +282,30 @@
                     <div class="skeleton skeleton-price"></div>
                     <div class="skeleton-btn" style="height: 38px;"></div>
                 </div>
+                <div class="product-skeleton-card">
+                    <div class="skeleton skeleton-image"></div>
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-price"></div>
+                    <div class="skeleton-btn" style="height: 38px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Newsletter / VIP Club Section ===== -->
+        <section class="newsletter-section">
+            <div class="newsletter-card">
+                <div class="newsletter-icon-wrap">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+                <h2 class="newsletter-title" data-i18n="home.newsletter_title">انضم إلى نادي المتميزين</h2>
+                <p class="newsletter-subtitle" data-i18n="home.newsletter_subtitle">اشترك الآن ليصلك أحدث العروض والخصومات الحصرية وقسيمة 10% على أول طلب</p>
+                <form class="newsletter-form">
+                    <input type="email" required placeholder="name@example.com" class="newsletter-input" aria-label="البريد الإلكتروني" data-i18n-aria-label="auth.email">
+                    <button type="submit" class="btn btn-primary newsletter-btn">
+                        <i class="fas fa-paper-plane"></i> <span data-i18n="home.newsletter_btn">اشتراك الآن</span>
+                    </button>
+                </form>
+                <span class="newsletter-promise" data-i18n="home.newsletter_promise">🔒 نحن نحترم خصوصيتك • يمكنك إلغاء الاشتراك في أي وقت</span>
             </div>
         </section>
     </main>

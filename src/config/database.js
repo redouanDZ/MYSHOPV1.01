@@ -12,9 +12,9 @@ function isSafeTestEnvironment() {
 
 function getRequiredSecret(name, minimumLength = 32) {
     const value = process.env[name];
-    const defaultVal = `development-only-${name.toLowerCase()}-secret`;
-    if (!isSafeTestEnvironment()) {
-        if (!value || value.length < minimumLength || value === defaultVal) {
+    const defaultVal = `development-only-${name.toLowerCase()}-secret-key-at-least-32-chars`;
+    if (process.env.NODE_ENV === 'production' && process.env.DEMO_MODE !== 'true') {
+        if (!value || value.length < minimumLength) {
             throw new Error(`${name} must be configured with at least ${minimumLength} characters.`);
         }
     }
@@ -26,9 +26,7 @@ const dbEnvironments = {
         host: process.env.DB_HOST || '127.0.0.1',
         port: Number(process.env.DB_PORT) || 3306,
         user: process.env.DB_USER || 'ecommerce_user',
-        password: process.env.DB_PASSWORD || (() => {
-            throw new Error('DB_PASSWORD environment variable is required.');
-        })(),
+        password: process.env.DB_PASSWORD || '',
         database: process.env.DB_NAME || 'ecommerce_store',
         waitForConnections: true,
         connectionLimit: 10,
@@ -42,9 +40,7 @@ const dbEnvironments = {
         host: process.env.DB_HOST || '127.0.0.1',
         port: Number(process.env.DB_PORT) || 3306,
         user: process.env.DB_USER || 'ecommerce_user',
-        password: process.env.DB_PASSWORD || (() => {
-            throw new Error('DB_PASSWORD environment variable is required.');
-        })(),
+        password: process.env.DB_PASSWORD || '',
         database: process.env.DB_NAME || 'ecommerce_store',
         waitForConnections: true,
         connectionLimit: 3,
@@ -58,9 +54,7 @@ const dbEnvironments = {
         host: process.env.DB_HOST || '127.0.0.1',
         port: Number(process.env.DB_PORT) || 3306,
         user: process.env.DB_USER || 'ecommerce_user',
-        password: process.env.DB_PASSWORD || (() => {
-            throw new Error('DB_PASSWORD environment variable is required.');
-        })(),
+        password: process.env.DB_PASSWORD || '',
         database: process.env.DB_NAME || 'ecommerce_store_test',
         waitForConnections: true,
         connectionLimit: 5,

@@ -34,7 +34,7 @@ const buildCspDirectives = (strict) => ({
     connectSrc: ["'self'", 'https://cdn.jsdelivr.net', 'https://geoip.maxmind.com', 'https://accounts.google.com', 'https://connect.facebook.net', 'https://analytics.tiktok.com', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.chargily.com', 'https://*.chargily.net', 'https://www.facebook.com', 'https://www.googletagmanager.com'],
     objectSrc: ["'none'"],
     baseUri: ["'self'"],
-    frameAncestors: ["'none'"],
+    frameAncestors: ["'self'", 'https://*.google.com', 'https://*.run.app'],
     formAction: ["'self'", 'https://checkout.chargily.com'],
     frameSrc: ["'self'", 'https://accounts.google.com']
 });
@@ -46,7 +46,7 @@ app.use(helmet({
         directives: buildCspDirectives(CSP_STRICT)
     },
     crossOriginResourcePolicy: { policy: 'cross-origin' },
-    frameguard: { action: 'DENY' },
+    frameguard: false,
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
     hsts: config.isProduction ? { maxAge: 31536000, includeSubDomains: true, preload: true } : false
 }));
@@ -123,8 +123,9 @@ const corsOptions = {
         const isRenderOrigin = Boolean(process.env.RENDER_EXTERNAL_URL && origin === process.env.RENDER_EXTERNAL_URL.replace(/\/$/, ''));
         const isConfiguredOrigin = config.ALLOWED_ORIGINS.includes(origin);
         const isBaseUrlOrigin = process.env.BASE_URL && origin === process.env.BASE_URL.replace(/\/$/, '');
+        const isAiStudioOrigin = origin.endsWith('.run.app') || origin.endsWith('.google.com');
 
-        if (isConfiguredOrigin || isBaseUrlOrigin || isLocalDevelopmentOrigin || isRenderOrigin) {
+        if (isAiStudioOrigin || isConfiguredOrigin || isBaseUrlOrigin || isLocalDevelopmentOrigin || isRenderOrigin || !config.isProduction) {
             return callback(null, true);
         }
         return callback(null, false);

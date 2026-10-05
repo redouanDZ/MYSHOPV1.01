@@ -90,8 +90,8 @@ class MailService {
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="${trackingUrl}" style="background: var(--primary-color); color: var(--bg-color, #fff)fff; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; margin-left: 10px; display: inline-block;">تتبع حالة طلبك</a>
-                    <a href="${invoiceUrl}" style="background: #64748b; color: var(--bg-color, #fff)fff; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; display: inline-block;">عرض الفاتورة</a>
+                    <a href="${trackingUrl}" style="background: var(--primary-color); color: #ffffff; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; margin-left: 10px; display: inline-block;">تتبع حالة طلبك</a>
+                    <a href="${invoiceUrl}" style="background: #64748b; color: #ffffff; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; display: inline-block;">عرض الفاتورة</a>
                 </div>
 
                 <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
@@ -140,7 +140,7 @@ class MailService {
                 </div>
 
                 <div style="text-align: center; margin: 25px 0;">
-                    <a href="${trackingUrl}" style="background: #0284c7; color: var(--bg-color, #fff)fff; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; display: inline-block;">متابعة تفاصيل الشحن</a>
+                    <a href="${trackingUrl}" style="background: #0284c7; color: #ffffff; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; display: inline-block;">متابعة تفاصيل الشحن</a>
                 </div>
             </div>
         </div>
@@ -161,8 +161,8 @@ class MailService {
         const resetUrl = `${storeConfig.baseUrl}/index.html?action=reset-password&token=${encodeURIComponent(resetToken)}&email=${encodeURIComponent(email)}`;
         const subject = `استعادة كلمة المرور - ${storeConfig.storeName || 'المتجر الإلكتروني'}`;
         const html = `
-            <div dir="rtl" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: var(--card-bg)fff; border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;">
-                <div style="background: var(--primary-color); color: var(--bg-color, #fff)fff; padding: 24px; text-align: center;">
+            <div dir="rtl" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: var(--card-bg, #fff); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;">
+                <div style="background: var(--primary-color); color: #ffffff; padding: 24px; text-align: center;">
                     <h2 style="margin: 0; font-size: 1.4rem;">استعادة كلمة المرور 🔐</h2>
                 </div>
                 <div style="padding: 24px; color: var(--text-color); line-height: 1.6;">
@@ -170,7 +170,7 @@ class MailService {
                     <p>تلقينا طلباً لإعادة تعيين كلمة المرور الخاصة بحسابك في متجرنا.</p>
                     <p>يمكنك تعيين كلمة مرور جديدة بالضغط على الزر أدناه:</p>
                     <div style="text-align: center; margin: 30px 0;">
-                        <a href="${resetUrl}" style="background: var(--primary-color); color: var(--bg-color, #fff)fff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">إعادة تعيين كلمة المرور</a>
+                        <a href="${resetUrl}" style="background: var(--primary-color); color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">إعادة تعيين كلمة المرور</a>
                     </div>
                     <p style="font-size: 0.9rem; color: var(--light-text);">أو استخدم رمز الاستعادة التالي: <strong style="color: var(--text-color); letter-spacing: 2px;">${resetToken}</strong></p>
                     <p style="font-size: 0.85rem; color: var(--light-text); border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 25px;">إذا لم تطلب إعادة تعيين كلمة المرور، يمكنك تجاهل هذه الرسالة بأمان.</p>

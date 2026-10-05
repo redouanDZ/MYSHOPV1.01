@@ -19,7 +19,7 @@
         .success-message h2 { color: #065f46; margin-bottom: 8px; font-size: 1.8rem; }
         .success-message p { color: #047857; margin: 0; font-size: 1.05rem; }
         
-        .order-details-box { background: white; border-radius: 10px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .order-details-box { background: white; border-radius: var(--radius-md, 12px); padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; background: var(--card-bg); padding: 15px; border-radius: 8px; }
         @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
         
@@ -37,7 +37,7 @@
         .summary-line.grand-total { font-size: 1.25rem; font-weight: bold; color: var(--primary-color); border-top: 1.5px solid #e2e8f0; padding-top: 10px; margin-top: 10px; }
         
         .action-buttons-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
-        .btn-action { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1rem; transition: background 0.2s; }
+        .btn-action { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius-sm, 8px); font-weight: bold; text-decoration: none; font-size: 1rem; transition: background 0.2s; }
         .btn-primary { background: var(--primary-color); color: white; }
         .btn-primary:hover { background: #1d4ed8; }
         .btn-invoice { background: var(--success-color); color: white; }
@@ -45,7 +45,7 @@
         .btn-outline { background: var(--card-bg); color: var(--text-color); border: 1.5px solid #cbd5e1; }
         .btn-outline:hover { background: #e2e8f0; }
 
-        .status-badge-custom { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; }
+        .status-badge-custom { display: inline-block; padding: 4px 10px; border-radius: var(--radius-xs, 6px); font-size: 0.85rem; font-weight: bold; }
         .status-pending { background: #fef3c7; color: #d97706; }
         .status-processing { background: #e0f2fe; color: #0284c7; }
         .status-shipped { background: #ede9fe; color: #7c3aed; }

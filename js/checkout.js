@@ -214,7 +214,18 @@ function updateOrderSummary() {
     
     // Promo discount if applicable
     const promo = getSavedPromo();
-    const discount = promo ? (promo.calculatedDiscount && promo.calculatedDiscount > 0 ? Math.min(subtotal, promo.calculatedDiscount) : (promo.discount ? Math.round(subtotal * promo.discount) : 0)) : 0;
+    let discount = 0;
+    if (promo) {
+        if (promo.discountPercent && promo.discountPercent > 0) {
+            discount = Math.round((subtotal * promo.discountPercent) / 100);
+        } else if (promo.discountAmount && promo.discountAmount > 0) {
+            discount = Math.min(subtotal, Math.round(promo.discountAmount));
+        } else if (promo.calculatedDiscount && promo.calculatedDiscount > 0) {
+            discount = Math.min(subtotal, promo.calculatedDiscount);
+        } else if (promo.discount && promo.discount > 0) {
+            discount = Math.round(subtotal * promo.discount);
+        }
+    }
     const grandTotal = Math.max(0, subtotal + currentShippingCost - discount);
 
     const subtotalEl = document.getElementById('reviewSubtotal');
@@ -301,7 +312,7 @@ async function placeOrderNow() {
         discountAmount: discount,
         total: grandTotal,
         cart: cart.map(item => ({
-            id: item.id || item.product_id,
+            id: item.product_id || item.id,
             name: item.name,
             price: Number(item.price),
             quantity: Number(item.quantity),

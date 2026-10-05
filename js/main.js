@@ -349,6 +349,8 @@ function initBackToTop() {
 function initNewsletter() {
   const forms = document.querySelectorAll('form[data-newsletter], .newsletter-form, footer form');
   forms.forEach(form => {
+    if (form.dataset.newsletterBound) return;
+    form.dataset.newsletterBound = 'true';
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const input = form.querySelector('input[type="email"]');
@@ -509,6 +511,19 @@ function initMobileNavigation() {
   
   const closeBtn = drawer.querySelector('.mobile-drawer-close');
   if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('.mobile-menu-btn');
+    if (trigger) {
+      e.preventDefault();
+      openDrawer();
+    }
+    const closeTrigger = e.target.closest('.mobile-drawer-close');
+    if (closeTrigger) {
+      e.preventDefault();
+      closeDrawer();
+    }
+  });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && drawer.classList.contains('active')) {

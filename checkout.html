@@ -19,26 +19,47 @@
         }
         .delivery-card {
             border: 2px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px;
+            border-radius: var(--radius-md, 12px);
+            padding: 16px 14px;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            text-align: center;
+            gap: 6px;
+            position: relative;
+            background: var(--card-bg, #ffffff);
         }
         .delivery-card.active, .delivery-card:hover {
             border-color: var(--primary-color);
             background: #eff6ff;
         }
         .delivery-card input[type="radio"] {
-            margin: 0;
-            accent-color: var(--primary-color);
+            position: absolute !important;
+            opacity: 0 !important;
+            width: 0 !important;
+            height: 0 !important;
+            pointer-events: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            clip: rect(0, 0, 0, 0) !important;
+            clip-path: inset(50%) !important;
+            overflow: hidden !important;
+        }
+        .delivery-card-info {
+            width: 100%;
+            text-align: center;
         }
         .delivery-card-info strong {
             display: block;
             color: var(--text-color);
             font-size: 0.95rem;
+            margin-bottom: 4px;
         }
         .delivery-card-info span {
             font-size: 0.85rem;
@@ -133,8 +154,8 @@
             border: 1px solid #a7f3d0;
             font-size: 0.72rem;
             font-weight: 700;
-            padding: 2px 9px;
-            border-radius: 9999px;
+            padding: 2px 8px;
+            border-radius: var(--radius-xs, 6px);
             line-height: 1.4;
             white-space: nowrap;
         }
@@ -293,14 +314,14 @@
                                     <input type="radio" name="delivery-type" value="home" checked data-action="onDeliveryTypeChange" data-args="">
                                     <div class="delivery-card-info">
                                         <strong><span data-i18n="checkout.home_delivery">توصيل للمنزل (Home Delivery)</span></strong>
-                                        <span id="homeDeliveryPriceLabel"><span data-i18n="checkout.home_delivery_price">السعر: حسب الولاية</span>
+                                        <span id="homeDeliveryPriceLabel"><span data-i18n="checkout.home_delivery_price">السعر: حسب الولاية</span></span>
                                     </div>
                                 </label>
                                 <label class="delivery-card" id="deliveryCardDesk">
                                     <input type="radio" name="delivery-type" value="desk" data-action="onDeliveryTypeChange" data-args="">
                                     <div class="delivery-card-info">
                                         <strong><span data-i18n="checkout.desk_delivery">استلام من المكتب (Stop Desk)</span></strong>
-                                        <span id="deskDeliveryPriceLabel"><span data-i18n="checkout.desk_delivery_price">السعر: خيار اقتصادي</span>
+                                        <span id="deskDeliveryPriceLabel"><span data-i18n="checkout.desk_delivery_price">السعر: خيار اقتصادي</span></span>
                                     </div>
                                 </label>
                             </div>

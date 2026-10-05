@@ -301,11 +301,22 @@ function showNotification(message, type='success') {
     }
 }
 
+function clearCart() {
+    cart = [];
+    window.cart = cart;
+    localStorage.removeItem('cart');
+    localStorage.removeItem('promoCode');
+    updateCartUI();
+    const summaryContainer = document.querySelector('.cart-summary');
+    if (summaryContainer) updateOrderSummary();
+}
+
 // Global Exports
 window.cart = cart;
 window.initCart = initCart;
 window.addToCart = addToCart;
 window.updateCartItemQuantity = updateCartItemQuantity;
 window.removeFromCart = removeFromCart;
+window.clearCart = clearCart;
 window.updateCartUI = updateCartUI;
 

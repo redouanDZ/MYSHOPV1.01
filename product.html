@@ -33,7 +33,7 @@
             border: 2px solid var(--border-color, #e2e8f0);
             background: var(--card-bg, #ffffff);
             color: var(--text-color, #1e293b);
-            border-radius: 10px;
+            border-radius: var(--radius-sm, 8px);
             font-size: 0.92rem;
             font-weight: 600;
             cursor: pointer;
@@ -97,11 +97,52 @@
             border-radius: 4px;
         }
         @media (max-width: 640px) {
+            .variant-select {
+                flex-direction: column;
+                gap: 8px;
+            }
             .variant-btn {
-                padding: 8px 12px;
-                font-size: 0.85rem;
-                flex: 1 1 calc(50% - 10px);
-                justify-content: center;
+                padding: 10px 14px;
+                font-size: 0.88rem;
+                width: 100%;
+                flex: 1 1 100%;
+                justify-content: space-between;
+                box-sizing: border-box;
+            }
+            .product-actions {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 10px !important;
+                align-items: center !important;
+                width: 100% !important;
+            }
+            .product-actions .quantity {
+                flex: 0 0 auto !important;
+                margin: 0 !important;
+                height: 44px !important;
+                border-radius: var(--radius-sm, 8px) !important;
+                overflow: hidden !important;
+            }
+            .product-actions .quantity input {
+                height: 44px !important;
+                width: 48px !important;
+            }
+            .product-actions .quantity-btn {
+                width: 40px !important;
+                height: 44px !important;
+            }
+            .product-actions .add-to-cart {
+                flex: 1 1 auto !important;
+                min-height: 44px !important;
+                border-radius: var(--radius-sm, 8px) !important;
+                margin: 0 !important;
+            }
+            .product-actions .add-to-wishlist {
+                flex: 0 0 44px !important;
+                width: 44px !important;
+                height: 44px !important;
+                margin: 0 !important;
+                border-radius: var(--radius-sm, 8px) !important;
             }
         }
         .thumbnail-images {
@@ -217,7 +258,7 @@
                             <h3 style="margin: 0; font-size: 1.12rem; color: var(--text-color, #1e293b); display: flex; align-items: center; gap: 8px;">
                                 <i class="fas fa-bolt" style="color: #f59e0b;"></i> <span data-i18n="product.quick_buy_title">الشراء السريع (الدفع عند الاستلام)</span>
                             </h3>
-                            <span style="background: rgba(14, 165, 233, 0.1); color: var(--primary-color, #0284c7); font-size: 0.78rem; font-weight: bold; padding: 3px 8px; border-radius: 20px;">
+                            <span style="background: rgba(14, 165, 233, 0.1); color: var(--primary-color, #0284c7); font-size: 0.78rem; font-weight: bold; padding: 3px 8px; border-radius: 6px;">
                                 <i class="fas fa-shield-alt"></i> <span data-i18n="product.direct_order">طلب مباشر</span>
                             </span>
                         </div>
@@ -277,7 +318,7 @@
                             </div>
 
                             <!-- زر الإرسال -->
-                            <button type="submit" id="express-submit-btn" style="width: 100%; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: var(--bg-color, #fff); border: none; border-radius: 10px; padding: 14px 20px; font-size: 1.08rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: all 0.2s ease;">
+                            <button type="submit" id="express-submit-btn" style="width: 100%; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: var(--bg-color, #fff); border: none; border-radius: var(--radius-sm, 8px); padding: 14px 20px; font-size: 1.08rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: all 0.2s ease;">
                                 <i class="fas fa-check-circle"></i> <span data-i18n="product.confirm_order_now">اضغط هنا لتأكيد الطلب الآن ⚡</span>
                             </button>
                         </form>

@@ -25,16 +25,55 @@
         .wishlist-count-badge {
             background: #fee2e2;
             color: var(--danger-color);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.95rem;
+            padding: 4px 12px;
+            border-radius: var(--radius-xs, 6px);
+            font-weight: 700;
+            font-size: 0.9rem;
         }
 
         .wishlist-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 25px;
+        }
+        @media (max-width: 600px) {
+            .wishlist-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .card-img-wrapper {
+                height: 140px;
+            }
+            .card-body {
+                padding: 10px;
+            }
+            .card-title {
+                font-size: 0.85rem;
+                height: 2.7em;
+                margin-bottom: 6px;
+            }
+            .card-price {
+                font-size: 0.98rem;
+                margin-bottom: 8px;
+            }
+            .btn-add-cart-card {
+                padding: 8px 6px;
+                font-size: 0.8rem;
+            }
+        }
+        @media (max-width: 380px) {
+            .wishlist-grid {
+                gap: 8px;
+            }
+            .card-img-wrapper {
+                height: 120px;
+            }
+            .card-title {
+                font-size: 0.78rem;
+            }
+            .card-price {
+                font-size: 0.88rem;
+            }
         }
         .wishlist-card {
             background: var(--card-bg);

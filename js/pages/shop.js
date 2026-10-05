@@ -365,17 +365,17 @@
         const isFav = wishlistIds.includes(product.id);
         const stockNum = Number(product.stock) || 0;
         const safeName = window.escapeHtml ? window.escapeHtml(product.name) : product.name;
-        const safeCat = window.escapeHtml ? window.escapeHtml(product.category || window.I18n.t('categories.general', 'عام')) : (product.category || window.I18n.t('categories.general', 'عام'));
+        const safeCat = window.escapeHtml ? window.escapeHtml(product.category || 'عام') : (product.category || 'عام');
         const hasDiscount = product.old_price && Number(product.old_price) > Number(product.price);
         const discountPct = hasDiscount ? Math.round((1 - Number(product.price) / Number(product.old_price)) * 100) : null;
         return `
         <div class="product-card" id="shop-product-${product.id}">
-          <span class="product-badge" ${hasDiscount ? 'style="background: var(--accent-gradient, linear-gradient(135deg, #ef4444, #f97316));"' : ''}>${hasDiscount ? (window.I18n ? window.I18n.t('shop.discount_badge', 'خصم -{pct}% 🔥').replace('{pct}', discountPct) : `خصم -${discountPct}% 🔥`) : safeCat}</span>
+          ${hasDiscount ? `<span class="product-badge">-${discountPct}%</span>` : ''}
           <button type="button" class="product-wishlist ${isFav ? 'active' : ''}" data-wishlist-id="${product.id}" data-action="handleToggleWishlist" data-args="${product.id}" data-i18n-title="common.wishlist" aria-label="${window.I18n ? window.I18n.t('common.wishlist', 'المفضلة') : 'المفضلة'}" data-i18n-aria-label="common.wishlist">
-            <i class="${isFav ? 'fas fa-heart' : 'far fa-heart'}"></i>
+            <i class="${isFav ? 'fas fa-heart text-danger' : 'far fa-heart'}"></i>
           </button>
           <a href="product.html?id=${product.id}" class="product-image">
-            <img src="${product.image_url || '/images/product-placeholder.jpg'}" srcset="${product.image_url || '/images/product-placeholder.jpg'} 1x, ${product.image_url || '/images/product-placeholder.jpg'} 2x" width="400" height="400" alt="${safeName}" loading="lazy" >
+            <img src="${product.image_url || '/images/product-placeholder.jpg'}" srcset="${product.image_url || '/images/product-placeholder.jpg'} 1x, ${product.image_url || '/images/product-placeholder.jpg'} 2x" width="400" height="400" alt="${safeName}" loading="lazy">
           </a>
           <div class="product-info">
             <span class="product-category">${safeCat}</span>
@@ -383,19 +383,18 @@
               <a href="product.html?id=${product.id}">${safeName}</a>
             </h3>
             <div class="product-rating">
-              <div class="rating-stars" style="color: #f59e0b; font-size: 0.85rem;">
+              <div class="rating-stars">
                 ${renderStars(product.rating)}
               </div>
-              <span class="rating-count" style="font-size: 0.8rem; color: var(--light-text); margin-inline-start: 6px;">(${Number(product.rating || 5).toFixed(1)})</span>
-            </div>
-            <div class="product-price-row" style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
-              <span class="product-price">${window.I18n ? window.I18n.formatNumber(product.price) : Number(product.price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>
-              ${hasDiscount ? `<span class="product-old-price" style="text-decoration: line-through; color: var(--light-text); font-size: 0.85rem;">${window.I18n ? window.I18n.formatNumber(product.old_price) : Number(product.old_price).toLocaleString()} <small data-i18n="common.currency">دج</small></span> <span class="discount-badge" style="background: rgba(239, 68, 68, 0.1); color: #dc2626; font-size: 0.75rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">-${discountPct}%</span>` : ''}
+              <span class="rating-count">(${Number(product.rating || 5).toFixed(1)})</span>
               ${getStockBadge(stockNum)}
             </div>
+            <div class="product-price-row">
+              <span class="product-price">${window.I18n ? window.I18n.formatNumber(product.price) : Number(product.price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>
+              ${hasDiscount ? `<span class="product-old-price">${window.I18n ? window.I18n.formatNumber(product.old_price) : Number(product.old_price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>` : ''}
+            </div>
             <div class="product-card-actions">
-              <a href="product.html?id=${product.id}" class="btn btn-secondary" data-i18n="product.details">التفاصيل</a>
-              <button type="button" data-action="handleAddToCart" data-args="${product.id}" class="btn" ${stockNum <= 0 ? 'disabled' : ''}>
+              <button type="button" data-action="handleAddToCart" data-args="${product.id}" class="btn btn-primary" ${stockNum <= 0 ? 'disabled' : ''}>
                 <i class="fas fa-cart-plus"></i> <span data-i18n="product.add_to_cart">أضف للسلة</span>
               </button>
             </div>

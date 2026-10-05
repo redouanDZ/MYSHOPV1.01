@@ -104,9 +104,21 @@ async function removeCartItem(req, res) {
     }
 }
 
+async function clearCart(req, res) {
+    try {
+        const userId = req.userId;
+        await db.clearUserCart(userId);
+        res.json({ message: 'تم إفراغ السلة بنجاح', success: true });
+    } catch (error) {
+        console.error('Error clearing cart:', error);
+        res.status(500).json({ error: 'خطأ في إفراغ السلة', message: 'خطأ في إفراغ السلة', code: 'CART_CLEAR_FAILED' });
+    }
+}
+
 module.exports = {
     addToCart,
     getCartItems,
     updateCartItem,
-    removeCartItem
+    removeCartItem,
+    clearCart
 };

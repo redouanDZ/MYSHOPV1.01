@@ -6,6 +6,12 @@ header nav {
     display: none !important;
 }
 
+/* Full width header container for admin layout */
+header .container {
+    max-width: 100% !important;
+    padding-inline: 28px !important;
+}
+
 /* Dashboard layout */
 .admin-dashboard {
     display: flex;
@@ -800,16 +806,17 @@ header nav {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .sidebar {
         position: fixed;
         top: 0;
         inset-inline-start: -280px;
-        width: 260px;
+        width: 280px;
         height: 100vh;
         z-index: 10000;
         transition: inset-inline-start 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+        overflow-y: auto;
     }
 
     .sidebar.active, .sidebar.open {
@@ -1299,31 +1306,14 @@ header nav {
 }
 
 @media (max-width: 900px) {
-    header { display: none !important; }
     .admin-menu-toggle {
-        display: inline-flex;
+        display: inline-flex !important;
         align-items: center;
         justify-content: center;
     }
 
     .admin-dashboard {
         position: relative;
-    }
-
-    .sidebar {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 280px;
-        z-index: 999;
-        transform: translateX(100%);
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
     }
 
     .main-content {
