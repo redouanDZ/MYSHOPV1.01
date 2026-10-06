@@ -76,6 +76,15 @@
         .variant-btn.out-of-stock .variant-name {
             text-decoration: line-through;
         }
+        .variant-btn { text-align: start; flex-wrap: wrap; }
+        .variant-btn .variant-name { flex: 1 1 150px; min-width: 0; overflow-wrap: anywhere; line-height: 1.4; }
+        .variant-options > div:first-child { min-width: 0; }
+        .variant-options > div:first-child > span { min-width: 0; overflow-wrap: anywhere; }
+        .variant-btn .variant-price-mod,
+        .variant-btn .variant-badge { flex: 0 0 auto; white-space: nowrap; }
+        .variant-btn.out-of-stock { opacity: 1; }
+        .variant-btn.out-of-stock .variant-name,
+        .variant-btn.out-of-stock .variant-price-mod { opacity: .5; }
         .variant-price-mod {
             font-size: 0.8rem;
             font-weight: 700;
@@ -217,8 +226,7 @@
 
     <!-- Theme Anti-Flicker -->
     <script src="/js/theme-init.js"></script>
-    <script src="js/i18n.js"></script>
-</head>
+    </head>
 <body>
     <!-- رأس الموقع الموحد -->
     <header id="site-header"></header>
@@ -369,5 +377,6 @@
     <script src="js/user-system.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/wishlist.js"></script>
+    <script src="js/i18n.js"></script>
 </body>
 </html>
