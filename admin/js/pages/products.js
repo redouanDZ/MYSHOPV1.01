@@ -95,11 +95,12 @@
         function populateCategoryDropdowns() {
             const filter = document.getElementById('categoryFilter');
             const formSelect = document.getElementById('productCategory');
+            const datalist = document.getElementById('categoriesDatalist');
             const currentFilterVal = filter.value;
             const currentFormVal = formSelect.value;
 
             filter.innerHTML = '<option value="">جميع التصنيفات</option>';
-            formSelect.innerHTML = '<option value="">اختر القسم...</option>';
+            if (datalist) datalist.innerHTML = '';
 
             storeCategories.forEach(cat => {
                 const opt1 = document.createElement('option');
@@ -107,14 +108,14 @@
                 opt1.textContent = cat.name;
                 filter.appendChild(opt1);
 
-                const opt2 = document.createElement('option');
-                opt2.value = cat.name;
-                opt2.textContent = cat.name;
-                formSelect.appendChild(opt2);
+                if (datalist) {
+                    const opt2 = document.createElement('option');
+                    opt2.value = cat.name;
+                    datalist.appendChild(opt2);
+                }
             });
 
             filter.value = currentFilterVal;
-            if (currentFormVal) formSelect.value = currentFormVal;
         }
 
         function openCategoriesModal() {
