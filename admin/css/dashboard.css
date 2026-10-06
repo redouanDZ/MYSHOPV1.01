@@ -2097,3 +2097,58 @@ header .container {
     table.cards-table td[data-label="إجراءات"]::before { display: none; }
     table.cards-table .status-select { max-width: 60%; }
 }
+
+/* ===== Design review fixes (v1.2) ===== */
+/* Header: brand on one side, actions on the other, always one row */
+header .container {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 16px;
+}
+header .container .user-actions { flex: 0 0 auto; }
+
+/* Toolbar controls share one height and one radius */
+.products-header .admin-input,
+.products-header .admin-select,
+.filters-bar input,
+.filters-bar select {
+    height: 44px;
+    min-height: 44px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-size: .95rem;
+}
+.products-header .admin-input { width: 100%; padding-block: 0; padding-inline: 42px 14px; }
+.products-header .admin-select,
+.filters-bar select { padding-block: 0; padding-inline: 12px; }
+.products-header .search-box i.search-icon {
+    position: absolute;
+    inset-inline-start: 14px;
+    inset-block-start: 50%;
+    left: auto;
+    transform: translateY(-50%);
+    color: var(--light-text, #94a3b8);
+    pointer-events: none;
+}
+
+/* Phones: page headers stack instead of squeezing title and actions side by side */
+@media (max-width: 768px) {
+    .dashboard-header,
+    .page-header {
+        flex-wrap: wrap !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+    }
+    .dashboard-header h1,
+    .page-header h1 { font-size: 1.35rem; line-height: 1.4; flex: 1 1 100%; min-width: 0; }
+    .dashboard-header > p,
+    .page-header > p { flex: 1 1 100%; margin: 0; }
+    .dashboard-header > .btn,
+    .dashboard-header > button,
+    .page-header > .add-product-btn { flex: 0 0 auto; }
+    .search-box i { inset-inline-start: 14px; left: auto; }
+    .search-box input { padding-inline: 40px 14px; }
+}

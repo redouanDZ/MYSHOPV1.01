@@ -50,6 +50,14 @@
         .status-processing { background: #e0f2fe; color: #0284c7; }
         .status-shipped { background: #ede9fe; color: #7c3aed; }
         .status-delivered { background: #d1fae5; color: var(--success-color); }
+        [data-theme="dark"] .success-message { background: rgba(16,185,129,.10); border-color: rgba(16,185,129,.35); }
+        [data-theme="dark"] .success-message h2 { color: #6ee7b7; }
+        [data-theme="dark"] .success-message p { color: #a7f3d0; }
+        .order-details-box { background: var(--card-bg); }
+        .summary-totals-box { padding: 15px 16px; border-radius: 8px; }
+        .summary-line.grand-total { gap: 12px; }
+        [data-theme="dark"] .summary-totals-box, [data-theme="dark"] .summary-line.grand-total { border-color: #334155; }
+        @media (max-width: 480px) { .order-details-box { padding: 18px 14px; } .success-message { padding: 26px 16px; } }
     </style>
   <meta name="theme-color" content="#2563eb">
   <link rel="manifest" href="/manifest.json">

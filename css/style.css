@@ -5975,3 +5975,229 @@ body.dark-mode .quantity input {
 .product-details .product-actions .add-to-wishlist {
     border-radius: 12px !important;
 }
+
+
+/* =====================================================================
+   Design review fixes (v1.2) — form controls, footer, cards, product row
+   ===================================================================== */
+
+/* A) Native radio / checkbox → one consistent custom control everywhere.
+      Hidden inputs inside .delivery-card / .payment-option keep their own
+      rules (they set opacity/clip themselves). */
+input[type="radio"],
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #94a3b8;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 12px 12px;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: border-color .15s, background-color .15s, box-shadow .15s;
+}
+input[type="radio"] { border-radius: 50%; }
+input[type="checkbox"] { border-radius: 5px; }
+input[type="radio"]:checked {
+    border-color: var(--primary-color);
+    background-image: radial-gradient(circle, var(--primary-color) 0 4px, transparent 5px);
+    background-size: 100% 100%;
+}
+input[type="checkbox"]:checked {
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.5l3 3 6-6.5'/%3E%3C/svg%3E");
+}
+input[type="radio"]:focus-visible,
+input[type="checkbox"]:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, .3);
+}
+input[type="radio"]:disabled,
+input[type="checkbox"]:disabled { opacity: .5; cursor: not-allowed; }
+[data-theme="dark"] input[type="radio"],
+[data-theme="dark"] input[type="checkbox"],
+body.dark-mode input[type="radio"],
+body.dark-mode input[type="checkbox"] { border-color: #64748b; background-color: transparent !important; }
+[data-theme="dark"] input[type="checkbox"]:checked,
+body.dark-mode input[type="checkbox"]:checked { background-color: var(--primary-color) !important; border-color: var(--primary-color); }
+
+/* generic form rules (.form-group input {width:100%}) were stretching them */
+.form-group input[type="radio"],
+.form-group input[type="checkbox"],
+.modal-body .form-group input[type="checkbox"],
+.modal-body .form-group input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    flex: 0 0 18px;
+}
+label:has(> input[type="checkbox"]),
+label:has(> input[type="radio"]) {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+.form-group > label:has(> input[type="checkbox"]),
+.form-group > label:has(> input[type="radio"]) { display: flex; }
+.filter-option-label input[type="radio"],
+.filter-option-label input[type="checkbox"] { width: 18px; height: 18px; }
+
+/* B) Footer — classes used by layout.js had no styles at all */
+footer h3,
+footer h4,
+.footer-col h3,
+.footer-col h4,
+[data-theme="dark"] footer h3,
+[data-theme="dark"] footer h4,
+body.dark-mode footer h3,
+body.dark-mode footer h4 { color: #f8fafc !important; }
+footer a { color: inherit; }
+.footer-brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.footer-brand-lockup .site-logo-img { flex: 0 0 auto; }
+.footer-brand {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #f8fafc;
+    line-height: 1.2;
+}
+.footer-tagline { line-height: 1.8; }
+.footer-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+.footer-trust-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .12);
+    color: #e2e8f0;
+    font-size: .82rem;
+    font-weight: 600;
+}
+.footer-trust-tag i { margin: 0; }
+.footer-col ul { list-style: none; padding: 0; margin: 0; }
+.footer-col ul li { display: flex; align-items: center; gap: 10px; }
+.footer-col ul li i { margin: 0; flex: 0 0 16px; text-align: center; }
+.footer-col ul li a { display: inline-flex; align-items: center; gap: 10px; color: #cbd5e1; }
+.footer-col ul li a:hover { color: #fff; }
+.payment-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+.payment-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .12);
+    color: #e2e8f0;
+    font-size: .82rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.payment-badge i { margin: 0; }
+.footer-sub-heading {
+    font-size: 1rem;
+    margin: 0 0 12px;
+    font-weight: 700;
+}
+.social-links a { color: #fff; }
+.footer-bottom-trust { margin-top: 8px; font-size: .85rem; }
+
+/* C) Product cards — rows line up: actions are pinned to the bottom */
+.product-card .product-info { flex: 1 1 auto; }
+.product-card .product-card-actions { margin-top: auto; padding-top: 12px; }
+.product-card .product-price-row { margin-top: auto; }
+.product-card .product-price-row + .product-card-actions { margin-top: 0; }
+.product-card .product-name { min-height: 2.8em; }
+.product-card-actions .btn-secondary,
+.similar-product .product-card-actions .btn {
+    background: var(--primary-gradient, var(--primary-color));
+    color: #fff;
+    border: 0;
+}
+.product-card-actions .btn-secondary:hover { filter: brightness(1.08); }
+
+/* D) Product page — qty / add-to-cart / wishlist stay on one row on phones */
+@media (max-width: 576px) {
+    .product-details .product-actions { flex-wrap: nowrap !important; gap: 8px !important; }
+    .product-details .product-actions .quantity { flex: 0 0 auto; }
+    .product-details .product-actions .add-to-cart { flex: 1 1 0 !important; min-width: 0; padding-inline: 10px; }
+    .product-details .product-actions .add-to-wishlist { flex: 0 0 44px !important; }
+}
+.express-grid-2 label { min-width: 0; }
+
+/* E) Hero stats — tidy wrapping on phones */
+@media (max-width: 576px) {
+    .hero-stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; justify-items: start; }
+    .hero-stats-row .hero-stat-item:last-child { grid-column: 1 / -1; justify-self: center; }
+    .hero-stat-item { font-size: .88rem; }
+}
+
+@media (max-width: 576px) {
+    .product-details .product-info,
+    .product-details .product-images { min-width: 0; }
+    .product-details .product-actions .add-to-cart { white-space: normal !important; font-size: .85rem; line-height: 1.25; gap: 6px; }
+    .product-details .product-actions .quantity .quantity-btn { flex-basis: 36px; width: 36px; }
+    .product-details .product-actions .quantity input { flex-basis: 40px; width: 40px; }
+}
+
+.footer-col ul li a { white-space: nowrap; flex: 0 0 auto; }
+.footer-col ul.footer-contact-list li { align-items: flex-start; }
+.footer-col ul.footer-contact-list li span { min-width: 0; overflow-wrap: anywhere; }
+
+/* Product action row on phones: [wishlist][qty stretches] / [add to cart full width] */
+@media (max-width: 576px) {
+    .product-details .product-actions { flex-wrap: wrap !important; }
+    .product-details .product-actions .quantity { order: 1; flex: 1 1 0 !important; min-width: 0; }
+    .product-details .product-actions .quantity input { flex: 1 1 auto; width: auto; min-width: 0; }
+    .product-details .product-actions .quantity .quantity-btn { flex: 0 0 48px; width: 48px; }
+    .product-details .product-actions .add-to-wishlist { order: 2; flex: 0 0 44px !important; }
+    .product-details .product-actions .add-to-cart { order: 3; flex: 1 1 100% !important; min-height: 48px; font-size: .95rem; white-space: nowrap !important; }
+}
+
+/* touch-target rules gave every <input> min-height:44px — checkbox/radio keep their own size */
+input[type="radio"],
+input[type="checkbox"] {
+    min-height: 0 !important;
+    height: 18px;
+    display: inline-block;
+    border-width: 2px;
+}
+.form-group input[type="radio"],
+.form-group input[type="checkbox"],
+.modal-body .form-group input[type="checkbox"],
+.modal-body .form-group input[type="radio"] { height: 18px; min-height: 0 !important; border-width: 2px; }
+input[type="checkbox"] { border-radius: 5px !important; }
+input[type="radio"] { border-radius: 50% !important; }
+input[type="radio"]:not(:checked),
+input[type="checkbox"]:not(:checked) { border-color: #94a3b8 !important; background-color: transparent !important; }
+[data-theme="dark"] input[type="radio"]:not(:checked),
+[data-theme="dark"] input[type="checkbox"]:not(:checked),
+body.dark-mode input[type="radio"]:not(:checked),
+body.dark-mode input[type="checkbox"]:not(:checked) { border-color: #64748b !important; }
+input[type="radio"]:checked,
+input[type="checkbox"]:checked { border-color: var(--primary-color) !important; }

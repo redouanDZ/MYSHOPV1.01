@@ -196,7 +196,7 @@ let currentProduct = null;
             if (breadcrumbEl) breadcrumbEl.textContent = locP.name;
 
             const nameEl = document.getElementById('product-name');
-            if (nameEl) nameEl.textContent = locP.name;
+            if (nameEl) { nameEl.removeAttribute('data-i18n'); nameEl.textContent = locP.name; }
 
             const cur = Number(product.price) || 0;
             const unitPrice = cur + (selectedVariant ? Number(selectedVariant.priceModifier || 0) : 0);

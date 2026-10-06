@@ -118,8 +118,8 @@
             </div>
             <p class="footer-tagline" data-i18n="footer.tagline">وجهتك الموثوقة للتسوق الإلكتروني في الجزائر، منتجات عالية الجودة، شحن سريع لـ 58 ولاية، وضمان الدفع عند الاستلام.</p>
             <div class="footer-badges">
-              <span class="footer-trust-tag"><i class="fas fa-shield-check text-success"></i> <span data-i18n="footer.genuine_products">100% منتجات أصلية</span></span>
-              <span class="footer-trust-tag"><i class="fas fa-box-check text-primary"></i> <span data-i18n="footer.inspect_on_delivery">فحص عند الاستلام</span></span>
+              <span class="footer-trust-tag"><i class="fas fa-shield-halved text-success"></i> <span data-i18n="footer.genuine_products">100% منتجات أصلية</span></span>
+              <span class="footer-trust-tag"><i class="fas fa-box-open text-primary"></i> <span data-i18n="footer.inspect_on_delivery">فحص عند الاستلام</span></span>
             </div>
           </div>
 
