@@ -825,6 +825,84 @@ function initMobileBottomBar() {
   updateWishlistUI();
 }
 
+/**
+ * Smart Mobile Header: Smoothly collapse search bar on scroll down, reveal on scroll up
+ */
+function initMobileSmartHeader() {
+  const getHeader = () => document.getElementById('main-header') || document.querySelector('header');
+  let header = getHeader();
+  if (!header) {
+    setTimeout(() => {
+      header = getHeader();
+      if (header) bindSmartHeader(header);
+    }, 100);
+    return;
+  }
+  bindSmartHeader(header);
+}
+
+function bindSmartHeader(header) {
+  let lastScrollY = window.scrollY || 0;
+  let ticking = false;
+
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY || 0;
+
+    // Only apply on mobile viewports (<= 768px)
+    if (window.innerWidth > 768) {
+      if (header.classList.contains('search-collapsed')) {
+        header.classList.remove('search-collapsed');
+      }
+      lastScrollY = currentScrollY;
+      ticking = false;
+      return;
+    }
+
+    // Do NOT collapse if user is actively focused or typing in the search input
+    const activeEl = document.activeElement;
+    if (activeEl && activeEl.closest('.header-search')) {
+      lastScrollY = currentScrollY;
+      ticking = false;
+      return;
+    }
+
+    // Near top of page: always expand
+    if (currentScrollY <= 45) {
+      header.classList.remove('search-collapsed');
+      lastScrollY = currentScrollY;
+      ticking = false;
+      return;
+    }
+
+    const delta = currentScrollY - lastScrollY;
+
+    // Scroll DOWN: collapse search bar if scrolled past threshold
+    if (delta > 8 && currentScrollY > 60) {
+      header.classList.add('search-collapsed');
+    }
+    // Scroll UP: expand search bar
+    else if (delta < -8) {
+      header.classList.remove('search-collapsed');
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(handleScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && header.classList.contains('search-collapsed')) {
+      header.classList.remove('search-collapsed');
+    }
+  }, { passive: true });
+}
+
 // Page Initialization
 document.addEventListener('DOMContentLoaded', () => {
   try {
@@ -840,6 +918,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupThemeToggleButtons();
   initMobileNavigation();
   initMobileBottomBar();
+  initMobileSmartHeader();
   initBackToTop();
   initNewsletter();
   updateWishlistUI();

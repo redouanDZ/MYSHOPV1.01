@@ -4398,6 +4398,12 @@ body.dark-mode .mobile-nav-item.active {
         padding-block: 8px 10px !important;
         gap: 8px 10px !important;
         min-height: auto !important;
+        transition: padding 0.28s cubic-bezier(0.16, 1, 0.3, 1), gap 0.28s ease !important;
+    }
+
+    #main-header.search-collapsed .header-main-container {
+        padding-block: 8px 8px !important;
+        gap: 0 !important;
     }
 
     .logo {
@@ -4426,12 +4432,27 @@ body.dark-mode .mobile-nav-item.active {
         font-size: 0.95rem !important;
     }
 
+    /* Smart Collapsible Search on Scroll (Mobile) */
     .header-search {
         order: 3 !important;
         flex: 0 0 100% !important;
         width: 100% !important;
         max-width: 100% !important;
         margin: 4px 0 0 0 !important;
+        max-height: 56px;
+        opacity: 1;
+        overflow: hidden;
+        transform: translateY(0);
+        transition: max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease, margin 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    #main-header.search-collapsed .header-search {
+        max-height: 0 !important;
+        opacity: 0 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        transform: translateY(-8px) !important;
+        pointer-events: none !important;
     }
 
     .header-search-form {
