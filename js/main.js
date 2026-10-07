@@ -842,11 +842,23 @@ function initMobileSmartHeader() {
 }
 
 function bindSmartHeader(header) {
-  let lastScrollY = window.scrollY || 0;
+  if (!header || header._smartHeaderBound) return;
+  header._smartHeaderBound = true;
+
+  let lastScrollY = Math.max(0, window.scrollY || 0);
+  let accumulatedDistance = 0;
+  let activeDirection = 0; // 1 = down, -1 = up, 0 = neutral
   let ticking = false;
 
+  // Hysteresis thresholds to eliminate jitter & screen flicker:
+  // Requires continuous downward scroll of 45px after top offset to collapse
+  // Requires continuous upward scroll of 30px to reveal
+  const DOWN_THRESHOLD = 45;
+  const UP_THRESHOLD = 30;
+  const TOP_SAFE_ZONE = 70; // Always stay fully expanded in the top 70px
+
   const handleScroll = () => {
-    const currentScrollY = window.scrollY || 0;
+    const currentScrollY = Math.max(0, window.scrollY || 0);
 
     // Only apply on mobile viewports (<= 768px)
     if (window.innerWidth > 768) {
@@ -854,35 +866,60 @@ function bindSmartHeader(header) {
         header.classList.remove('search-collapsed');
       }
       lastScrollY = currentScrollY;
+      accumulatedDistance = 0;
+      activeDirection = 0;
       ticking = false;
       return;
     }
 
-    // Do NOT collapse if user is actively focused or typing in the search input
+    // Do NOT collapse if user is actively focused or typing in search
     const activeEl = document.activeElement;
     if (activeEl && activeEl.closest('.header-search')) {
       lastScrollY = currentScrollY;
+      accumulatedDistance = 0;
+      activeDirection = 0;
       ticking = false;
       return;
     }
 
-    // Near top of page: always expand
-    if (currentScrollY <= 45) {
-      header.classList.remove('search-collapsed');
+    // Near the top of the page: always expand smoothly and reset state
+    if (currentScrollY <= TOP_SAFE_ZONE) {
+      if (header.classList.contains('search-collapsed')) {
+        header.classList.remove('search-collapsed');
+      }
       lastScrollY = currentScrollY;
+      accumulatedDistance = 0;
+      activeDirection = 0;
       ticking = false;
       return;
     }
 
     const delta = currentScrollY - lastScrollY;
+    const currentDir = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
 
-    // Scroll DOWN: collapse search bar if scrolled past threshold
-    if (delta > 8 && currentScrollY > 60) {
-      header.classList.add('search-collapsed');
-    }
-    // Scroll UP: expand search bar
-    else if (delta < -8) {
-      header.classList.remove('search-collapsed');
+    if (currentDir !== 0) {
+      if (currentDir !== activeDirection) {
+        // Direction switched: reset accumulator for the new direction
+        activeDirection = currentDir;
+        accumulatedDistance = 0;
+      }
+
+      accumulatedDistance += Math.abs(delta);
+
+      // Scrolling DOWN deliberately: collapse search row
+      if (activeDirection === 1 && accumulatedDistance >= DOWN_THRESHOLD) {
+        if (!header.classList.contains('search-collapsed')) {
+          header.classList.add('search-collapsed');
+        }
+        accumulatedDistance = 0; // Reset after triggering
+      }
+      // Scrolling UP deliberately: reveal search row
+      else if (activeDirection === -1 && accumulatedDistance >= UP_THRESHOLD) {
+        if (header.classList.contains('search-collapsed')) {
+          header.classList.remove('search-collapsed');
+        }
+        accumulatedDistance = 0; // Reset after triggering
+      }
     }
 
     lastScrollY = currentScrollY;

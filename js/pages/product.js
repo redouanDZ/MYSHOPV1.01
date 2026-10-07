@@ -314,9 +314,22 @@ let currentProduct = null;
                 updateProductRating(currentProduct.rating || 5.0);
 
                 loadSimilarProducts(currentProduct.category);
-                loadProductReviews(currentProduct.id);
             } catch (error) {
-                alert(window.I18n ? window.I18n.t('messages.load_product_error', 'خطأ في تحميل المنتج') : 'خطأ في تحميل المنتج');
+                console.error('Error loading product:', error);
+                const container = document.querySelector('.product-details .container');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="text-align: center; padding: 60px 20px; max-width: 500px; margin: 40px auto; background: var(--card-bg, #fff); border-radius: var(--radius-md, 12px); border: 1px solid var(--border-color, #e2e8f0); box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.05));">
+                            <i class="fas fa-box-open" style="font-size: 3.5rem; color: var(--text-muted, #94a3b8); margin-bottom: 18px;"></i>
+                            <h2 style="font-size: 1.4rem; margin-bottom: 10px; color: var(--text-main, #1e293b);">${window.I18n ? window.I18n.t('product.not_found', 'المنتج غير متوفر') : 'المنتج غير متوفر'}</h2>
+                            <p style="color: var(--text-muted, #64748b); margin-bottom: 24px; font-size: 0.95rem; line-height: 1.6;">${window.I18n ? window.I18n.t('product.not_found_desc', 'عذراً، هذا المنتج غير متوفر حالياً أو ربما تم حذفه.') : 'عذراً، هذا المنتج غير متوفر حالياً أو ربما تم حذفه.'}</p>
+                            <a href="shop.html" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; border-radius: 99px; text-decoration: none; font-weight: 600;">
+                                <i class="fas fa-shopping-bag"></i>
+                                <span>${window.I18n ? window.I18n.t('shop.title', 'تصفح منتجات المتجر') : 'تصفح منتجات المتجر'}</span>
+                            </a>
+                        </div>
+                    `;
+                }
             }
         }
 
