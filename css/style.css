@@ -4910,10 +4910,7 @@ input[type="tel"] {
     .shop-layout {
         grid-template-columns: 1fr !important;
     }
-    .shop-sidebar {
-        position: static !important;
-        margin-bottom: 20px;
-    }
+    /* .shop-sidebar is a bottom sheet on phones/tablets — layout is owned by shop.html */
 }
 
 @media (max-width: 768px) {

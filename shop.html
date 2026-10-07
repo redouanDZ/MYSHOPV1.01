@@ -125,6 +125,56 @@
       .filter-box { width: 100%; justify-content: space-between; }
       .filter-box select { flex: 1; max-width: 200px; }
     }
+
+    /* ===== Mobile filters: collapsed behind a button, opened as a bottom sheet ===== */
+    .filters-toggle-btn, .filters-close-btn, .filters-apply-wrap, .filters-backdrop { display: none; }
+    .filters-toggle-btn {
+      align-items: center; gap: 8px; padding: 0 14px; height: 40px; flex: 0 0 auto;
+      border: 1px solid var(--border-color, #cbd5e1); border-radius: var(--radius-sm, 8px);
+      background: var(--card-bg, #fff); color: var(--text-color, #334155);
+      font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    }
+    .filters-toggle-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
+    .filters-badge {
+      min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; box-sizing: border-box;
+      background: var(--primary-color); color: #fff; font-size: 0.75rem; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .filters-badge[hidden] { display: none; }
+    .filters-close-btn {
+      width: 36px; height: 36px; border-radius: 50%; border: 0; cursor: pointer;
+      background: var(--light-color, #f1f5f9); color: var(--text-color, #334155);
+      align-items: center; justify-content: center; flex: 0 0 36px;
+    }
+    @media (max-width: 992px) {
+      .filters-toggle-btn { display: inline-flex; }
+      .filter-box { flex-wrap: nowrap; }
+      .filter-box select { min-width: 0; height: 40px; padding-block: 0; line-height: 1.2; }
+      .shop-section { padding: 20px 0 30px; }
+      #resultsCount { display: none; }
+      .filters-backdrop {
+        display: block; position: fixed; inset: 0; z-index: 10000;
+        background: rgba(15, 23, 42, 0.55); opacity: 0; pointer-events: none; transition: opacity .25s;
+      }
+      .filters-backdrop.open { opacity: 1; pointer-events: auto; }
+      .shop-sidebar {
+        position: fixed; top: auto; bottom: 0; inset-inline: 0; margin: 0; z-index: 10001;
+        max-height: 85vh; overflow-y: auto; overscroll-behavior: contain;
+        border-radius: 20px 20px 0 0; padding-bottom: 0;
+        transform: translateY(105%); visibility: hidden;
+        transition: transform .3s cubic-bezier(.16, 1, .3, 1), visibility 0s linear .3s;
+      }
+      .shop-sidebar.open { transform: none; visibility: visible; transition-delay: 0s; }
+      .sidebar-header { gap: 10px; }
+      .sidebar-header h3 { flex: 1 1 auto; }
+      .filters-close-btn { display: inline-flex; }
+      .filters-apply-wrap {
+        display: block; position: sticky; bottom: 0; margin: 0 -24px; padding: 12px 24px calc(12px + env(safe-area-inset-bottom, 0px));
+        background: var(--card-bg, #fff); border-top: 1px solid var(--border-color, #edf2f7);
+      }
+      .filters-apply-btn { width: 100%; justify-content: center; }
+      body.filters-open { overflow: hidden; }
+    }
     .notification {
       position: fixed;
       top: 20px;
@@ -176,10 +226,12 @@
       <div class="shop-layout">
         
         <!-- الشريط الجانبي (Sidebar) للفلاتر -->
-        <aside class="shop-sidebar">
+        <div class="filters-backdrop" id="filtersBackdrop"></div>
+        <aside class="shop-sidebar" id="shopSidebar">
           <div class="sidebar-header">
             <h3><i class="fas fa-sliders-h"></i> <span data-i18n="shop.filters_title">فلاتر المنتجات</span></h3>
             <button type="button" class="reset-filters-btn" data-action="resetFilters" data-args=""><i class="fas fa-redo-alt"></i> <span data-i18n="shop.reset_filters">إعادة ضبط</span></button>
+            <button type="button" class="filters-close-btn" id="closeFiltersBtn" data-i18n-aria-label="shop.close_filters" aria-label="إغلاق الفلاتر"><i class="fas fa-times" aria-hidden="true"></i></button>
           </div>
 
           <!-- تصنيفات المنتجات -->
@@ -270,6 +322,12 @@
               </label>
             </div>
           </div>
+
+          <div class="filters-apply-wrap">
+            <button type="button" class="btn filters-apply-btn" id="applyFiltersBtn">
+              <span data-i18n="shop.show_results">عرض النتائج</span> <span id="filtersApplyCount"></span>
+            </button>
+          </div>
         </aside>
 
         <!-- المحتوى الرئيسي للمنتجات -->
@@ -283,6 +341,11 @@
               </button>
             </div>
             <div class="filter-box">
+              <button type="button" class="filters-toggle-btn" id="openFiltersBtn" aria-controls="shopSidebar" aria-expanded="false">
+                <i class="fas fa-sliders-h" aria-hidden="true"></i>
+                <span data-i18n="shop.filters_btn">الفلاتر</span>
+                <span class="filters-badge" id="filtersBadge" hidden>0</span>
+              </button>
               <span id="resultsCount" style="font-weight: 600; color: var(--light-text, #64748b); font-size: 0.9rem;"></span>
               <select id="sortFilter" data-action="applyFilters" data-args="">
                 <option value="newest" data-i18n="shop.sort_newest">الأحدث أولاً</option>

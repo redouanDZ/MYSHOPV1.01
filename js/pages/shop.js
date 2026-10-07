@@ -729,3 +729,90 @@ window.changePage = changePage;
 window.handleAddToCart = handleAddToCart;
 window.showNotification = showNotification;
 window.handleToggleWishlist = handleToggleWishlist;
+
+
+// ===== Mobile filters bottom sheet (<= 992px) =====
+(function initFiltersSheet() {
+    const mq = window.matchMedia('(max-width: 992px)');
+    let lastFocus = null;
+
+    function els() {
+        return {
+            sidebar: document.getElementById('shopSidebar'),
+            backdrop: document.getElementById('filtersBackdrop'),
+            openBtn: document.getElementById('openFiltersBtn'),
+            closeBtn: document.getElementById('closeFiltersBtn'),
+            applyBtn: document.getElementById('applyFiltersBtn')
+        };
+    }
+
+    function setOpen(open) {
+        const { sidebar, backdrop, openBtn, closeBtn } = els();
+        if (!sidebar) return;
+        if (open && !mq.matches) return;
+        sidebar.classList.toggle('open', open);
+        if (backdrop) backdrop.classList.toggle('open', open);
+        document.body.classList.toggle('filters-open', open);
+        if (openBtn) openBtn.setAttribute('aria-expanded', String(open));
+        if (open) {
+            lastFocus = document.activeElement;
+            if (closeBtn) closeBtn.focus({ preventScroll: true });
+        } else if (lastFocus && typeof lastFocus.focus === 'function') {
+            lastFocus.focus({ preventScroll: true });
+            lastFocus = null;
+        }
+    }
+
+    function updateBadge() {
+        const badge = document.getElementById('filtersBadge');
+        if (!badge) return;
+        let n = 0;
+        const cat = document.querySelector('input[name="categoryFilter"]:checked');
+        if (cat && cat.value !== '') n++;
+        const rating = document.querySelector('input[name="ratingFilter"]:checked');
+        if (rating && Number(rating.value) > 0) n++;
+        const price = document.getElementById('priceRange');
+        if (price && Number(price.value) < Number(price.max)) n++;
+        const stock = document.getElementById('inStockOnly');
+        if (stock && stock.checked) n++;
+        badge.textContent = String(n);
+        badge.hidden = n === 0;
+    }
+
+    function updateApplyCount() {
+        const countEl = document.getElementById('resultsCount');
+        const target = document.getElementById('filtersApplyCount');
+        if (!countEl || !target) return;
+        const m = (countEl.textContent || '').match(/\d+/);
+        target.textContent = m ? '(' + m[0] + ')' : '';
+    }
+
+    function refresh() { updateBadge(); updateApplyCount(); }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const { sidebar, backdrop, openBtn, closeBtn, applyBtn } = els();
+        if (!sidebar) return;
+
+        if (openBtn) openBtn.addEventListener('click', () => setOpen(true));
+        if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
+        if (applyBtn) applyBtn.addEventListener('click', () => setOpen(false));
+        if (backdrop) backdrop.addEventListener('click', () => setOpen(false));
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('open')) setOpen(false);
+        });
+        const onMq = () => { if (!mq.matches) setOpen(false); };
+        if (mq.addEventListener) mq.addEventListener('change', onMq); else if (mq.addListener) mq.addListener(onMq);
+
+        sidebar.addEventListener('change', refresh);
+        sidebar.addEventListener('input', refresh);
+        sidebar.addEventListener('click', (e) => {
+            if (e.target.closest('.reset-filters-btn')) setTimeout(refresh, 0);
+        });
+
+        const countEl = document.getElementById('resultsCount');
+        if (countEl && 'MutationObserver' in window) {
+            new MutationObserver(refresh).observe(countEl, { childList: true, characterData: true, subtree: true });
+        }
+        refresh();
+    });
+})();
