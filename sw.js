@@ -1,4 +1,4 @@
-const CACHE_NAME = 'myshop-pwa-vda5548461d';
+const CACHE_NAME = 'myshop-pwa-vadminfix01';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -80,6 +80,11 @@ self.addEventListener('fetch', (event) => {
 
   // 3. For modifying API requests (POST/PUT/DELETE) -> strictly Network Only
   if (event.request.method !== 'GET') {
+    return;
+  }
+
+  // 4. Bypass Service Worker completely for admin pages and admin assets
+  if (url.pathname.startsWith('/admin')) {
     return;
   }
 

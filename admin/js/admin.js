@@ -478,8 +478,25 @@ function handleAdminGenericAction(e, type) {
     const actionEl = e.target.closest('[data-action]');
     if (!actionEl) return;
     
+    // Forms must ONLY be triggered by the submit event
+    if (actionEl.tagName === 'FORM' && type !== 'submit') {
+        return;
+    }
+    
+    // Select elements should never trigger their action on click (only on change)
     if (e.target.tagName === 'SELECT' || e.target.tagName === 'OPTION') {
         if (type === 'click') return;
+    }
+
+    // Change events should only trigger if the changed element is the action element itself
+    if (type === 'change' && actionEl !== e.target) {
+        return;
+    }
+
+    // Clicks inside form controls (inputs, textareas) should not trigger a parent element's action
+    if (type === 'click') {
+        const isControl = ['INPUT', 'TEXTAREA'].includes(e.target.tagName);
+        if (isControl && actionEl !== e.target) return;
     }
     
     const action = actionEl.dataset.action;
@@ -492,6 +509,7 @@ function handleAdminGenericAction(e, type) {
                     s = s.trim();
                     if (s === 'this') return actionEl;
                     if (s === 'this.value') return actionEl.value;
+                    if (s === 'event') return e;
                     if (s.startsWith("'") && s.endsWith("'")) return s.slice(1, -1);
                     if (s.startsWith("&quot;") && s.endsWith("&quot;")) return s.slice(6, -6);
                     if (!isNaN(s) && s !== '') return Number(s);

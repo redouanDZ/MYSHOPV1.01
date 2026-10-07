@@ -76,6 +76,13 @@
                 if (currentPage < totalPages) loadProducts(currentPage + 1);
             });
 
+            // Close modal when clicking on dark backdrop
+            window.addEventListener('click', (e) => {
+                if (e.target && e.target.classList && e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                }
+            });
+
             await loadStoreCategories();
             loadProducts(1);
         });
@@ -249,7 +256,8 @@
             }
         }
 
-        async function saveProduct() {
+        async function saveProduct(e) {
+            if (e && e.preventDefault) e.preventDefault();
             const form = document.getElementById('productForm');
             if (!form.checkValidity()) {
                 form.reportValidity();
@@ -618,3 +626,20 @@
 // Buttons that open the hidden file inputs (data-action delegation lives in admin.js)
 window.clickFileproductImage = function () { const el = document.getElementById('productImage'); if (el) el.click(); };
 window.clickFilenewVariantImage = function () { const el = document.getElementById('newVariantImage'); if (el) el.click(); };
+
+// Expose admin product functions globally for data-action delegation
+window.openAddProductModal = openAddProductModal;
+window.closeProductModal = closeProductModal;
+window.editProduct = editProduct;
+window.saveProduct = saveProduct;
+window.deleteProduct = deleteProduct;
+window.loadProducts = loadProducts;
+window.openCategoriesModal = openCategoriesModal;
+window.closeCategoriesModal = closeCategoriesModal;
+window.handleAddCategory = handleAddCategory;
+window.deleteCategoryItem = deleteCategoryItem;
+window.openVariantsModal = openVariantsModal;
+window.closeVariantsModal = closeVariantsModal;
+window.handleCreateVariant = handleCreateVariant;
+window.handleDeleteVariant = handleDeleteVariant;
+window.resetVariantImagePreview = resetVariantImagePreview;
