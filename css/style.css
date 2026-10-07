@@ -5957,13 +5957,11 @@ body.dark-mode .quantity input {
     border-inline: 1.5px solid #334155 !important;
 }
 
-/* 3) Mobile top bar: single compact row now that the duplicate language
-      select is gone. */
+/* 3) Mobile top bar: Hide announcement bar on mobile screens (<= 768px) so it appears only on desktop */
 @media (max-width: 768px) {
-    .top-announcement-container { flex-wrap: nowrap; gap: 10px; justify-content: space-between; }
-    .top-announcement-container .announcement-text { min-width: 0; font-size: 0.78rem; }
-    .top-announcement-container .announcement-text span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; max-width: 100%; vertical-align: middle; }
-    .top-bar-actions { flex: 0 0 auto; }
+    .top-announcement-bar {
+        display: none !important;
+    }
 }
 
 /* Product action row: one radius for stepper, add-to-cart and wishlist */
