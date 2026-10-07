@@ -13,7 +13,10 @@ function isSafeTestEnvironment() {
 function getRequiredSecret(name, minimumLength = 32) {
     const value = process.env[name];
     const defaultVal = `development-only-${name.toLowerCase()}-secret-key-at-least-32-chars`;
-    if (process.env.NODE_ENV === 'production' && process.env.DEMO_MODE !== 'true') {
+    const isProduction = process.env.NODE_ENV === 'production' && process.env.DEMO_MODE !== 'true';
+    // NODE_ENV=test only relaxes the check for a dedicated "*_test" database.
+    const isUnsafeTest = process.env.NODE_ENV === 'test' && !isSafeTestEnvironment();
+    if (isProduction || isUnsafeTest) {
         if (!value || value.length < minimumLength) {
             throw new Error(`${name} must be configured with at least ${minimumLength} characters.`);
         }
