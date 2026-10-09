@@ -335,9 +335,10 @@ function showLoginForm() {
                             <button type="button" class="toggle-password-btn" data-target="login-password" data-i18n-title="auth.toggle_password" title="إظهار/إخفاء كلمة المرور" style="position:absolute;inset-inline-end:10px;background:none;border:none;cursor:pointer;color:var(--light-text,#94a3b8);font-size:1rem;padding:4px;"><i class="fas fa-eye"></i></button>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-bottom: 12px;">
-                        <label style="font-size: 0.85rem; font-weight: normal; cursor: pointer;">
-                            <input type="checkbox" id="remember-me"> <span data-i18n="auth.remember_me">تذكرني</span>
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label for="remember-me" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; font-weight: 500; color: var(--text-color); cursor: pointer; user-select: none; padding: 4px 0;">
+                            <input type="checkbox" id="remember-me" style="cursor: pointer; margin: 0; width: 18px; height: 18px; accent-color: var(--primary-color);">
+                            <span data-i18n="auth.remember_me">تذكرني</span>
                         </label>
                     </div>
                     <button type="submit" class="btn" style="width: 100%;"><span data-i18n="auth.login_btn">تسجيل الدخول</span></button>
@@ -468,9 +469,9 @@ function showSignupForm() {
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-bottom: 12px;">
-                        <label style="font-size: 0.85rem; font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                            <input type="checkbox" id="agree-terms" required>
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label for="agree-terms" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: normal; color: var(--text-color); cursor: pointer; padding: 4px 0;">
+                            <input type="checkbox" id="agree-terms" required style="cursor: pointer; margin: 0; width: 18px; height: 18px; accent-color: var(--primary-color);">
                             <span><span data-i18n="auth.agree_prefix">أوافق على</span> <a href="terms.html" target="_blank" rel="noopener" style="color: var(--primary-color); text-decoration: underline;"><span data-i18n="auth.terms_and_conditions">الشروط والأحكام</span></a> <span data-i18n="auth.and">و</span> <a href="privacy.html" target="_blank" rel="noopener" style="color: var(--primary-color); text-decoration: underline;"><span data-i18n="auth.privacy_policy">سياسة الخصوصية</span></a></span>
                         </label>
                     </div>
