@@ -347,22 +347,19 @@ function initBackToTop() {
  * Newsletter & VIP Club Handler
  */
 function initNewsletter() {
-  const forms = document.querySelectorAll('form[data-newsletter], .newsletter-form, footer form');
-
-  // Render existing VIP status if saved locally
+  // Clear any persistent VIP card override so page reload always returns to the normal state
   try {
-    const savedVip = localStorage.getItem('myshop_vip_club');
-    if (savedVip) {
-      const vipData = JSON.parse(savedVip);
-      const card = document.querySelector('.newsletter-card');
-      if (card && vipData && vipData.code) {
-        renderVipRewardCard(card, vipData.code, vipData.email, true);
-        return;
-      }
-    }
+    localStorage.removeItem('myshop_vip_club');
   } catch (e) {}
 
+  const forms = document.querySelectorAll('form[data-newsletter], .newsletter-form, footer form');
   forms.forEach(form => {
+    // Save original HTML of the parent card for easy reset
+    const parentCard = form.closest('.newsletter-card');
+    if (parentCard && !parentCard._originalHTML) {
+      parentCard._originalHTML = parentCard.innerHTML;
+    }
+
     if (form.dataset.newsletterBound) return;
     form.dataset.newsletterBound = 'true';
     form.addEventListener('submit', async (e) => {
@@ -394,15 +391,12 @@ function initNewsletter() {
 
         if (response.ok && data.success) {
           const discountCode = data.discountCode || 'PROMO10';
-          try {
-            localStorage.setItem('myshop_vip_club', JSON.stringify({ email, code: discountCode }));
-          } catch (_) {}
 
           showToast(data.message || (window.I18n ? window.I18n.t('footer.newsletter_success', 'شكراً لاشتراكك في النشرة البريدية! 🎉') : 'شكراً لاشتراكك في النشرة البريدية! 🎉'), 'success');
 
           const card = form.closest('.newsletter-card') || document.querySelector('.newsletter-card');
           if (card) {
-            renderVipRewardCard(card, discountCode, email, false);
+            renderVipRewardCard(card, discountCode, email);
           } else if (input) {
             input.value = '';
           }
@@ -412,13 +406,10 @@ function initNewsletter() {
       } catch (err) {
         console.error('Newsletter submission error:', err);
         const fallbackCode = 'PROMO10';
-        try {
-          localStorage.setItem('myshop_vip_club', JSON.stringify({ email, code: fallbackCode }));
-        } catch (_) {}
         showToast(window.I18n ? window.I18n.t('footer.newsletter_vip_success', 'تهانينا! لقد انضممت بنجاح إلى نادي المتميزين 🎉') : 'تهانينا! لقد انضممت بنجاح إلى نادي المتميزين 🎉', 'success');
         const card = form.closest('.newsletter-card') || document.querySelector('.newsletter-card');
         if (card) {
-          renderVipRewardCard(card, fallbackCode, email, false);
+          renderVipRewardCard(card, fallbackCode, email);
         } else if (input) {
           input.value = '';
         }
@@ -432,8 +423,11 @@ function initNewsletter() {
   });
 }
 
-function renderVipRewardCard(card, code, email, isPreExisting) {
+function renderVipRewardCard(card, code, email) {
   if (!card) return;
+  if (!card._originalHTML) {
+    card._originalHTML = card.innerHTML;
+  }
   const t = (key, fallback) => (window.I18n ? window.I18n.t(key, fallback) : fallback);
   const safeCode = window.escapeHtml ? window.escapeHtml(code) : code;
   const safeEmail = window.escapeHtml ? window.escapeHtml(email || '') : (email || '');
@@ -443,6 +437,7 @@ function renderVipRewardCard(card, code, email, isPreExisting) {
   const copyText = t('home.copy', 'نسخ');
   const shopNowText = t('home.shop_now_discount', 'تسوق الآن واستفد من الخصم');
   const subPrefix = t('home.vip_subscriber', 'المشترك:');
+  const resetText = t('home.vip_subscribe_another', 'تسجيل بريد إلكتروني آخر ↩');
 
   card.innerHTML = `
     <div class="vip-reward-card">
@@ -463,6 +458,7 @@ function renderVipRewardCard(card, code, email, isPreExisting) {
         </a>
       </div>
       ${safeEmail ? `<span class="newsletter-promise" data-i18n="home.vip_subscriber" style="margin-top: 14px; font-size: 0.8rem; opacity: 0.85;">📧 ${subPrefix} ${safeEmail}</span>` : ''}
+      <button type="button" class="btn-reset-vip" id="btnResetVip" data-i18n="home.vip_subscribe_another" style="display:inline-block; margin-top:12px; background:none; border:none; color:var(--primary-color); font-size:0.84rem; font-weight:700; cursor:pointer; text-decoration:underline;">${resetText}</button>
     </div>
   `;
 
@@ -493,6 +489,21 @@ function renderVipRewardCard(card, code, email, isPreExisting) {
         if (typeof showToast === 'function') {
           showToast(t('home.coupon_code_is', 'كود الخصم الخاص بك هو:') + ' ' + code, 'info');
         }
+      }
+    });
+  }
+
+  const resetBtn = card.querySelector('#btnResetVip');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (card._originalHTML) {
+        card.innerHTML = card._originalHTML;
+        // Re-bind form submit
+        const form = card.querySelector('form');
+        if (form) {
+          delete form.dataset.newsletterBound;
+        }
+        initNewsletter();
       }
     });
   }
