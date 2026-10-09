@@ -38,20 +38,7 @@
             margin-bottom: 25px;
         }
         
-        @media (max-width: 768px) {
-            .track-form-grid { grid-template-columns: 1fr; }
-            
-            /* Responsive Stepper for Mobile */
-            .timeline-stepper { flex-direction: column; align-items: stretch; margin: 30px 0 20px; padding-inline: 4px; }
-            .timeline-stepper::before { top: 0; bottom: 0; left: auto; right: auto; inset-inline-start: 22px; width: 4px; height: auto; }
-            .timeline-progress-bar { top: 0; left: auto; right: auto; inset-inline-start: 22px; width: 4px !important; height: var(--progress-perc, 0%); transition: height 0.4s ease; }
-            .step-node { display: flex; align-items: center; gap: 14px; width: 100%; margin-bottom: 25px; text-align: start; flex: 0 0 auto; }
-            .step-node > *:not(.step-icon) { min-width: 0; overflow-wrap: anywhere; white-space: normal; }
-            .step-icon { margin: 0; flex-shrink: 0; }
-            
-            .order-header-info { flex-direction: column; }
-            .order-result-box { overflow-x: auto; }
-        }
+        /* Mobile styles moved to bottom of stylesheet for proper cascade */
 
         /* Dark Mode Support */
         [data-theme="dark"] .track-container { background: var(--card-bg, #1e293b); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
@@ -102,7 +89,7 @@
         .timeline-stepper::before {
             content: '';
             position: absolute;
-            top: 22px;
+            top: 23px;
             right: 40px;
             left: 40px;
             height: 4px;
@@ -112,13 +99,17 @@
         .timeline-progress-bar {
             width: var(--progress-perc, 0%);
             position: absolute;
-            top: 22px;
+            top: 23px;
             right: 40px;
             height: 4px;
             background: var(--success-color);
             z-index: 2;
-            transition: width 0.4s ease;
-            width: 0%;
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        html[dir="ltr"] .timeline-progress-bar,
+        [dir="ltr"] .timeline-progress-bar {
+            right: auto;
+            left: 40px;
         }
         .step-node {
             position: relative;
@@ -130,26 +121,27 @@
             width: 46px;
             height: 46px;
             border-radius: 50%;
-            background: var(--card-bg);
-            border: 3px solid var(--border-color);
+            background: var(--card-bg, #fff);
+            border: 3px solid var(--border-color, #e2e8f0);
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 10px;
             color: var(--light-text);
             font-size: 1.1rem;
+            box-shadow: 0 0 0 4px var(--card-bg, #fff);
             transition: all 0.3s;
         }
         .step-node.completed .step-icon {
             background: var(--success-color);
             border-color: var(--success-color);
-            color: var(--bg-color, #fff);
+            color: #fff;
         }
         .step-node.active .step-icon {
             background: var(--primary-color);
             border-color: var(--primary-color);
-            color: var(--bg-color, #fff);
-            box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.2);
+            color: #fff;
+            box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.25);
         }
         .step-label { font-size: 0.9rem; font-weight: bold; color: var(--light-text); }
         .step-node.completed .step-label { color: var(--success-color); }
@@ -209,6 +201,77 @@
         .status-delivered { background: #d1fae5; color: var(--success-color); }
         .status-cancelled { background: #fee2e2; color: #dc2626; }
         
+        /* Responsive Stepper for Mobile (Properly Cascaded at End) */
+        @media (max-width: 768px) {
+            .track-container { padding: 20px 16px; margin: -20px auto 40px; }
+            .track-form-grid { grid-template-columns: 1fr; gap: 12px; }
+            
+            .timeline-stepper {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                margin: 25px 0 15px;
+                padding-inline: 6px;
+                position: relative;
+            }
+            .timeline-stepper::before {
+                top: 22px;
+                bottom: 22px;
+                left: auto;
+                right: auto;
+                inset-inline-start: 26px;
+                width: 4px;
+                height: auto;
+                background: #e2e8f0;
+            }
+            [data-theme="dark"] .timeline-stepper::before {
+                background: #334155;
+            }
+            .timeline-progress-bar {
+                top: 22px;
+                left: auto !important;
+                right: auto !important;
+                inset-inline-start: 26px;
+                width: 4px !important;
+                height: var(--progress-perc, 0%);
+                max-height: calc(100% - 44px);
+                transition: height 0.4s ease;
+            }
+            .step-node {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                width: 100%;
+                margin-bottom: 24px;
+                text-align: start;
+                flex: 0 0 auto;
+                position: relative;
+                z-index: 3;
+            }
+            .step-node:last-child {
+                margin-bottom: 0;
+            }
+            .step-icon {
+                width: 44px;
+                height: 44px;
+                margin: 0 !important;
+                flex-shrink: 0;
+                box-shadow: 0 0 0 4px var(--card-bg, #fff);
+            }
+            [data-theme="dark"] .step-icon {
+                box-shadow: 0 0 0 4px var(--card-bg, #1e293b);
+            }
+            .step-label {
+                font-size: 0.92rem;
+                flex: 1;
+                margin: 0;
+                line-height: 1.4;
+            }
+            
+            .order-header-info { flex-direction: column; padding: 12px 14px; gap: 10px; }
+            .order-result-box { overflow-x: auto; margin-top: 20px; padding-top: 18px; }
+        }
+
         /* Sticky Footer Fix */
         body {
             display: flex;
