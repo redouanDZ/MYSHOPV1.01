@@ -2931,7 +2931,7 @@ body.dark-mode .review-content p {
     color: var(--text-color);
 }
 
-.next-step-btn, .prev-step-btn {
+.next-step-btn, .prev-step-btn, .submit-order-btn {
     padding: 12px 26px;
     min-height: 46px;
     border-radius: var(--radius-sm, 8px);
@@ -2946,17 +2946,24 @@ body.dark-mode .review-content p {
     gap: 8px;
 }
 
-.next-step-btn {
+.next-step-btn, .submit-order-btn {
     background: var(--primary-gradient);
     color: white;
     border: none;
     box-shadow: 0 4px 14px -2px rgba(79, 70, 229, 0.35);
 }
 
-.next-step-btn:hover {
+.next-step-btn:hover, .submit-order-btn:hover {
     background: var(--primary-hover-gradient);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px -2px rgba(79, 70, 229, 0.45);
+}
+
+.submit-order-btn:disabled, .next-step-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .prev-step-btn {
@@ -2977,6 +2984,7 @@ body.dark-mode .review-content p {
     margin-top: 32px;
     padding-top: 16px;
     border-top: 1px solid var(--border-color);
+    gap: 12px;
 }
 
 .payment-options {
@@ -3676,7 +3684,8 @@ body.dark-mode .review-content p {
     }
 
     .step-buttons {
-        flex-direction: column;
+        flex-direction: column-reverse;
+        gap: 12px;
     }
 
     .step-buttons button {

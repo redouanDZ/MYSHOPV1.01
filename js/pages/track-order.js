@@ -99,9 +99,9 @@ function renderOrderStatus(status) {
     [s1, s2, s3, s4].forEach(s => { s.className = 'step-node'; });
 
     const statusMap = {
-        'pending': { text: window.I18n ? window.I18n.t('track.status_pending', 'قيد المراجعة') : 'قيد المراجعة', class: 'status-pending', width: '15%', activeNode: s1 },
-        'processing': { text: window.I18n ? window.I18n.t('track.status_processing', 'قيد التجهيز والتأكيد') : 'قيد التجهيز والتأكيد', class: 'status-processing', width: '45%', completedNodes: [s1], activeNode: s2 },
-        'shipped': { text: window.I18n ? window.I18n.t('track.status_shipped_truck', 'تم الشحن مع الموزع 🚚') : 'تم الشحن مع الموزع 🚚', class: 'status-shipped', width: '75%', completedNodes: [s1, s2], activeNode: s3 },
+        'pending': { text: window.I18n ? window.I18n.t('track.status_pending', 'قيد المراجعة') : 'قيد المراجعة', class: 'status-pending', width: '0%', activeNode: s1 },
+        'processing': { text: window.I18n ? window.I18n.t('track.status_processing', 'قيد التجهيز والتأكيد') : 'قيد التجهيز والتأكيد', class: 'status-processing', width: '33%', completedNodes: [s1], activeNode: s2 },
+        'shipped': { text: window.I18n ? window.I18n.t('track.status_shipped_truck', 'تم الشحن مع الموزع 🚚') : 'تم الشحن مع الموزع 🚚', class: 'status-shipped', width: '66%', completedNodes: [s1, s2], activeNode: s3 },
         'delivered': { text: window.I18n ? window.I18n.t('track.status_delivered_check', 'تم التسليم بنجاح ✅') : 'تم التسليم بنجاح ✅', class: 'status-delivered', width: '100%', completedNodes: [s1, s2, s3, s4], activeNode: null },
         'cancelled': { text: window.I18n ? window.I18n.t('track.status_cancelled_cross', 'ملغي ❌') : 'ملغي ❌', class: 'status-cancelled', width: '0%', activeNode: null }
     };

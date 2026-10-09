@@ -33,8 +33,10 @@
         .item-info-wrapper img { width: 55px; height: 55px; object-fit: cover; border-radius: 6px; }
         
         .summary-totals-box { border-top: 1.5px solid #e2e8f0; padding-top: 15px; }
-        .summary-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
-        .summary-line.grand-total { font-size: 1.25rem; font-weight: bold; color: var(--primary-color); border-top: 1.5px solid #e2e8f0; padding-top: 10px; margin-top: 10px; }
+        .summary-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.95rem; }
+        .summary-line.grand-total { font-size: 1.05rem; font-weight: 700; color: var(--primary-color); border-top: 1.5px solid #e2e8f0; padding-top: 12px; margin-top: 10px; gap: 10px; }
+        .summary-line.grand-total .grand-total-label { font-size: 0.98rem; font-weight: 700; color: var(--text-color); }
+        .summary-line.grand-total .grand-total-val { font-size: 1.25rem; font-weight: 800; color: var(--primary-color); white-space: nowrap; }
         
         .action-buttons-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
         .btn-action { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius-sm, 8px); font-weight: bold; text-decoration: none; font-size: 1rem; transition: background 0.2s; }
@@ -57,7 +59,13 @@
         .summary-totals-box { padding: 15px 16px; border-radius: 8px; }
         .summary-line.grand-total { gap: 12px; }
         [data-theme="dark"] .summary-totals-box, [data-theme="dark"] .summary-line.grand-total { border-color: #334155; }
-        @media (max-width: 480px) { .order-details-box { padding: 18px 14px; } .success-message { padding: 26px 16px; } }
+        @media (max-width: 480px) {
+            .order-details-box { padding: 18px 14px; }
+            .success-message { padding: 26px 16px; }
+            .summary-line.grand-total { font-size: 0.95rem; }
+            .summary-line.grand-total .grand-total-label { font-size: 0.92rem; }
+            .summary-line.grand-total .grand-total-val { font-size: 1.2rem; }
+        }
     </style>
   <meta name="theme-color" content="#2563eb">
   <link rel="manifest" href="/manifest.json">
@@ -144,8 +152,8 @@
                             <span id="confShipping">0 <span data-i18n="common.currency">دج</span></span>
                         </div>
                         <div class="summary-line grand-total">
-                            <span><span data-i18n="checkout.total">المبلغ الإجمالي للدفع:</span></span>
-                            <span id="confTotal">0 <span data-i18n="common.currency">دج</span></span>
+                            <span class="grand-total-label"><span data-i18n="checkout.total">المبلغ الإجمالي للدفع:</span></span>
+                            <span id="confTotal" class="grand-total-val">0 <span data-i18n="common.currency">دج</span></span>
                         </div>
                     </div>
                 </div>

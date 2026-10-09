@@ -217,25 +217,41 @@
             .timeline-stepper::before {
                 top: 22px;
                 bottom: 22px;
-                left: auto;
-                right: auto;
-                inset-inline-start: 26px;
                 width: 4px;
                 height: auto;
                 background: #e2e8f0;
+                z-index: 1;
+            }
+            html[dir="rtl"] .timeline-stepper::before,
+            [dir="rtl"] .timeline-stepper::before {
+                right: 26px !important;
+                left: auto !important;
+            }
+            html[dir="ltr"] .timeline-stepper::before,
+            [dir="ltr"] .timeline-stepper::before {
+                left: 26px !important;
+                right: auto !important;
             }
             [data-theme="dark"] .timeline-stepper::before {
                 background: #334155;
             }
             .timeline-progress-bar {
                 top: 22px;
-                left: auto !important;
-                right: auto !important;
-                inset-inline-start: 26px;
                 width: 4px !important;
                 height: var(--progress-perc, 0%);
                 max-height: calc(100% - 44px);
+                z-index: 2;
                 transition: height 0.4s ease;
+            }
+            html[dir="rtl"] .timeline-progress-bar,
+            [dir="rtl"] .timeline-progress-bar {
+                right: 26px !important;
+                left: auto !important;
+            }
+            html[dir="ltr"] .timeline-progress-bar,
+            [dir="ltr"] .timeline-progress-bar {
+                left: 26px !important;
+                right: auto !important;
             }
             .step-node {
                 display: flex;

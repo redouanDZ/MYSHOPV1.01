@@ -448,12 +448,12 @@
                                     <strong id="reviewShippingCost">0 <span data-i18n="common.currency">دج</span></strong>
                                 </div>
                                 <div class="total-item" id="reviewDiscountRow" style="display: none; justify-content: space-between; margin-bottom: 8px; color: var(--success-color);">
-                                    <span><span data-i18n="checkout.discount">الخصم المطبق:</span>
+                                    <span><span data-i18n="checkout.discount">الخصم المطبق:</span></span>
                                     <strong id="reviewDiscount">-0 <span data-i18n="common.currency">دج</span></strong>
                                 </div>
-                                <div class="total-item final-total" style="display: flex; justify-content: space-between; font-size: 1.25rem; color: var(--primary-color); font-weight: bold; border-top: 2px solid var(--border-color); padding-top: 10px;">
-                                    <span><span data-i18n="checkout.total">المبلغ الإجمالي المستحق:</span>
-                                    <span id="reviewGrandTotal">0 <span data-i18n="common.currency">دج</span></span>
+                                <div class="total-item final-total" style="display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--border-color); padding-top: 12px; margin-top: 6px; gap: 10px;">
+                                    <span class="final-total-label" style="font-size: 0.98rem; font-weight: 700; color: var(--text-color);"><span data-i18n="checkout.total">المبلغ الإجمالي المستحق:</span></span>
+                                    <span id="reviewGrandTotal" style="font-size: 1.25rem; font-weight: 800; color: var(--primary-color); white-space: nowrap;">0 <span data-i18n="common.currency">دج</span></span>
                                 </div>
                             </div>
 
@@ -464,7 +464,7 @@
 
                             <div class="step-buttons">
                                 <button type="button" class="prev-step-btn" data-action="goToPaymentStep" data-args=""><i class="fas fa-chevron-right"></i> <span data-i18n="checkout.prev_payment">السابق: طريقة الدفع</span></button>
-                                <button type="button" class="submit-order-btn" id="confirmOrderBtn" data-action="placeOrderNow" data-args="">
+                                <button type="button" class="submit-order-btn next-step-btn" id="confirmOrderBtn" data-action="placeOrderNow" data-args="">
                                     <i class="fas fa-check-circle"></i> <span data-i18n="checkout.confirm_btn">تأكيد الطلب الآن</span>
                                 </button>
                             </div>
