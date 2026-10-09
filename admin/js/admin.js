@@ -98,12 +98,12 @@ const AdminAuth = {
 
 const AdminUI = {
     init() {
+        this.ensureArabicRtl();
         this.fetchStoreName();
         this.initTheme();
         this.initThemeToggle();
         this.initMobileNav();
         this.initLogoutHandler();
-        this.translateInterface();
     },
 
     async fetchStoreName() {
@@ -152,106 +152,9 @@ const AdminUI = {
         button.setAttribute('aria-label', button.title);
     },
 
-    translateInterface() {
-        const lang = localStorage.getItem('myshop_lang') || 'ar';
-        if (lang === 'ar') return;
-
-        const translations = {
-            fr: {
-                'المتجر الإلكتروني': 'Boutique en ligne',
-                'زيارة المتجر': 'Visiter la boutique',
-                'لوحة التحكم': 'Tableau de bord',
-                'الطلبات': 'Commandes',
-                'المنتجات': 'Produits',
-                'العملاء': 'Clients',
-                'الكوبونات': 'Coupons',
-                'التقييمات': 'Avis',
-                'الإعدادات': 'Paramètres',
-                'التوثيق': 'Documentation',
-                'لوحة الإدارة': 'Administration',
-                'مدير النظام': 'Administrateur',
-                'الإحصائيات العامة': 'Vue d’ensemble',
-                'إدارة الطلبات': 'Gestion des commandes',
-                'المنتجات والمخزون': 'Produits et stock',
-                'إدارة المستخدمين': 'Gestion des utilisateurs',
-                'قسائم الخصم': 'Coupons de réduction',
-                'تقييمات المنتجات': 'Avis produits',
-                'الإعدادات والبكسلات': 'Paramètres et pixels',
-                'واجهة المتجر': 'Boutique',
-                'تسجيل الخروج': 'Déconnexion',
-                'نظرة عامة على المبيعات والمخزون': 'Vue d’ensemble des ventes et du stock',
-                'إجمالي المبيعات المحققة': 'Chiffre d’affaires total',
-                'صافي الأرباح التقديرية 📈': 'Bénéfice net estimé 📈',
-                'إجمالي عدد الطلبات': 'Nombre total de commandes',
-                'طلبات جديدة قيد المعالجة': 'Nouvelles commandes en traitement',
-                'تنبيه: منتجات قاربت على النفاد': 'Alerte : stock faible',
-                'إدارة المنتجات والمخزون': 'Gestion des produits et du stock',
-                'إضافة منتج جديد': 'Ajouter un produit',
-                'إدارة الأقسام': 'Gérer les catégories',
-                'بحث باسم المنتج أو الوصف...': 'Rechercher par nom ou description...',
-                'جميع التصنيفات': 'Toutes les catégories',
-                'جميع حالات المخزون': 'Tous les états du stock',
-                'متوفر في المخزون': 'En stock',
-                'مخزون منخفض (1-3)': 'Stock faible (1-3)',
-                'نفد المخزون (0)': 'Rupture de stock (0)',
-                'جاري الحفظ...': 'Enregistrement...'
-            },
-            en: {
-                'المتجر الإلكتروني': 'Online Store',
-                'زيارة المتجر': 'Visit Store',
-                'لوحة التحكم': 'Dashboard',
-                'الطلبات': 'Orders',
-                'المنتجات': 'Products',
-                'العملاء': 'Customers',
-                'الكوبونات': 'Coupons',
-                'التقييمات': 'Reviews',
-                'الإعدادات': 'Settings',
-                'التوثيق': 'Documentation',
-                'لوحة الإدارة': 'Admin Panel',
-                'مدير النظام': 'Administrator',
-                'الإحصائيات العامة': 'Overview',
-                'إدارة الطلبات': 'Order Management',
-                'المنتجات والمخزون': 'Products & Inventory',
-                'إدارة المستخدمين': 'User Management',
-                'قسائم الخصم': 'Discount Coupons',
-                'تقييمات المنتجات': 'Product Reviews',
-                'الإعدادات والبكسلات': 'Settings & Pixels',
-                'واجهة المتجر': 'Storefront',
-                'تسجيل الخروج': 'Log out',
-                'نظرة عامة على المبيعات والمخزون': 'Sales and Inventory Overview',
-                'إجمالي المبيعات المحققة': 'Total Revenue',
-                'صافي الأرباح التقديرية 📈': 'Estimated Net Profit 📈',
-                'إجمالي عدد الطلبات': 'Total Orders',
-                'طلبات جديدة قيد المعالجة': 'New Orders Processing',
-                'تنبيه: منتجات قاربت على النفاد': 'Low Stock Alert',
-                'إدارة المنتجات والمخزون': 'Product & Inventory Management',
-                'إضافة منتج جديد': 'Add New Product',
-                'إدارة الأقسام': 'Manage Categories',
-                'بحث باسم المنتج أو الوصف...': 'Search by product name or description...',
-                'جميع التصنيفات': 'All Categories',
-                'جميع حالات المخزون': 'All Stock Statuses',
-                'متوفر في المخزون': 'In Stock',
-                'مخزون منخفض (1-3)': 'Low Stock (1-3)',
-                'نفد المخزون (0)': 'Out of Stock (0)',
-                'جاري الحفظ...': 'Saving...'
-            }
-        };
-        const dictionary = translations[lang] || translations.en;
-        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-        const nodes = [];
-        while (walker.nextNode()) nodes.push(walker.currentNode);
-        nodes.forEach(node => {
-            const value = node.nodeValue.trim();
-            if (dictionary[value]) node.nodeValue = node.nodeValue.replace(value, dictionary[value]);
-        });
-        document.querySelectorAll('[placeholder], [title], [aria-label]').forEach(element => {
-            ['placeholder', 'title', 'aria-label'].forEach(attribute => {
-                const value = element.getAttribute(attribute);
-                if (value && dictionary[value]) element.setAttribute(attribute, dictionary[value]);
-            });
-        });
-        document.documentElement.lang = lang;
-        document.documentElement.dir = 'ltr';
+    ensureArabicRtl() {
+        document.documentElement.lang = 'ar';
+        document.documentElement.dir = 'rtl';
     },
 
     initMobileNav() {
