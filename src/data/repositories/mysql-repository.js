@@ -2445,6 +2445,31 @@ function createFallbackRepository() {
       if (paymentMethod) order.payment_method = String(paymentMethod);
       return true;
     },
+    async deleteOrder(id) {
+      const cleanId = Number(id);
+      const orderIndex = state.orders.findIndex(entry => Number(entry.id) === cleanId);
+      if (orderIndex === -1) return false;
+
+      const order = state.orders[orderIndex];
+
+      // If order was active (not cancelled), restore product stock before deletion
+      if (order.status !== 'cancelled') {
+        const items = state.orderItems.filter(i => Number(i.order_id) === cleanId);
+        for (const item of items) {
+          const product = state.products.find(p => Number(p.id) === Number(item.product_id));
+          if (product) {
+            product.stock = Number(product.stock || 0) + Number(item.quantity || 0);
+          }
+        }
+      }
+
+      // Remove order items
+      state.orderItems = state.orderItems.filter(i => Number(i.order_id) !== cleanId);
+
+      // Remove order
+      state.orders.splice(orderIndex, 1);
+      return true;
+    },
     async getOrderItems(orderId) {
       return state.orderItems.filter(entry => Number(entry.order_id) === Number(orderId));
     },
