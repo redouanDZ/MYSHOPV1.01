@@ -382,20 +382,30 @@
         grid-area: details !important;
         min-width: 0 !important;
         text-align: start !important;
-        padding-inline-end: 36px !important;
+        padding-inline-end: 44px !important;
+      }
+      html[dir="rtl"] .item-details {
+        padding-left: 44px !important;
+        padding-right: 0 !important;
+      }
+      html[dir="ltr"] .item-details {
+        padding-right: 44px !important;
+        padding-left: 0 !important;
       }
       .item-details h3 {
         font-size: 0.95rem !important;
         line-height: 1.4 !important;
         margin-bottom: 3px !important;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
       .item-details .item-price {
         display: none !important;
       }
       .remove-item {
         position: absolute !important;
-        top: 14px !important;
-        inset-inline-end: 14px !important;
+        top: 12px !important;
+        inset-inline-end: 12px !important;
         left: auto !important;
         right: auto !important;
         width: 32px !important;
@@ -404,11 +414,11 @@
         z-index: 2 !important;
       }
       html[dir="rtl"] .remove-item {
-        left: 14px !important;
+        left: 12px !important;
         right: auto !important;
       }
       html[dir="ltr"] .remove-item {
-        right: 14px !important;
+        right: 12px !important;
         left: auto !important;
       }
       .item-quantity {
