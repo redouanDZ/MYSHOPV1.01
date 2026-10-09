@@ -2177,3 +2177,183 @@ header .container .user-actions { flex: 0 0 auto; }
 #productModal .admin-input,
 #productModal .admin-select,
 #productModal .admin-textarea { width: 100%; box-sizing: border-box; }
+
+/* ==========================================================================
+   📱 Comprehensive Mobile & Small Screens Optimization (<= 768px, <= 576px, <= 390px)
+   Guarantees 100% flawless layout, no horizontal overflow, and clean touch UX
+   ========================================================================== */
+
+/* 1. Header breathing room on mobile */
+@media (max-width: 768px) {
+    header .container {
+        padding-inline: 14px !important;
+        gap: 10px !important;
+    }
+    .main-content {
+        padding: 16px 12px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+@media (max-width: 390px) {
+    header .container {
+        padding-inline: 10px !important;
+        gap: 8px !important;
+    }
+    header .logo a {
+        font-size: 1.05rem !important;
+    }
+    .user-actions {
+        gap: 8px !important;
+    }
+    .main-content {
+        padding: 12px 8px !important;
+    }
+}
+
+/* 2. Charts grid: prevent horizontal overflow on <= 576px */
+@media (max-width: 576px) {
+    .charts-container {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+        margin-top: 16px !important;
+    }
+    .chart-container, .chart-box {
+        padding: 16px 12px !important;
+        margin-bottom: 14px !important;
+        border-radius: 10px !important;
+    }
+    .chart-box h2 {
+        font-size: 1.05rem !important;
+    }
+}
+
+/* 3. Containers padding (Products, Orders, Settings, Users, Coupons, Reviews) */
+@media (max-width: 576px) {
+    .products-container,
+    .orders-container,
+    .surface-card,
+    .settings-section-card {
+        padding: 14px 10px !important;
+        border-radius: 10px !important;
+    }
+    .search-box,
+    .order-search-box {
+        min-width: 0 !important;
+        width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+    .filter-box {
+        width: 100% !important;
+        flex-direction: column !important;
+    }
+    .filter-box select,
+    .filter-box .admin-select {
+        width: 100% !important;
+    }
+    .filters-bar {
+        padding: 12px 10px !important;
+        gap: 10px !important;
+    }
+    .filters-bar > div {
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+    .filters-bar button,
+    .filters-bar .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}
+
+/* 4. All Modals & Surfaces on Mobile (Products, Orders, Coupons, Customers, Categories) */
+@media (max-width: 576px) {
+    .modal {
+        padding: 10px !important;
+    }
+    .modal-content,
+    .modal-surface,
+    .admin-confirm-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 16px 12px !important;
+        margin: 15px auto !important;
+        box-sizing: border-box !important;
+        border-radius: 12px !important;
+    }
+    .modal-content [style*="grid-template-columns"],
+    .modal-surface [style*="grid-template-columns"],
+    .modal form [style*="grid-template-columns"],
+    #couponModal [style*="grid-template-columns"],
+    #customerModal [style*="grid-template-columns"],
+    #orderDetailsModal [style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    .modal-footer {
+        flex-direction: column-reverse !important;
+        gap: 8px !important;
+    }
+    .modal-footer .btn,
+    .modal-surface form button[type="submit"],
+    .modal-surface form .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    #modalOrderContent .info-box {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        padding: 12px 10px !important;
+    }
+    #modalOrderContent .summary-box-success {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        padding: 12px 10px !important;
+    }
+    #modalOrderContent table {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+}
+
+/* 5. Settings forms & Upload row on phones */
+@media (max-width: 480px) {
+    .form-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .upload-field-row {
+        flex-wrap: wrap !important;
+    }
+    .upload-field-row input {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        min-width: 0 !important;
+    }
+    .upload-btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    .toggle-switch-container {
+        padding: 12px 14px !important;
+    }
+    .btn-save {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}
+
+/* 6. Order status pills row on phones */
+@media (max-width: 576px) {
+    .status-tab-btn {
+        padding: 6px 12px !important;
+        font-size: 0.82rem !important;
+        flex: 1 1 calc(50% - 8px) !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+}
+
