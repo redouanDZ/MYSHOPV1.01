@@ -302,15 +302,56 @@
     /* Empty Cart Box */
     .empty-cart-box {
       text-align: center;
-      padding: 56px 20px;
+      padding: 44px 20px;
       background: var(--card-bg, #fff);
-      border-radius: 14px;
+      border-radius: 16px;
       border: 1px dashed var(--border-color, #cbd5e1);
     }
-    .empty-cart-box i {
-      font-size: 3.5rem;
+    .empty-cart-box .empty-state-icon {
       margin-bottom: 16px;
-      color: var(--border-color, #cbd5e1);
+    }
+    .empty-cart-box .empty-state-icon i {
+      font-size: 3rem;
+      margin-bottom: 0;
+      color: var(--border-color, #94a3b8);
+      display: inline-block;
+    }
+    .empty-cart-box .empty-state-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-color, #1e293b);
+    }
+    .empty-cart-box .empty-state-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted, #64748b);
+      max-width: 400px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+    .empty-cart-box .btn-browse-shop {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 22px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.2s ease-in-out;
+      border: none;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25);
+    }
+    .empty-cart-box .btn-browse-shop:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+    }
+    .empty-cart-box .btn-browse-shop i {
+      font-size: 1rem !important;
+      margin-bottom: 0 !important;
+      color: inherit !important;
+      display: inline-block !important;
     }
     
     /* Responsive Styles */
@@ -400,6 +441,27 @@
         position: static;
         padding: 20px 16px;
         margin-top: 5px;
+      }
+      .empty-cart-box {
+        padding: 32px 16px;
+      }
+      .empty-cart-box .empty-state-icon i {
+        font-size: 2.4rem;
+      }
+      .empty-cart-box .empty-state-title {
+        font-size: 1.15rem;
+      }
+      .empty-cart-box .empty-state-desc {
+        font-size: 0.88rem;
+        margin-bottom: 16px;
+      }
+      .empty-cart-box .btn-browse-shop {
+        padding: 9px 18px;
+        font-size: 0.9rem;
+        gap: 6px;
+      }
+      .empty-cart-box .btn-browse-shop i {
+        font-size: 0.95rem !important;
       }
     }
     
@@ -497,6 +559,18 @@
       background: var(--card-bg, #1e293b);
       border-color: #334155;
     }
+    [data-theme="dark"] .empty-cart-box .empty-state-title,
+    body.dark-mode .empty-cart-box .empty-state-title {
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .empty-cart-box .empty-state-desc,
+    body.dark-mode .empty-cart-box .empty-state-desc {
+      color: #94a3b8;
+    }
+    [data-theme="dark"] .empty-cart-box .empty-state-icon i,
+    body.dark-mode .empty-cart-box .empty-state-icon i {
+      color: #475569;
+    }
   </style>
   <meta name="theme-color" content="#2563eb">
   <link rel="manifest" href="/manifest.json">
@@ -539,7 +613,7 @@
             </div>
             <h3 class="empty-state-title"><span data-i18n="cart.empty_title">عربة التسوق فارغة حالياً</span></h3>
             <p class="empty-state-desc"><span data-i18n="cart.empty_desc">لم تقم بإضافة أي منتجات إلى سلتك بعد. استكشف تشكيلتنا الواسعة وابدأ التسوق الآن.</span></p>
-            <a href="shop.html" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; padding: 12px 24px; border-radius: 10px;">
+            <a href="shop.html" class="btn btn-primary btn-browse-shop">
               <i class="fas fa-shopping-bag"></i> <span data-i18n="cart.browse_shop">تصفح متجر المنتجات</span>
             </a>
           </div>
