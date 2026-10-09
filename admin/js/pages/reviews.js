@@ -53,22 +53,26 @@
                 const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
                 return `
                     <tr style="border-bottom: 1px solid var(--border-color);">
-                        <td style="padding: 12px 15px; font-weight: bold;">${r.id}</td>
-                        <td style="padding: 12px 15px;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <img src="${r.productImage || '../images/product-placeholder.jpg'}" style="width: 36px; height: 36px; border-radius: 4px; object-fit: cover;">
-                                <strong>${AdminTable.escapeHtml(r.productName)}</strong>
+                        <td data-label="#" style="padding: 12px 15px; font-weight: bold;">${r.id}</td>
+                        <td data-label="المنتج" style="padding: 12px 15px;">
+                            <div class="product-cell" style="display: flex; align-items: center; gap: 10px;">
+                                <img src="${r.productImage || '../images/product-placeholder.jpg'}" alt="" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover; flex-shrink: 0;">
+                                <div class="product-cell-text" style="min-width: 0;">
+                                    <strong class="product-cell-name" style="font-size: 0.95rem;">${AdminTable.escapeHtml(r.productName)}</strong>
+                                </div>
                             </div>
                         </td>
-                        <td style="padding: 12px 15px;">
-                            <strong>${AdminTable.escapeHtml(r.username)}</strong>
-                            <div style="font-size: 0.8rem; color: var(--light-text, #64748b);">${AdminTable.escapeHtml(r.email || '')}</div>
+                        <td data-label="العميل" style="padding: 12px 15px;">
+                            <div class="customer-info-cell">
+                                <strong style="display: block; font-size: 0.95rem;">${AdminTable.escapeHtml(r.username)}</strong>
+                                <span style="font-size: 0.8rem; color: var(--light-text, #64748b);">${AdminTable.escapeHtml(r.email || '')}</span>
+                            </div>
                         </td>
-                        <td style="padding: 12px 15px; text-align: center; font-size: 1.1rem;" class="stars-gold">${stars}</td>
-                        <td style="padding: 12px 15px; max-width: 250px; font-size: 0.9rem; color: var(--text-color, #334155);">${AdminTable.escapeHtml(r.comment) || '<span class="text-slate-light">بدون تعليق نصي</span>'}</td>
-                        <td style="padding: 12px 15px; text-align: center; color: var(--light-text, #64748b); font-size: 0.85rem;">${new Date(r.created_at).toLocaleDateString('ar-DZ')}</td>
-                        <td style="padding: 12px 15px; text-align: center;"><span class="status-badge status-${r.status}">${statusLabels[r.status] || r.status}</span></td>
-                        <td style="padding: 12px 15px; text-align: center;">
+                        <td data-label="التقييم" style="padding: 12px 15px; text-align: center; font-size: 1.1rem;" class="stars-gold">${stars}</td>
+                        <td data-label="التعليق" style="padding: 12px 15px; max-width: 250px; font-size: 0.9rem; color: var(--text-color, #334155);">${AdminTable.escapeHtml(r.comment) || '<span class="text-slate-light">بدون تعليق نصي</span>'}</td>
+                        <td data-label="التاريخ" style="padding: 12px 15px; text-align: center; color: var(--light-text, #64748b); font-size: 0.85rem;">${new Date(r.created_at).toLocaleDateString('ar-DZ')}</td>
+                        <td data-label="الحالة" style="padding: 12px 15px; text-align: center;"><span class="status-badge status-${r.status}">${statusLabels[r.status] || r.status}</span></td>
+                        <td data-label="الإجراءات" style="padding: 12px 15px; text-align: center;">
                             ${r.status !== 'approved' ? `<button type="button" class="review-action-btn approve-btn" data-action="updateReviewStatus" data-args="${r.id}, 'approved'" title="الموافقة على النشر"><i class="fas fa-check"></i></button>` : ''}
                             ${r.status !== 'rejected' ? `<button type="button" class="review-action-btn reject-btn" data-action="updateReviewStatus" data-args="${r.id}, 'rejected'" title="رفض وحجب"><i class="fas fa-ban"></i></button>` : ''}
                             <button type="button" class="review-action-btn delete-btn" data-action="deleteReview" data-args="${r.id}" title="حذف نهائي"><i class="fas fa-trash-alt"></i></button>

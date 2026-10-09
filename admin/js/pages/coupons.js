@@ -49,14 +49,14 @@
 
                 return `
                     <tr style="border-bottom: 1px solid var(--border-color);">
-                        <td style="padding: 12px 15px; font-weight: bold;">${c.id}</td>
-                        <td style="padding: 12px 15px; font-weight: bold; color: var(--primary-color); font-size: 1.05rem;">${AdminTable.escapeHtml(c.code)}</td>
-                        <td style="padding: 12px 15px; font-weight: bold; color: var(--success-color);">${discountText}</td>
-                        <td style="padding: 12px 15px;">${Number(c.min_order_amount) > 0 ? Number(c.min_order_amount).toLocaleString() + ' دج' : 'بدون حد'}</td>
-                        <td style="padding: 12px 15px; text-align: center;"><strong>${c.uses_count}</strong> / ${c.max_uses}</td>
-                        <td style="padding: 12px 15px; text-align: center; color: var(--light-text, #64748b); font-size: 0.9rem;">${c.expires_at ? new Date(c.expires_at).toLocaleDateString('ar-DZ') : 'دائم'}</td>
-                        <td style="padding: 12px 15px; text-align: center;"><span class="status-badge status-${displayStatus}">${statusLabels[displayStatus] || displayStatus}</span></td>
-                        <td style="padding: 12px 15px; text-align: center;">
+                        <td data-label="#" style="padding: 12px 15px; font-weight: bold;">${c.id}</td>
+                        <td data-label="رمز الكوبون" style="padding: 12px 15px; font-weight: bold; color: var(--primary-color); font-size: 1.05rem;">${AdminTable.escapeHtml(c.code)}</td>
+                        <td data-label="قيمة الخصم" style="padding: 12px 15px; font-weight: bold; color: var(--success-color);">${discountText}</td>
+                        <td data-label="الحد الأدنى" style="padding: 12px 15px;">${Number(c.min_order_amount) > 0 ? Number(c.min_order_amount).toLocaleString() + ' دج' : 'بدون حد'}</td>
+                        <td data-label="الاستخدامات" style="padding: 12px 15px; text-align: center;"><strong>${c.uses_count}</strong> / ${c.max_uses}</td>
+                        <td data-label="تاريخ الانتهاء" style="padding: 12px 15px; text-align: center; color: var(--light-text, #64748b); font-size: 0.9rem;">${c.expires_at ? new Date(c.expires_at).toLocaleDateString('ar-DZ') : 'دائم'}</td>
+                        <td data-label="الحالة" style="padding: 12px 15px; text-align: center;"><span class="status-badge status-${displayStatus}">${statusLabels[displayStatus] || displayStatus}</span></td>
+                        <td data-label="إجراءات" style="padding: 12px 15px; text-align: center;">
                             <button type="button" class="coupon-action-btn" data-action="openEditCouponModal" data-args="${c.id}" title="تعديل الكوبون"><i class="fas fa-edit"></i></button>
                             <button type="button" class="coupon-action-btn toggle-btn" data-action="toggleCouponStatus" data-args="${c.id}, '${c.status === 'active' ? 'inactive' : 'active'}'" title="${c.status === 'active' ? 'تعطيل الكوبون' : 'تفعيل الكوبون'}"><i class="fas fa-power-off"></i></button>
                             <button type="button" class="coupon-action-btn delete-btn" data-action="deleteCoupon" data-args="${c.id}" title="حذف الكوبون"><i class="fas fa-trash-alt"></i></button>

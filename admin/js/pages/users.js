@@ -47,15 +47,15 @@
 
             tbody.innerHTML = customers.map(c => `
                 <tr style="border-bottom: 1px solid var(--border-color);">
-                    <td style="padding: 12px 15px; font-weight: bold;">${c.id}</td>
-                    <td style="padding: 12px 15px; font-weight: bold; color: var(--text-color, #1e293b);">${AdminTable.escapeHtml(c.username)}</td>
-                    <td style="padding: 12px 15px; color: var(--light-text, #64748b);">${AdminTable.escapeHtml(c.email)}</td>
-                    <td style="padding: 12px 15px; color: var(--text-color, #334155);">${AdminTable.escapeHtml(c.phone || '-')}</td>
-                    <td style="padding: 12px 15px;"><span class="role-badge ${c.role === 'admin' ? 'role-admin' : 'role-customer'}">${c.role === 'admin' ? 'مدير' : 'عميل'}</span></td>
-                    <td style="padding: 12px 15px; text-align: center; font-weight: bold;">${c.orders_count || 0}</td>
-                    <td style="padding: 12px 15px; text-align: left; font-weight: bold; color: var(--success-color);">${Number(c.total_spent || 0).toLocaleString()} دج</td>
-                    <td style="padding: 12px 15px; text-align: center; color: var(--light-text, #64748b); font-size: 0.9rem;">${new Date(c.created_at).toLocaleDateString('ar-DZ')}</td>
-                    <td style="padding: 12px 15px; text-align: center;">
+                    <td data-label="#" style="padding: 12px 15px; font-weight: bold;">${c.id}</td>
+                    <td data-label="الاسم" style="padding: 12px 15px; font-weight: bold; color: var(--text-color, #1e293b);">${AdminTable.escapeHtml(c.username)}</td>
+                    <td data-label="البريد الإلكتروني" style="padding: 12px 15px; color: var(--light-text, #64748b);">${AdminTable.escapeHtml(c.email)}</td>
+                    <td data-label="الهاتف" style="padding: 12px 15px; color: var(--text-color, #334155);">${AdminTable.escapeHtml(c.phone || '-')}</td>
+                    <td data-label="نوع الحساب" style="padding: 12px 15px;"><span class="role-badge ${c.role === 'admin' ? 'role-admin' : 'role-customer'}">${c.role === 'admin' ? 'مدير' : 'عميل'}</span></td>
+                    <td data-label="الطلبات" style="padding: 12px 15px; text-align: center; font-weight: bold;">${c.orders_count || 0}</td>
+                    <td data-label="إجمالي المشتريات" style="padding: 12px 15px; text-align: left; font-weight: bold; color: var(--success-color);">${Number(c.total_spent || 0).toLocaleString()} دج</td>
+                    <td data-label="تاريخ التسجيل" style="padding: 12px 15px; text-align: center; color: var(--light-text, #64748b); font-size: 0.9rem;">${new Date(c.created_at).toLocaleDateString('ar-DZ')}</td>
+                    <td data-label="إجراءات" style="padding: 12px 15px; text-align: center;">
                         <button type="button" class="customer-action-btn" data-action="viewCustomerDetails" data-args="${c.id}" title="عرض التفاصيل"><i class="fas fa-eye"></i></button>
                     </td>
                 </tr>

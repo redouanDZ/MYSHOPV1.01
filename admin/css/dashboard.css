@@ -2096,6 +2096,25 @@ header .container {
     table.cards-table td[data-label="الإجراءات"]::before,
     table.cards-table td[data-label="إجراءات"]::before { display: none; }
     table.cards-table .status-select { max-width: 60%; }
+    table.cards-table td[data-label="العميل"] {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 12px !important;
+    }
+    table.cards-table .customer-info-cell {
+        text-align: end;
+        min-width: 0;
+    }
+    table.cards-table td[data-label="التعليق"],
+    table.cards-table td[data-label="التعليق والملاحظات"] {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+        max-width: 100% !important;
+        word-break: break-word !important;
+    }
 }
 
 /* ===== Design review fixes (v1.2) ===== */
