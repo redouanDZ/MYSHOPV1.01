@@ -19,7 +19,9 @@ function requireCsrf(req, res, next) {
         '/api/auth/verify-email',
         '/api/payments/chargily/webhook',
         '/api/coupons/validate',
-        '/coupons/validate'
+        '/coupons/validate',
+        '/api/newsletter/subscribe',
+        '/newsletter/subscribe'
     ];
 
     const currentPath = req.originalUrl ? req.originalUrl.split('?')[0] : req.path;

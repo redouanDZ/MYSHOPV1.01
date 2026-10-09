@@ -1989,6 +1989,70 @@ class MysqlRepository {
     await this.pool.query('DELETE FROM sessions WHERE expires_at < ?', [now]);
     await this.pool.query('DELETE FROM login_attempts WHERE locked_until < ? AND locked_until > 0', [now]);
   }
+
+  async subscribeNewsletter({ email, source = 'vip_club', discountCode = 'PROMO10', ipAddress = null } = {}) {
+    const cleanEmail = String(email || '').trim().toLowerCase();
+    const [existing] = await this.pool.query(
+      'SELECT id, email, discount_code, status, created_at FROM newsletter_subscribers WHERE email = ?',
+      [cleanEmail]
+    );
+    if (existing && existing.length > 0) {
+      return {
+        alreadySubscribed: true,
+        id: existing[0].id,
+        email: existing[0].email,
+        discountCode: existing[0].discount_code || discountCode,
+        createdAt: existing[0].created_at
+      };
+    }
+
+    const [result] = await this.pool.query(
+      'INSERT INTO newsletter_subscribers (email, source, discount_code, ip_address) VALUES (?, ?, ?, ?)',
+      [cleanEmail, source, discountCode, ipAddress]
+    );
+
+    return {
+      alreadySubscribed: false,
+      id: result.insertId,
+      email: cleanEmail,
+      discountCode,
+      createdAt: new Date().toISOString()
+    };
+  }
+
+  async getNewsletterSubscribers({ page = 1, limit = 50, search = '' } = {}) {
+    const offset = Math.max(0, (Number(page) - 1) * Number(limit));
+    let query = 'SELECT id, email, source, discount_code, status, created_at FROM newsletter_subscribers';
+    let countQuery = 'SELECT COUNT(*) as total FROM newsletter_subscribers';
+    const params = [];
+    const countParams = [];
+
+    if (search) {
+      const q = `%${search.trim().toLowerCase()}%`;
+      query += ' WHERE email LIKE ?';
+      countQuery += ' WHERE email LIKE ?';
+      params.push(q);
+      countParams.push(q);
+    }
+
+    query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
+    params.push(Number(limit), Number(offset));
+
+    const [rows] = await this.pool.query(query, params);
+    const [countRows] = await this.pool.query(countQuery, countParams);
+
+    return {
+      subscribers: rows || [],
+      total: countRows[0]?.total || 0,
+      page: Number(page),
+      limit: Number(limit)
+    };
+  }
+
+  async deleteNewsletterSubscriber(id) {
+    const [res] = await this.pool.query('DELETE FROM newsletter_subscribers WHERE id = ?', [Number(id)]);
+    return res.affectedRows > 0;
+  }
 }
 
 function createMysqlRepository(pool) {
@@ -2808,7 +2872,9 @@ function createFallbackRepository() {
       if (!state.coupons) {
         state.coupons = [
           { id: 1, code: 'SAVE10', discount_percent: 10, discount_amount: 0, min_order_amount: 1000, max_uses: 500, uses_count: 5, status: 'active', expires_at: null, created_at: new Date().toISOString() },
-          { id: 2, code: 'SAVE20', discount_percent: 20, discount_amount: 0, min_order_amount: 3000, max_uses: 200, uses_count: 12, status: 'active', expires_at: null, created_at: new Date().toISOString() }
+          { id: 2, code: 'SAVE20', discount_percent: 20, discount_amount: 0, min_order_amount: 3000, max_uses: 200, uses_count: 12, status: 'active', expires_at: null, created_at: new Date().toISOString() },
+          { id: 3, code: 'PROMO10', discount_percent: 10, discount_amount: 0, min_order_amount: 0, max_uses: 1000, uses_count: 0, status: 'active', expires_at: null, created_at: new Date().toISOString() },
+          { id: 4, code: 'VIP10', discount_percent: 10, discount_amount: 0, min_order_amount: 0, max_uses: 1000, uses_count: 0, status: 'active', expires_at: null, created_at: new Date().toISOString() }
         ];
       }
       const c = state.coupons.find(item => item.code.toUpperCase() === String(code).trim().toUpperCase());
@@ -3087,10 +3153,79 @@ function createFallbackRepository() {
     async deleteRefreshToken(tokenHash) {},
     async revokeRefreshToken(tokenHash) {},
     async revokeAllUserRefreshTokens(userId) {},
-    async getLoginAttempt(identifier) { return { count: 0, lockedUntil: 0 }; },
-    async setLoginAttempt(identifier, count, lockedUntil) {},
-    async clearLoginAttempt(identifier) {},
-    async purgeExpiredSessionsAndTokens() {}
+    async getLoginAttempt(identifier) {
+      if (!state.loginAttempts) state.loginAttempts = new Map();
+      const item = state.loginAttempts.get(String(identifier || '').toLowerCase());
+      if (!item) return { count: 0, lockedUntil: 0 };
+      return { count: item.count || 0, lockedUntil: item.lockedUntil || 0 };
+    },
+    async setLoginAttempt(identifier, count, lockedUntil) {
+      if (!state.loginAttempts) state.loginAttempts = new Map();
+      state.loginAttempts.set(String(identifier || '').toLowerCase(), { count, lockedUntil });
+    },
+    async clearLoginAttempt(identifier) {
+      if (!state.loginAttempts) state.loginAttempts = new Map();
+      const target = String(identifier || '').toLowerCase();
+      for (const key of state.loginAttempts.keys()) {
+        if (key.includes(target)) {
+          state.loginAttempts.delete(key);
+        }
+      }
+    },
+    async purgeExpiredSessionsAndTokens() {},
+
+    async subscribeNewsletter({ email, source = 'vip_club', discountCode = 'PROMO10' } = {}) {
+      if (!state.subscribers) state.subscribers = [];
+      const cleanEmail = String(email || '').trim().toLowerCase();
+      const existing = state.subscribers.find(s => s.email === cleanEmail);
+      if (existing) {
+        return {
+          alreadySubscribed: true,
+          id: existing.id,
+          email: existing.email,
+          discountCode: existing.discountCode || discountCode,
+          createdAt: existing.createdAt
+        };
+      }
+      const newSub = {
+        id: state.subscribers.length + 1,
+        email: cleanEmail,
+        source,
+        discountCode,
+        status: 'active',
+        createdAt: new Date().toISOString()
+      };
+      state.subscribers.push(newSub);
+      return {
+        alreadySubscribed: false,
+        id: newSub.id,
+        email: newSub.email,
+        discountCode,
+        createdAt: newSub.createdAt
+      };
+    },
+
+    async getNewsletterSubscribers({ page = 1, limit = 50, search = '' } = {}) {
+      if (!state.subscribers) state.subscribers = [];
+      let list = [...state.subscribers];
+      if (search) {
+        const q = String(search).trim().toLowerCase();
+        list = list.filter(s => s.email.includes(q));
+      }
+      list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const total = list.length;
+      const offset = (Number(page) - 1) * Number(limit);
+      const subscribers = list.slice(offset, offset + Number(limit));
+      return { subscribers, total, page: Number(page), limit: Number(limit) };
+    },
+
+    async deleteNewsletterSubscriber(id) {
+      if (!state.subscribers) return false;
+      const idx = state.subscribers.findIndex(s => Number(s.id) === Number(id));
+      if (idx === -1) return false;
+      state.subscribers.splice(idx, 1);
+      return true;
+    }
   };
   return repo;
 }

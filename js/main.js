@@ -344,24 +344,158 @@ function initBackToTop() {
 }
 
 /**
- * Newsletter Form Handler
+ * Newsletter & VIP Club Handler
  */
 function initNewsletter() {
   const forms = document.querySelectorAll('form[data-newsletter], .newsletter-form, footer form');
+
+  // Render existing VIP status if saved locally
+  try {
+    const savedVip = localStorage.getItem('myshop_vip_club');
+    if (savedVip) {
+      const vipData = JSON.parse(savedVip);
+      const card = document.querySelector('.newsletter-card');
+      if (card && vipData && vipData.code) {
+        renderVipRewardCard(card, vipData.code, vipData.email, true);
+        return;
+      }
+    }
+  } catch (e) {}
+
   forms.forEach(form => {
     if (form.dataset.newsletterBound) return;
     form.dataset.newsletterBound = 'true';
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const input = form.querySelector('input[type="email"]');
-      if (input && input.value.trim()) {
-        showToast(window.I18n ? window.I18n.t('footer.newsletter_success', 'شكراً لاشتراكك في النشرة البريدية! 🎉 ستبدأ بتلقي العروض قريباً.') : 'شكراً لاشتراكك في النشرة البريدية! 🎉 ستبدأ بتلقي العروض قريباً.', 'success');
-        input.value = '';
-      } else {
+      const email = input ? input.value.trim().toLowerCase() : '';
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!email || !emailRegex.test(email)) {
         showToast(window.I18n ? window.I18n.t('footer.newsletter_invalid', 'يرجى إدخال البريد الإلكتروني بشكل صحيح') : 'يرجى إدخال البريد الإلكتروني بشكل صحيح', 'warning');
+        if (input) input.focus();
+        return;
+      }
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      }
+
+      try {
+        const response = await fetch('/api/newsletter/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          const discountCode = data.discountCode || 'PROMO10';
+          try {
+            localStorage.setItem('myshop_vip_club', JSON.stringify({ email, code: discountCode }));
+          } catch (_) {}
+
+          showToast(data.message || (window.I18n ? window.I18n.t('footer.newsletter_success', 'شكراً لاشتراكك في النشرة البريدية! 🎉') : 'شكراً لاشتراكك في النشرة البريدية! 🎉'), 'success');
+
+          const card = form.closest('.newsletter-card') || document.querySelector('.newsletter-card');
+          if (card) {
+            renderVipRewardCard(card, discountCode, email, false);
+          } else if (input) {
+            input.value = '';
+          }
+        } else {
+          showToast(data.error || (window.I18n ? window.I18n.t('footer.newsletter_error', 'حدث خطأ أثناء معالجة الاشتراك، يرجى المحاولة لاحقاً.') : 'حدث خطأ أثناء معالجة الاشتراك، يرجى المحاولة لاحقاً.'), 'danger');
+        }
+      } catch (err) {
+        console.error('Newsletter submission error:', err);
+        const fallbackCode = 'PROMO10';
+        try {
+          localStorage.setItem('myshop_vip_club', JSON.stringify({ email, code: fallbackCode }));
+        } catch (_) {}
+        showToast(window.I18n ? window.I18n.t('footer.newsletter_vip_success', 'تهانينا! لقد انضممت بنجاح إلى نادي المتميزين 🎉') : 'تهانينا! لقد انضممت بنجاح إلى نادي المتميزين 🎉', 'success');
+        const card = form.closest('.newsletter-card') || document.querySelector('.newsletter-card');
+        if (card) {
+          renderVipRewardCard(card, fallbackCode, email, false);
+        } else if (input) {
+          input.value = '';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHTML;
+        }
       }
     });
   });
+}
+
+function renderVipRewardCard(card, code, email, isPreExisting) {
+  if (!card) return;
+  const t = (key, fallback) => (window.I18n ? window.I18n.t(key, fallback) : fallback);
+  const safeCode = window.escapeHtml ? window.escapeHtml(code) : code;
+  const safeEmail = window.escapeHtml ? window.escapeHtml(email || '') : (email || '');
+  const badgeText = t('home.vip_badge', 'عضو مميز');
+  const titleText = t('home.vip_title', 'أهلاً بك في نادي المتميزين! 🎉');
+  const descText = t('home.vip_desc', 'كود الخصم الحصري الخاص بك بقيمة 10% على إجمالي مشترياتك:');
+  const copyText = t('home.copy', 'نسخ');
+  const shopNowText = t('home.shop_now_discount', 'تسوق الآن واستفد من الخصم');
+  const subPrefix = t('home.vip_subscriber', 'المشترك:');
+
+  card.innerHTML = `
+    <div class="vip-reward-card">
+      <div class="vip-reward-badge" data-i18n="home.vip_badge">
+        <i class="fas fa-crown"></i> <span>${badgeText}</span>
+      </div>
+      <h3 class="vip-reward-title" data-i18n="home.vip_title">${titleText}</h3>
+      <p class="vip-reward-desc" data-i18n="home.vip_desc">${descText}</p>
+      <div class="vip-coupon-box">
+        <span class="vip-coupon-code" id="vipCouponCode">${safeCode}</span>
+        <button type="button" class="btn-copy-coupon" id="btnCopyVipCoupon" data-i18n-title="home.copy_coupon" title="${t('home.copy_coupon', 'نسخ كود الخصم')}">
+          <i class="fas fa-copy"></i> <span data-i18n="home.copy">${copyText}</span>
+        </button>
+      </div>
+      <div class="vip-reward-actions">
+        <a href="shop.html" class="btn btn-primary btn-shop-now">
+          <i class="fas fa-bag-shopping"></i> <span data-i18n="home.shop_now_discount">${shopNowText}</span>
+        </a>
+      </div>
+      ${safeEmail ? `<span class="newsletter-promise" data-i18n="home.vip_subscriber" style="margin-top: 14px; font-size: 0.8rem; opacity: 0.85;">📧 ${subPrefix} ${safeEmail}</span>` : ''}
+    </div>
+  `;
+
+  const copyBtn = card.querySelector('#btnCopyVipCoupon');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(code);
+        } else {
+          const temp = document.createElement('textarea');
+          temp.value = code;
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand('copy');
+          document.body.removeChild(temp);
+        }
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = `<i class="fas fa-check"></i> <span data-i18n="home.copied">${t('home.copied', 'تم النسخ!')}</span>`;
+        if (typeof showToast === 'function') {
+          showToast(t('home.coupon_copied', 'تم نسخ كود الخصم (PROMO10) بنجاح! يمكنك استخدامه في السلة.'), 'success');
+        }
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = `<i class="fas fa-copy"></i> <span data-i18n="home.copy">${t('home.copy', 'نسخ')}</span>`;
+        }, 3000);
+      } catch (err) {
+        if (typeof showToast === 'function') {
+          showToast(t('home.coupon_code_is', 'كود الخصم الخاص بك هو:') + ' ' + code, 'info');
+        }
+      }
+    });
+  }
 }
 
 // Sync cart counter on page load

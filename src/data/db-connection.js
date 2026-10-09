@@ -12,7 +12,13 @@ let memoryPoolProxy = null;
 function getMemoryPool() {
     if (!memoryPoolProxy) {
         memoryPoolProxy = {
-            async query() {
+            async query(sql, params) {
+                if (typeof sql === 'string' && sql.toUpperCase().includes('DELETE FROM LOGIN_ATTEMPTS')) {
+                    if (serviceInstance && serviceInstance.clearLoginAttempt) {
+                        const target = params && params[0] ? String(params[0]).replace(/%/g, '') : '';
+                        await serviceInstance.clearLoginAttempt(target);
+                    }
+                }
                 return [[], []];
             },
             async execute() {
@@ -193,5 +199,8 @@ module.exports = {
     getLoginAttempt: buildProxy('getLoginAttempt'),
     setLoginAttempt: buildProxy('setLoginAttempt'),
     clearLoginAttempt: buildProxy('clearLoginAttempt'),
-    purgeExpiredSessionsAndTokens: buildProxy('purgeExpiredSessionsAndTokens')
+    purgeExpiredSessionsAndTokens: buildProxy('purgeExpiredSessionsAndTokens'),
+    subscribeNewsletter: buildProxy('subscribeNewsletter'),
+    getNewsletterSubscribers: buildProxy('getNewsletterSubscribers'),
+    deleteNewsletterSubscriber: buildProxy('deleteNewsletterSubscriber')
 };

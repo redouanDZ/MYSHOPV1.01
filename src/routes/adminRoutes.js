@@ -42,4 +42,9 @@ router.put('/settings', requireAdmin, adminController.updateStoreSettings);
 router.post('/upload-media', requireAdmin, upload.single('file'), validateUploadedImage, adminController.uploadMedia);
 router.post('/test-telegram', requireAdmin, adminController.testTelegramAlert);
 
+// Newsletter Subscribers
+const newsletterController = require('../controllers/newsletterController');
+router.get('/subscribers', requireAdmin, newsletterController.getAdminSubscribers);
+router.delete('/subscribers/:id', requireAdmin, newsletterController.deleteAdminSubscriber);
+
 module.exports = router;

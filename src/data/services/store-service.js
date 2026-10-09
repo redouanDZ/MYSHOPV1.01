@@ -323,6 +323,18 @@ class StoreService {
   async setLoginAttempt(identifier, count, lockedUntil) { return this.repository.setLoginAttempt(identifier, count, lockedUntil); }
   async clearLoginAttempt(identifier) { return this.repository.clearLoginAttempt(identifier); }
   async purgeExpiredSessionsAndTokens() { return this.repository.purgeExpiredSessionsAndTokens(); }
+
+  async subscribeNewsletter(data) {
+    return this.repository.subscribeNewsletter(data);
+  }
+
+  async getNewsletterSubscribers(options) {
+    return this.repository.getNewsletterSubscribers(options);
+  }
+
+  async deleteNewsletterSubscriber(id) {
+    return this.repository.deleteNewsletterSubscriber(id);
+  }
 }
 
 module.exports = {

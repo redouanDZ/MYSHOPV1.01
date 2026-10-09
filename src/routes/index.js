@@ -11,6 +11,7 @@ const adminRoutes = require('./adminRoutes');
 const paymentRoutes = require('./paymentRoutes');
 const wishlistRoutes = require('./wishlistRoutes');
 const couponRoutes = require('./couponRoutes');
+const newsletterRoutes = require('./newsletterRoutes');
 
 // Mount routes
 router.use('/', authRoutes);
@@ -23,6 +24,7 @@ router.use('/admin', adminRoutes);
 router.use('/payments', paymentRoutes);
 router.use('/wishlist', wishlistRoutes);
 router.use('/coupons', couponRoutes);
+router.use('/newsletter', newsletterRoutes);
 router.get('/categories', require('../controllers/adminController').getCategories);
 router.get('/settings', require('../controllers/adminController').getStoreSettings);
 
