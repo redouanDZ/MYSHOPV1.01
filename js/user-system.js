@@ -336,8 +336,8 @@ function showLoginForm() {
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom: 14px;">
-                        <label for="remember-me" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; font-weight: 500; color: var(--text-color); cursor: pointer; user-select: none; padding: 4px 0;">
-                            <input type="checkbox" id="remember-me" style="cursor: pointer; margin: 0; width: 18px; height: 18px; accent-color: var(--primary-color);">
+                        <label for="remember-me" style="display: inline-flex; align-items: center; gap: 9px; font-size: 0.9rem; font-weight: 500; color: var(--text-color); cursor: pointer; user-select: none; padding: 4px 0;">
+                            <input type="checkbox" id="remember-me" class="custom-checkbox-input">
                             <span data-i18n="auth.remember_me">تذكرني</span>
                         </label>
                     </div>
@@ -470,8 +470,8 @@ function showSignupForm() {
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom: 14px;">
-                        <label for="agree-terms" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: normal; color: var(--text-color); cursor: pointer; padding: 4px 0;">
-                            <input type="checkbox" id="agree-terms" required style="cursor: pointer; margin: 0; width: 18px; height: 18px; accent-color: var(--primary-color);">
+                        <label for="agree-terms" style="display: inline-flex; align-items: center; gap: 9px; font-size: 0.85rem; font-weight: normal; color: var(--text-color); cursor: pointer; user-select: none; padding: 4px 0;">
+                            <input type="checkbox" id="agree-terms" required class="custom-checkbox-input">
                             <span><span data-i18n="auth.agree_prefix">أوافق على</span> <a href="terms.html" target="_blank" rel="noopener" style="color: var(--primary-color); text-decoration: underline;"><span data-i18n="auth.terms_and_conditions">الشروط والأحكام</span></a> <span data-i18n="auth.and">و</span> <a href="privacy.html" target="_blank" rel="noopener" style="color: var(--primary-color); text-decoration: underline;"><span data-i18n="auth.privacy_policy">سياسة الخصوصية</span></a></span>
                         </label>
                     </div>
