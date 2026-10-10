@@ -149,9 +149,14 @@
                         <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'delivered', this">تم التسليم</button>
                         <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'cancelled', this">ملغي</button>
                     </div>
-                    <div class="search-box order-search-box" style="position: relative; min-width: 280px;">
-                        <input type="text" id="orderSearchInput" data-action="filterOrders" data-args="" placeholder="بحث برقم الطلب، العميل، الهاتف، الولاية..." class="admin-input">
-                        <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                    <div class="search-box order-search-box" style="position: relative; min-width: 280px; display: flex; gap: 8px; align-items: center;">
+                        <div style="position: relative; flex: 1;">
+                            <input type="text" id="orderSearchInput" placeholder="بحث برقم الطلب، العميل، الهاتف، الولاية..." class="admin-input">
+                            <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                        </div>
+                        <button type="button" id="resetOrdersFilterBtn" data-action="resetOrdersFilters" data-args="" class="btn btn-secondary" title="إعادة تعيين الفلاتر">
+                            <i class="fas fa-undo"></i>
+                        </button>
                     </div>
                 </div>
 

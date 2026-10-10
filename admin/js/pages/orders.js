@@ -43,7 +43,7 @@
         }
 
         function filterOrders() {
-            const query = (document.getElementById('orderSearchInput').value || '').trim().toLowerCase();
+            const query = (document.getElementById('orderSearchInput')?.value || '').trim().toLowerCase();
             let filtered = cachedOrders;
 
             if (currentStatusFilter !== 'all') {
@@ -56,8 +56,21 @@
                     String(o.order_number || '').toLowerCase().includes(query) ||
                     String(o.shipping_full_name || '').toLowerCase().includes(query) ||
                     String(o.phone || '').includes(query) ||
-                    String(o.wilaya_name || '').toLowerCase().includes(query)
+                    String(o.wilaya_name || '').toLowerCase().includes(query) ||
+                    String(o.city || '').toLowerCase().includes(query) ||
+                    String(o.email || '').toLowerCase().includes(query) ||
+                    String(o.payment_method || '').toLowerCase().includes(query) ||
+                    String(o.total || '').includes(query)
                 );
+            }
+
+            const countBadge = document.getElementById('ordersCountBadge');
+            if (countBadge) {
+                if (currentStatusFilter !== 'all' || query) {
+                    countBadge.textContent = `${filtered.length} من ${cachedOrders.length} طلب`;
+                } else {
+                    countBadge.textContent = `${cachedOrders.length} طلب`;
+                }
             }
 
             renderOrdersTable(filtered);
@@ -356,6 +369,7 @@
                 const item = cachedOrders.find(o => o.id === orderId);
                 if (item) item.status = newStatus;
                 AdminUI.showToast('تم تحديث حالة الطلب بنجاح', 'success');
+                filterOrders();
             } catch (err) {
                 AdminUI.showToast('خطأ: ' + err.message, 'error');
                 loadAdminOrders();
@@ -498,4 +512,30 @@
                 AdminUI.showToast(err.message || 'فشل حذف الطلب', 'error');
             }
         }
+
+        function resetOrdersFilters() {
+            const searchInput = document.getElementById('orderSearchInput');
+            if (searchInput) searchInput.value = '';
+            currentStatusFilter = 'all';
+            document.querySelectorAll('.status-tab-btn').forEach(b => {
+                if (b.dataset.args && b.dataset.args.includes("'all'")) {
+                    b.classList.add('active');
+                } else {
+                    b.classList.remove('active');
+                }
+            });
+            filterOrders();
+        }
+
+// Expose admin order functions globally for data-action delegation
+window.filterByStatus = filterByStatus;
+window.filterOrders = filterOrders;
+window.resetOrdersFilters = resetOrdersFilters;
+window.changeOrderStatus = changeOrderStatus;
+window.viewOrderDetails = viewOrderDetails;
+window.closeOrderDetailsModal = closeOrderDetailsModal;
+window.openWhatsAppContact = openWhatsAppContact;
+window.printThermalLabel = printThermalLabel;
+window.exportOrdersToCsv = exportOrdersToCsv;
+window.deleteAdminOrder = deleteAdminOrder;
     

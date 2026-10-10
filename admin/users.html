@@ -115,12 +115,22 @@
 
             <!-- Filters Bar -->
             <div class="filters-bar surface-card">
-                <div style="flex: 1; min-width: 250px;">
+                <div style="flex: 1; min-width: 220px;">
                     <input type="text" id="searchInput" placeholder="البحث بالاسم، البريد أو الهاتف..." class="admin-input">
                 </div>
                 <div>
+                    <select id="roleFilter" class="admin-select">
+                        <option value="all">جميع الحسابات</option>
+                        <option value="customer">العملاء فقط</option>
+                        <option value="admin">المدراء والمشرفين</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 8px;">
                     <button type="button" data-action="loadAdminCustomers" data-args="1" class="btn btn-primary">
                         <i class="fas fa-search"></i> بحث
+                    </button>
+                    <button type="button" id="resetUsersFilterBtn" data-action="resetUsersFilters" data-args="" class="btn btn-secondary" title="إعادة تعيين الفلاتر">
+                        <i class="fas fa-undo"></i> إعادة تعيين
                     </button>
                 </div>
             </div>

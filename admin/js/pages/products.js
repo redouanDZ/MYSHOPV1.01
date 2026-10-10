@@ -64,6 +64,12 @@
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', AdminTable.debounce(() => loadProducts(1), 300));
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        loadProducts(1);
+                    }
+                });
             }
             document.getElementById('categoryFilter').addEventListener('change', () => loadProducts(1));
             document.getElementById('stockFilter').addEventListener('change', () => loadProducts(1));
@@ -354,7 +360,7 @@
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (category) url += `&category=${encodeURIComponent(category)}`;
             if (sortBy) url += `&sortBy=${encodeURIComponent(sortBy)}`;
-            if (stockVal === 'in-stock') url += `&inStock=true`;
+            if (stockVal) url += `&stockStatus=${encodeURIComponent(stockVal)}`;
 
             try {
                 const response = await fetch(url, { credentials: 'include' });
@@ -362,12 +368,6 @@
 
                 const data = await response.json();
                 let products = Array.isArray(data) ? data : (Array.isArray(data.products) ? data.products : []);
-
-                if (stockVal === 'low-stock') {
-                    products = products.filter(p => Number(p.stock) > 0 && Number(p.stock) <= 3);
-                } else if (stockVal === 'out-of-stock') {
-                    products = products.filter(p => Number(p.stock) === 0);
-                }
 
                 totalPages = data.totalPages || 1;
                 // Auto-stepback if page is out of bounds after deletion
@@ -627,6 +627,18 @@
 window.clickFileproductImage = function () { const el = document.getElementById('productImage'); if (el) el.click(); };
 window.clickFilenewVariantImage = function () { const el = document.getElementById('newVariantImage'); if (el) el.click(); };
 
+        function resetProductsFilters() {
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const stockFilter = document.getElementById('stockFilter');
+            const sortFilter = document.getElementById('sortFilter');
+            if (searchInput) searchInput.value = '';
+            if (categoryFilter) categoryFilter.value = '';
+            if (stockFilter) stockFilter.value = '';
+            if (sortFilter) sortFilter.value = 'newest';
+            loadProducts(1);
+        }
+
 // Expose admin product functions globally for data-action delegation
 window.openAddProductModal = openAddProductModal;
 window.closeProductModal = closeProductModal;
@@ -634,6 +646,7 @@ window.editProduct = editProduct;
 window.saveProduct = saveProduct;
 window.deleteProduct = deleteProduct;
 window.loadProducts = loadProducts;
+window.resetProductsFilters = resetProductsFilters;
 window.openCategoriesModal = openCategoriesModal;
 window.closeCategoriesModal = closeCategoriesModal;
 window.handleAddCategory = handleAddCategory;

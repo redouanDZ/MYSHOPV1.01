@@ -719,7 +719,7 @@ class MysqlRepository {
   }
 
   async getProducts(options = {}) {
-    const { category, search, minPrice, maxPrice, minRating, inStock, status = 'active', sortBy, page = 1, limit = 100 } = options;
+    const { category, search, minPrice, maxPrice, minRating, inStock, stockStatus, status = 'active', sortBy, page = 1, limit = 100 } = options;
     const queryParams = [];
     let whereSql = ' WHERE 1 = 1';
 
@@ -754,8 +754,12 @@ class MysqlRepository {
       queryParams.push(Number(minRating));
     }
 
-    if (inStock === true || inStock === 'true' || inStock === 1 || inStock === '1') {
+    if (inStock === true || inStock === 'true' || inStock === 1 || inStock === '1' || stockStatus === 'in-stock') {
       whereSql += ' AND p.stock > 0';
+    } else if (stockStatus === 'low-stock') {
+      whereSql += ' AND p.stock > 0 AND p.stock <= 3';
+    } else if (stockStatus === 'out-of-stock') {
+      whereSql += ' AND p.stock = 0';
     }
 
     let orderSql = ' ORDER BY p.created_at DESC';
@@ -764,9 +768,10 @@ class MysqlRepository {
     if (sortBy === 'rating' || sortBy === 'rating-desc') orderSql = ' ORDER BY p.rating DESC, p.created_at DESC';
     if (sortBy === 'name-asc') orderSql = ' ORDER BY p.name ASC';
     if (sortBy === 'name-desc') orderSql = ' ORDER BY p.name DESC';
+    if (sortBy === 'oldest') orderSql = ' ORDER BY p.created_at ASC';
     if (sortBy === 'newest') orderSql = ' ORDER BY p.created_at DESC';
 
-    const totalQuery = `SELECT COUNT(*) AS total FROM products p INNER JOIN categories c ON c.id = p.category_id${whereSql}`;
+    const totalQuery = `SELECT COUNT(*) AS total FROM products p LEFT JOIN categories c ON c.id = p.category_id${whereSql}`;
     const [countRows] = await this.pool.query(totalQuery, queryParams);
     const total = Number(countRows[0]?.total || 0);
 
@@ -774,7 +779,7 @@ class MysqlRepository {
     const limitNum = Math.max(1, Number(limit) || 100);
     const offset = (pageNum - 1) * limitNum;
 
-    const rowsQuery = `SELECT p.*, c.name AS category_name FROM products p INNER JOIN categories c ON c.id = p.category_id${whereSql}${orderSql} LIMIT ? OFFSET ?`;
+    const rowsQuery = `SELECT p.*, c.name AS category_name FROM products p LEFT JOIN categories c ON c.id = p.category_id${whereSql}${orderSql} LIMIT ? OFFSET ?`;
     const [rows] = await this.pool.query(rowsQuery, [...queryParams, limitNum, offset]);
 
     return {
@@ -1496,12 +1501,17 @@ class MysqlRepository {
 
   // --- Admin Customers Management ---
   async getAdminUsers(options = {}) {
-    const { search, page = 1, limit = 20 } = options;
+    const { search, role, page = 1, limit = 20 } = options;
     const pageNum = Math.max(1, Number(page) || 1);
     const limitNum = Math.max(1, Math.min(100, Number(limit) || 20));
     const offset = (pageNum - 1) * limitNum;
     const queryParams = [];
     let whereClause = ' WHERE 1 = 1';
+
+    if (role && role !== 'all') {
+      whereClause += ' AND u.role = ?';
+      queryParams.push(role);
+    }
 
     if (search) {
       whereClause += ' AND (LOWER(u.username) LIKE ? OR LOWER(u.email) LIKE ? OR u.phone LIKE ?)';
@@ -1575,8 +1585,16 @@ class MysqlRepository {
     let sql = 'SELECT * FROM coupons WHERE 1 = 1';
     const params = [];
     if (status && status !== 'all') {
-      sql += ' AND status = ?';
-      params.push(status);
+      if (status === 'active') {
+        sql += ' AND status = "active" AND (expires_at IS NULL OR expires_at >= NOW())';
+      } else if (status === 'expired') {
+        sql += ' AND expires_at IS NOT NULL AND expires_at < NOW()';
+      } else if (status === 'inactive') {
+        sql += ' AND status = "inactive"';
+      } else {
+        sql += ' AND status = ?';
+        params.push(status);
+      }
     }
     if (search) {
       sql += ' AND LOWER(code) LIKE ?';
@@ -1738,7 +1756,7 @@ class MysqlRepository {
   }
 
   async getAdminReviews(options = {}) {
-    const { status, productId, search, page = 1, limit = 20 } = options;
+    const { status, rating, productId, search, page = 1, limit = 20 } = options;
     const pageNum = Math.max(1, Number(page) || 1);
     const limitNum = Math.max(1, Math.min(100, Number(limit) || 20));
     const offset = (pageNum - 1) * limitNum;
@@ -1747,6 +1765,10 @@ class MysqlRepository {
     if (status && status !== 'all') {
       whereClause += ' AND r.status = ?';
       queryParams.push(status);
+    }
+    if (rating !== null && rating !== undefined && !Number.isNaN(Number(rating))) {
+      whereClause += ' AND r.rating = ?';
+      queryParams.push(Number(rating));
     }
     if (productId) {
       whereClause += ' AND r.product_id = ?';
@@ -1758,7 +1780,7 @@ class MysqlRepository {
       queryParams.push(term, term, term);
     }
 
-    const countSql = `SELECT COUNT(*) as total FROM product_reviews r JOIN products p ON p.id = r.product_id JOIN users u ON u.id = r.user_id ${whereClause}`;
+    const countSql = `SELECT COUNT(*) as total FROM product_reviews r LEFT JOIN products p ON p.id = r.product_id LEFT JOIN users u ON u.id = r.user_id ${whereClause}`;
     const [countRows] = await this.pool.query(countSql, queryParams);
     const total = Number(countRows[0]?.total || 0);
 
@@ -1766,8 +1788,8 @@ class MysqlRepository {
       SELECT r.id, r.product_id, r.user_id, r.rating, r.comment, r.status, r.created_at,
              p.name AS product_name, p.image_url AS product_image, u.username, u.email
       FROM product_reviews r
-      JOIN products p ON p.id = r.product_id
-      JOIN users u ON u.id = r.user_id
+      LEFT JOIN products p ON p.id = r.product_id
+      LEFT JOIN users u ON u.id = r.user_id
       ${whereClause}
       ORDER BY r.created_at DESC
       LIMIT ? OFFSET ?
@@ -2259,17 +2281,24 @@ function createFallbackRepository() {
     },
     async getProducts(options = {}) {
       let filtered = [...state.products];
-      const { category, search, minPrice, maxPrice, sortBy, page = 1, limit = 100 } = options;
-      if (category && category !== 'all') filtered = filtered.filter(item => item.category === category);
+      const { category, search, minPrice, maxPrice, minRating, inStock, stockStatus, sortBy, page = 1, limit = 100 } = options;
+      if (category && category !== 'all') filtered = filtered.filter(item => item.category === category || item.category_name === category);
       if (search) {
         const term = String(search).trim().toLowerCase();
-        filtered = filtered.filter(item => item.name.toLowerCase().includes(term) || (item.description || '').toLowerCase().includes(term) || item.category.toLowerCase().includes(term));
+        filtered = filtered.filter(item => item.name.toLowerCase().includes(term) || (item.description || '').toLowerCase().includes(term) || (item.category || '').toLowerCase().includes(term));
       }
       if (minPrice !== null && minPrice !== undefined && !Number.isNaN(Number(minPrice))) filtered = filtered.filter(item => Number(item.price) >= Number(minPrice));
       if (maxPrice !== null && maxPrice !== undefined && !Number.isNaN(Number(maxPrice))) filtered = filtered.filter(item => Number(item.price) <= Number(maxPrice));
+      if (minRating !== null && minRating !== undefined && !Number.isNaN(Number(minRating))) filtered = filtered.filter(item => Number(item.rating) >= Number(minRating));
+      if (inStock === true || inStock === 'true' || inStock === 1 || inStock === '1' || stockStatus === 'in-stock') filtered = filtered.filter(item => Number(item.stock) > 0);
+      if (stockStatus === 'low-stock') filtered = filtered.filter(item => Number(item.stock) > 0 && Number(item.stock) <= 3);
+      if (stockStatus === 'out-of-stock') filtered = filtered.filter(item => Number(item.stock) === 0);
       if (sortBy === 'price-asc') filtered.sort((a, b) => Number(a.price) - Number(b.price));
       if (sortBy === 'price-desc') filtered.sort((a, b) => Number(b.price) - Number(a.price));
-      if (sortBy === 'rating') filtered.sort((a, b) => Number(b.rating) - Number(a.rating));
+      if (sortBy === 'rating' || sortBy === 'rating-desc') filtered.sort((a, b) => Number(b.rating) - Number(a.rating));
+      if (sortBy === 'name-asc') filtered.sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'ar'));
+      if (sortBy === 'name-desc') filtered.sort((a, b) => String(b.name || '').localeCompare(String(a.name || ''), 'ar'));
+      if (sortBy === 'oldest') filtered.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
       if (sortBy === 'newest') filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
       const pageNum = Math.max(1, Number(page) || 1);
@@ -2677,6 +2706,10 @@ function createFallbackRepository() {
         };
       });
 
+      if (options.role && options.role !== 'all') {
+        list = list.filter(u => u.role === options.role);
+      }
+
       if (search) {
         const q = String(search).toLowerCase();
         list = list.filter(u => u.username.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || (u.phone && u.phone.includes(q)));
@@ -2859,7 +2892,15 @@ function createFallbackRepository() {
       }
       let list = [...state.coupons];
       if (options.status && options.status !== 'all') {
-        list = list.filter(c => c.status === options.status);
+        if (options.status === 'active') {
+          list = list.filter(c => c.status === 'active' && (!c.expires_at || new Date(c.expires_at) >= new Date()));
+        } else if (options.status === 'expired') {
+          list = list.filter(c => c.expires_at && new Date(c.expires_at) < new Date());
+        } else if (options.status === 'inactive') {
+          list = list.filter(c => c.status === 'inactive');
+        } else {
+          list = list.filter(c => c.status === options.status);
+        }
       }
       if (options.search) {
         const q = String(options.search).toUpperCase();
@@ -3012,6 +3053,9 @@ function createFallbackRepository() {
 
       if (options.status && options.status !== 'all') {
         list = list.filter(r => r.status === options.status);
+      }
+      if (options.rating !== null && options.rating !== undefined && !Number.isNaN(Number(options.rating))) {
+        list = list.filter(r => Number(r.rating) === Number(options.rating));
       }
       if (options.productId) {
         list = list.filter(r => Number(r.productId) === Number(options.productId));

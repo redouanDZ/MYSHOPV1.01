@@ -5,6 +5,12 @@
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', AdminTable.debounce(loadAdminCoupons, 300));
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        loadAdminCoupons();
+                    }
+                });
             }
             document.getElementById('statusFilter').addEventListener('change', loadAdminCoupons);
 
@@ -197,5 +203,22 @@
                 loadAdminCoupons();
             } catch (err) {
                 AdminUI.showToast('خطأ: ' + err.message, 'error');
-                }
-    }
+            }
+        }
+
+        function resetCouponsFilters() {
+            const searchInput = document.getElementById('searchInput');
+            const statusFilter = document.getElementById('statusFilter');
+            if (searchInput) searchInput.value = '';
+            if (statusFilter) statusFilter.value = 'all';
+            loadAdminCoupons();
+        }
+
+// Expose admin coupon functions globally for data-action delegation
+window.loadAdminCoupons = loadAdminCoupons;
+window.resetCouponsFilters = resetCouponsFilters;
+window.openAddCouponModal = openAddCouponModal;
+window.openEditCouponModal = openEditCouponModal;
+window.closeCouponModal = closeCouponModal;
+window.saveCoupon = saveCoupon;
+window.deleteCoupon = deleteCoupon;

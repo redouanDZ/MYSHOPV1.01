@@ -2268,8 +2268,11 @@ header .container .user-actions { flex: 0 0 auto; }
         flex-direction: column !important;
     }
     .filter-box select,
-    .filter-box .admin-select {
+    .filter-box .admin-select,
+    .filter-box button,
+    .filter-box .btn {
         width: 100% !important;
+        justify-content: center !important;
     }
     .filters-bar {
         padding: 12px 10px !important;
@@ -2279,9 +2282,13 @@ header .container .user-actions { flex: 0 0 auto; }
         min-width: 0 !important;
         width: 100% !important;
     }
+    .filters-bar select,
+    .filters-bar .admin-select {
+        width: 100% !important;
+    }
     .filters-bar button,
     .filters-bar .btn {
-        width: 100% !important;
+        flex: 1;
         justify-content: center !important;
     }
 }

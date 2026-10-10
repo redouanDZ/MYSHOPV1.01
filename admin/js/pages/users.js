@@ -8,6 +8,16 @@
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', AdminTable.debounce(() => loadAdminCustomers(1), 300));
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        loadAdminCustomers(1);
+                    }
+                });
+            }
+            const roleFilter = document.getElementById('roleFilter');
+            if (roleFilter) {
+                roleFilter.addEventListener('change', () => loadAdminCustomers(1));
             }
 
             loadAdminCustomers(1);
@@ -15,11 +25,13 @@
 
         async function loadAdminCustomers(page = 1) {
             currentPage = page;
-            const search = (document.getElementById('searchInput').value || '').trim();
+            const search = (document.getElementById('searchInput')?.value || '').trim();
+            const role = document.getElementById('roleFilter')?.value || 'all';
             const headers = AdminAuth.getHeaders(false);
 
             let url = `/api/admin/users?page=${page}&limit=15`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (role && role !== 'all') url += `&role=${encodeURIComponent(role)}`;
 
             try {
                 const res = await fetch(url, { credentials: 'include', headers });
@@ -203,4 +215,21 @@
         function closeCustomerModal() {
             document.getElementById('customerModal').style.display = 'none';
         }
+
+        function resetUsersFilters() {
+            const searchInput = document.getElementById('searchInput');
+            const roleFilter = document.getElementById('roleFilter');
+            if (searchInput) searchInput.value = '';
+            if (roleFilter) roleFilter.value = 'all';
+            loadAdminCustomers(1);
+        }
+
+// Expose admin customer functions globally for data-action delegation
+window.loadAdminCustomers = loadAdminCustomers;
+window.resetUsersFilters = resetUsersFilters;
+window.viewCustomerDetails = viewCustomerDetails;
+window.closeCustomerModal = closeCustomerModal;
+window.changeUserRole = changeUserRole;
+window.changeUserStatus = changeUserStatus;
+window.deleteUserAccount = deleteUserAccount;
     

@@ -126,11 +126,15 @@
                         <option value="all">جميع الحالات</option>
                         <option value="active">نشط</option>
                         <option value="inactive">غير نشط</option>
+                        <option value="expired">منتهي الصلاحية</option>
                     </select>
                 </div>
-                <div>
+                <div style="display: flex; gap: 8px;">
                     <button type="button" data-action="loadAdminCoupons" data-args="" class="btn btn-primary">
                         <i class="fas fa-filter"></i> تصفية
+                    </button>
+                    <button type="button" id="resetCouponsFilterBtn" data-action="resetCouponsFilters" data-args="" class="btn btn-secondary" title="إعادة تعيين الفلاتر">
+                        <i class="fas fa-undo"></i> إعادة تعيين
                     </button>
                 </div>
             </div>

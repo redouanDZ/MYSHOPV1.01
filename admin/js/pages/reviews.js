@@ -8,19 +8,31 @@
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', AdminTable.debounce(() => loadAdminReviews(1), 300));
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        loadAdminReviews(1);
+                    }
+                });
             }
             document.getElementById('statusFilter').addEventListener('change', () => loadAdminReviews(1));
+            const ratingFilter = document.getElementById('ratingFilter');
+            if (ratingFilter) {
+                ratingFilter.addEventListener('change', () => loadAdminReviews(1));
+            }
 
             loadAdminReviews(1);
         });
 
         async function loadAdminReviews(page = 1) {
             currentPage = page;
-            const search = (document.getElementById('searchInput').value || '').trim();
-            const status = document.getElementById('statusFilter').value;
+            const search = (document.getElementById('searchInput')?.value || '').trim();
+            const status = document.getElementById('statusFilter')?.value || 'all';
+            const rating = document.getElementById('ratingFilter')?.value || 'all';
             const headers = AdminAuth.getHeaders(false);
 
             let url = `/api/admin/reviews?page=${page}&limit=15&status=${status}`;
+            if (rating && rating !== 'all') url += `&rating=${encodeURIComponent(rating)}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
 
             try {
@@ -129,4 +141,20 @@
                 AdminUI.showToast('خطأ: ' + err.message, 'error');
             }
         }
+
+        function resetReviewsFilters() {
+            const searchInput = document.getElementById('searchInput');
+            const statusFilter = document.getElementById('statusFilter');
+            const ratingFilter = document.getElementById('ratingFilter');
+            if (searchInput) searchInput.value = '';
+            if (statusFilter) statusFilter.value = 'all';
+            if (ratingFilter) ratingFilter.value = 'all';
+            loadAdminReviews(1);
+        }
+
+// Expose admin review functions globally for data-action delegation
+window.loadAdminReviews = loadAdminReviews;
+window.resetReviewsFilters = resetReviewsFilters;
+window.updateReviewStatus = updateReviewStatus;
+window.deleteReview = deleteReview;
     
