@@ -84,28 +84,28 @@ const DEFAULT_PRODUCTS = [
   },
   {
     id: 100,
-    category: 'أزياء وملابس',
-    name: 'حقيبة ظهر عصرية مضادة للسرقة مع منفذ USB',
+    category: 'هواتف وإلكترونيات',
+    name: 'حاسوب محمول فائق الأداء للأعمال والبرمجة',
     price: 3900,
     cost_price: 2100,
     stock: 16,
     image_url: '/images/christopher-gower-m_HRfLhgABo-unsplash.jpg',
     status: 'active',
-    description: 'حقيبة ظهر مريحة ومتينة مقاومة للمطر والخدوش مع قفل رقمي مدمج ومنفذ USB للشحن أثناء التنقل، تتسع لأجهزة اللابتوب والحاسوب المحمول حتى 15.6 بوصة ومثالية للسفر والعمل.',
-    rating: 4.3,
+    description: 'حاسوب محمول فائق السرعة بمعالج قوي وشاشة عالية الدقة مضادة للانعكاس، بطارية تدوم طويلاً وهيكل أنيق خفيف الوزن مثالي للعمل المكتبي والبرمجة والدراسة.',
+    rating: 4.5,
     created_at: new Date().toISOString()
   },
   {
     id: 101,
     category: 'هواتف وإلكترونيات',
-    name: 'سماعات لاسلكية Pro ANC عازلة للضوضاء',
+    name: 'كاميرا رقمية احترافية بدقة 4K للتصوير الفوتوغرافي',
     price: 4200,
     cost_price: 2400,
     stock: 5,
     image_url: '/images/samsung-memory-RZM2cE0lx0Y-unsplash.jpg',
     status: 'active',
-    description: 'سماعات رأس لاسلكية مريحة بتقنية العزل النشط للضوضاء (Active Noise Cancelling) وبلوتوث 5.3، بطارية جبارة تدوم حتى 30 ساعة مع ميكروفون نقي للمكالمات.',
-    rating: 3.9,
+    description: 'كاميرا تصوير رقمية احترافية مزودة بمستشعر متطور وعدسة تصوير عالية الدقة، تدعم تصوير الفيديو بدقة 4K مع تركيز بؤري فائق السرعة وشاشة متحركة لإنتاج محتوى متميز.',
+    rating: 4.8,
     created_at: new Date().toISOString()
   }
 ];
