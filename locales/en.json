@@ -22,7 +22,7 @@
     },
     "common": {
         "store_name": "MYSHOP",
-        "store_brand_title": "MYSHOP Demo Store",
+        "store_brand_title": "MYSHOP",
         "search": "Search...",
         "search_placeholder": "Search for clothing, electronics, perfumes, home goods...",
         "currency": "DZD",

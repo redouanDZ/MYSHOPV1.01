@@ -22,7 +22,7 @@
     },
     "common": {
         "store_name": "MYSHOP",
-        "store_brand_title": "Boutique MYSHOP Démo",
+        "store_brand_title": "MYSHOP",
         "search": "Recherche...",
         "search_placeholder": "Rechercher des vêtements, électronique, parfums, maison...",
         "currency": "DA",

@@ -313,7 +313,7 @@ async function seedDemoData() {
     // 6. Update Store Settings
     console.log('⚙️ Updating Demo Store Settings...');
     const demoSettings = {
-        store_name: 'متجر MYSHOP التجريبي',
+        store_name: 'MYSHOP',
         store_currency: 'دج',
         store_phone: '0550 00 00 00',
         store_whatsapp: '213550000000',
@@ -323,7 +323,7 @@ async function seedDemoData() {
         store_favicon: '/images/favicon.svg',
         enable_cod: 'true',
         enable_chargily: 'true',
-        announcement_bar_text: '🎉 مرحباً بكم في المتجر التجريبي MYSHOP Pro — توصيل سريع لـ 58 ولاية والدفع عند الاستلام!'
+        announcement_bar_text: '🎉 مرحباً بكم في MYSHOP — توصيل سريع لـ 58 ولاية والدفع عند الاستلام!'
     };
 
     for (const [key, value] of Object.entries(demoSettings)) {
