@@ -678,8 +678,9 @@ function initMobileNavigation() {
 }
 
 function getLocalizedStoreName(rawName) {
-  const defaultDemoNames = ['MYSHOP', 'متجر MYSHOP', 'متجر MYSHOP التجريبي', 'Boutique MYSHOP Démo', 'MYSHOP Demo Store'];
-  if (!rawName || defaultDemoNames.includes(String(rawName).trim())) {
+  const trimmed = String(rawName || '').trim();
+  const isDefault = !trimmed || trimmed === 'MYSHOP' || trimmed.includes('MYSHOP');
+  if (isDefault) {
     if (window.I18n && typeof window.I18n.t === 'function') {
       const translated = window.I18n.t('common.store_brand_title');
       if (translated && translated !== 'common.store_brand_title') return translated;
