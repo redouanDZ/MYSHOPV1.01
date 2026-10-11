@@ -207,16 +207,16 @@ function renderCart() {
           <h3>${safeName}</h3>
         </a>
         <span class="item-category-tag">${safeCat}</span>
-        <p class="item-price">
-          ${priceNum.toLocaleString()} ${currency}
-        </p>
       </div>
       <div class="item-quantity">
         <button type="button" class="quantity-btn decrease" data-action="change-qty" data-key="${itemKey}" data-delta="-1" aria-label="Decrease quantity">-</button>
         <input type="number" id="input-qty-${itemKey}" class="cart-qty-input" value="${qtyNum}" min="1" max="99" data-action="qty-input" data-key="${itemKey}" aria-label="Quantity">
         <button type="button" class="quantity-btn increase" data-action="change-qty" data-key="${itemKey}" data-delta="1" aria-label="Increase quantity">+</button>
       </div>
-      <div class="item-total" id="total-${itemKey}">${lineTotal} ${currency}</div>
+      <div class="item-price-col">
+        <div class="item-total" id="total-${itemKey}">${lineTotal} ${currency}</div>
+        <div class="item-unit-subtext" id="unit-subtext-${itemKey}" style="${qtyNum > 1 ? '' : 'display: none;'}"><bdi>${priceNum.toLocaleString()} ${currency}</bdi> × ${qtyNum}</div>
+      </div>
       <button type="button" class="remove-item" data-action="remove-item" data-key="${itemKey}" title="${removeTitle}" aria-label="${removeTitle}">
         <i class="fas fa-trash-alt"></i>
       </button>
@@ -263,7 +263,18 @@ function updateItemQuantityUI(item, newQty) {
 
   const totalEl = document.getElementById(`total-${itemKey}`);
   const currency = window.I18n ? window.I18n.t('common.currency', 'دج') : 'دج';
-  if (totalEl) totalEl.textContent = `${(Number(item.price) * newQty).toLocaleString()} ${currency}`;
+  const priceNum = Number(item.price) || 0;
+  if (totalEl) totalEl.textContent = `${(priceNum * newQty).toLocaleString()} ${currency}`;
+
+  const unitSubEl = document.getElementById(`unit-subtext-${itemKey}`);
+  if (unitSubEl) {
+    if (newQty > 1) {
+      unitSubEl.innerHTML = `<bdi>${priceNum.toLocaleString()} ${currency}</bdi> × ${newQty}`;
+      unitSubEl.style.display = 'block';
+    } else {
+      unitSubEl.style.display = 'none';
+    }
+  }
 
   saveCartToLocalStorage();
   updateSummary();

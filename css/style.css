@@ -2620,13 +2620,30 @@ body.dark-mode .review-content p {
     background: transparent;
 }
 
+.item-price-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 85px;
+    text-align: center;
+    white-space: nowrap;
+    gap: 2px;
+}
+
 .item-total {
     font-weight: 800;
-    color: var(--dark-color);
+    color: var(--primary-color, #4f46e5);
     font-size: 1.05rem;
     white-space: nowrap;
     text-align: end;
-    min-width: 80px;
+}
+
+.item-unit-subtext {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--light-text, #64748b);
+    white-space: nowrap;
 }
 
 .remove-item {

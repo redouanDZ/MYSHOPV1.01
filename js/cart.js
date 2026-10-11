@@ -150,19 +150,25 @@ function updateCartUI() {
 function createCartItemHTML(item) {
     const safeName = window.escapeHtml ? window.escapeHtml(item.name) : item.name;
     const safeImg = window.escapeHtml ? window.escapeHtml(item.image || '/images/product-placeholder.jpg') : (item.image || '/images/product-placeholder.jpg');
+    const currency = window.I18n ? window.I18n.t('common.currency', 'دج') : 'دج';
+    const priceNum = Number(item.price) || 0;
+    const qtyNum = Number(item.quantity) || 1;
+    const lineTotal = (priceNum * qtyNum).toLocaleString();
     return `
         <div class="cart-item" data-id="${item.id}">
             <div class="item-image"><img src="${safeImg}" alt="${safeName}" loading="lazy"></div>
             <div class="item-details">
                 <h3>${safeName}</h3>
-                <div class="item-price">${Number(item.price).toLocaleString()} ${window.I18n.t('common.currency', 'دج')}</div>
             </div>
             <div class="item-quantity">
                 <button class="quantity-btn decrease" data-id="${item.id}">-</button>
-                <input type="number" value="${item.quantity}" min="1" max="20" data-id="${item.id}">
+                <input type="number" value="${qtyNum}" min="1" max="20" data-id="${item.id}">
                 <button class="quantity-btn increase" data-id="${item.id}">+</button>
             </div>
-            <div class="item-total">${(Number(item.price) * Number(item.quantity)).toLocaleString()} ${window.I18n.t('common.currency', 'دج')}</div>
+            <div class="item-price-col">
+                <div class="item-total">${lineTotal} ${currency}</div>
+                <div class="item-unit-subtext" style="${qtyNum > 1 ? '' : 'display: none;'}"><bdi>${priceNum.toLocaleString()} ${currency}</bdi> × ${qtyNum}</div>
+            </div>
             <button class="remove-item" data-id="${item.id}" title="${window.I18n.t('cart.remove_item', 'إزالة العنصر')}"><i class="fas fa-trash-alt"></i></button>
         </div>
     `;
