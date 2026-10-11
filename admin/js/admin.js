@@ -386,8 +386,8 @@ function handleAdminGenericAction(e, type) {
         return;
     }
     
-    // Select elements should never trigger their action on click (only on change)
-    if (e.target.tagName === 'SELECT' || e.target.tagName === 'OPTION') {
+    // Select & file inputs should never trigger their action on click (only on change)
+    if (e.target.tagName === 'SELECT' || e.target.tagName === 'OPTION' || (e.target.tagName === 'INPUT' && e.target.type === 'file')) {
         if (type === 'click') return;
     }
 

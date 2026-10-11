@@ -1,6 +1,12 @@
+/**
+ * MYSHOP Admin Dashboard - Store Settings Page Logic
+ */
 
         async function loadSettings() {
             try {
+                const user = await AdminAuth.verifyAdmin();
+                if (!user) return;
+
                 const res = await fetch('/api/admin/settings', { 
                     credentials: 'include',
                     headers: AdminAuth.getHeaders(false)
@@ -24,13 +30,17 @@
 
                     if (settings.store_logo) {
                         const preview = document.getElementById('logoPreview');
-                        preview.src = settings.store_logo;
-                        preview.style.display = 'block';
+                        if (preview) {
+                            preview.src = settings.store_logo;
+                            preview.style.display = 'block';
+                        }
                     }
                     if (settings.store_favicon) {
                         const preview = document.getElementById('faviconPreview');
-                        preview.src = settings.store_favicon;
-                        preview.style.display = 'block';
+                        if (preview) {
+                            preview.src = settings.store_favicon;
+                            preview.style.display = 'block';
+                        }
                     }
                 }
             } catch (err) {
@@ -39,13 +49,24 @@
         }
 
         async function uploadSingleMedia(fileInput, targetInputId, previewImgId) {
-            const file = fileInput.files[0];
+            const file = fileInput.files && fileInput.files[0];
             if (!file) return;
+
+            // Find matching label to show feedback
+            const uploadBtn = document.querySelector(`.upload-btn[for="${fileInput.id}"]`) || fileInput.closest('.upload-btn');
+            const originalBtnHtml = uploadBtn ? uploadBtn.innerHTML : '';
+            if (uploadBtn) {
+                uploadBtn.style.pointerEvents = 'none';
+                uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>جاري الرفع...</span>';
+            }
 
             const formData = new FormData();
             formData.append('file', file);
 
             try {
+                if (!AdminAuth.csrfToken) {
+                    await AdminAuth.fetchCsrfToken();
+                }
                 const headers = AdminAuth.getHeaders(false);
 
                 const res = await fetch('/api/admin/upload-media', {
@@ -56,9 +77,12 @@
                 });
 
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'فشل رفع الملف');
+                if (!res.ok) throw new Error(data.error || data.message || 'فشل رفع الملف');
 
-                document.getElementById(targetInputId).value = data.url;
+                const targetInput = document.getElementById(targetInputId);
+                if (targetInput) {
+                    targetInput.value = data.url;
+                }
                 const preview = document.getElementById(previewImgId);
                 if (preview) {
                     preview.src = data.url;
@@ -68,7 +92,40 @@
                 AdminUI.showToast('تم رفع الصورة بنجاح! ☁️', 'success');
             } catch (err) {
                 AdminUI.showToast(err.message, 'error');
+            } finally {
+                if (uploadBtn) {
+                    uploadBtn.style.pointerEvents = '';
+                    uploadBtn.innerHTML = originalBtnHtml;
+                }
+                fileInput.value = '';
             }
+        }
+
+        function initMediaUploaders() {
+            const logoFileInput = document.getElementById('logoFileInput');
+            if (logoFileInput) {
+                logoFileInput.addEventListener('change', function() {
+                    uploadSingleMedia(this, 'setting_store_logo', 'logoPreview');
+                });
+            }
+            const faviconFileInput = document.getElementById('faviconFileInput');
+            if (faviconFileInput) {
+                faviconFileInput.addEventListener('change', function() {
+                    uploadSingleMedia(this, 'setting_store_favicon', 'faviconPreview');
+                });
+            }
+
+            // Keyboard support for upload labels (Enter / Space)
+            document.querySelectorAll('.upload-btn[for]').forEach(lbl => {
+                lbl.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const targetId = lbl.getAttribute('for');
+                        const targetInput = document.getElementById(targetId);
+                        if (targetInput) targetInput.click();
+                    }
+                });
+            });
         }
 
         async function saveSettings(e) {
@@ -158,5 +215,13 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadSettings);
-    
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            initMediaUploaders();
+        });
+
+// Expose admin settings functions globally for data-action delegation
+window.loadSettings = loadSettings;
+window.uploadSingleMedia = uploadSingleMedia;
+window.saveSettings = saveSettings;
+window.testTelegramNotification = testTelegramNotification;

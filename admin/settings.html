@@ -252,27 +252,27 @@
                     <div class="form-grid" style="margin-top: 16px;">
                         <!-- Logo Upload -->
                         <div class="form-group">
-                            <label>شعار المتجر الرئيسي (Logo)</label>
+                            <label for="logoFileInput">شعار المتجر الرئيسي (Logo)</label>
                             <div class="upload-field-row">
                                 <img id="logoPreview" class="media-preview-box" alt="Logo Preview">
                                 <input type="text" id="setting_store_logo" placeholder="/images/logo.png أو رابط CDN" style="flex: 1;">
-                                <label class="upload-btn">
-                                    <i class="fas fa-cloud-upload-alt"></i> رفع شعار
-                                    <input type="file" id="logoFileInput" accept="image/*" style="display: none;" data-action="uploadSingleMedia" data-args="this, 'setting_store_logo', 'logoPreview'">
+                                <label for="logoFileInput" class="upload-btn" role="button" tabindex="0" title="رفع شعار المتجر">
+                                    <i class="fas fa-cloud-upload-alt"></i> <span>رفع شعار</span>
                                 </label>
+                                <input type="file" id="logoFileInput" accept="image/*" style="display: none;" data-action="uploadSingleMedia" data-args="this, 'setting_store_logo', 'logoPreview'">
                             </div>
                         </div>
 
                         <!-- Favicon Upload -->
                         <div class="form-group">
-                            <label>أيقونة المتصفح المصغرة (Favicon)</label>
+                            <label for="faviconFileInput">أيقونة المتصفح المصغرة (Favicon)</label>
                             <div class="upload-field-row">
                                 <img id="faviconPreview" class="media-preview-box" alt="Favicon Preview">
                                 <input type="text" id="setting_store_favicon" placeholder="/favicon.ico أو رابط CDN" style="flex: 1;">
-                                <label class="upload-btn">
-                                    <i class="fas fa-cloud-upload-alt"></i> رفع أيقونة
-                                    <input type="file" id="faviconFileInput" accept="image/*" style="display: none;" data-action="uploadSingleMedia" data-args="this, 'setting_store_favicon', 'faviconPreview'">
+                                <label for="faviconFileInput" class="upload-btn" role="button" tabindex="0" title="رفع أيقونة المتصفح">
+                                    <i class="fas fa-cloud-upload-alt"></i> <span>رفع أيقونة</span>
                                 </label>
+                                <input type="file" id="faviconFileInput" accept="image/*" style="display: none;" data-action="uploadSingleMedia" data-args="this, 'setting_store_favicon', 'faviconPreview'">
                             </div>
                         </div>
                     </div>

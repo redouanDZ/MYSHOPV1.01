@@ -340,35 +340,213 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: clamp(12px, 3vh, 24px) clamp(10px, 3vw, 20px);
+            box-sizing: border-box;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
         }
 
         .account-modal.show {
             display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .account-modal-content {
-            background: var(--card-bg);
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: var(--card-bg, #ffffff);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 540px;
+            max-height: calc(100vh - 32px);
+            max-height: calc(100dvh - 32px);
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
             position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+            animation: accountModalZoomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes accountModalZoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .account-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border-color, #e2e8f0);
+            background: var(--card-bg, #ffffff);
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .account-modal-header h3 {
+            margin: 0;
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--text-color, #1e293b);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .close-modal-btn {
-            position: absolute;
-            top: 16px;
-            left: 16px;
             background: transparent;
             border: none;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
+            line-height: 1;
             cursor: pointer;
-            color: #888;
+            color: var(--light-text, #888);
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .close-modal-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--danger-color, #e74c3c);
+            transform: scale(1.08);
+        }
+
+        .account-modal-form {
+            padding: 20px 22px;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-sizing: border-box;
+        }
+
+        .account-modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .account-modal-form .form-group {
+            margin-bottom: 0;
+            gap: 6px;
+        }
+
+        .account-modal-form .form-group label {
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .account-modal-form .form-group input,
+        .account-modal-form .form-group textarea {
+            padding: 10px 12px;
+            font-size: 0.92rem;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .account-modal-form textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .modal-checkbox-row {
+            padding-top: 4px;
+        }
+
+        .account-modal-actions {
+            margin-top: 6px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-color, #f0f0f0);
+        }
+
+        .btn-secondary-modal {
+            background: #95a5a6;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-secondary-modal:hover {
+            opacity: 0.9;
+        }
+
+        /* Responsive Modal tweaks */
+        @media (max-width: 520px) {
+            .account-modal {
+                padding: 8px;
+            }
+            .account-modal-content {
+                max-height: calc(100vh - 16px);
+                max-height: calc(100dvh - 16px);
+                border-radius: 14px;
+            }
+            .account-modal-header {
+                padding: 14px 16px;
+            }
+            .account-modal-form {
+                padding: 14px 16px;
+                gap: 12px;
+            }
+            .account-modal-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .account-modal-actions {
+                flex-direction: column-reverse;
+                gap: 8px;
+            }
+            .account-modal-actions button {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        /* Landscape orientation on short screens */
+        @media (max-height: 500px) {
+            .account-modal-header {
+                padding: 10px 16px;
+            }
+            .account-modal-form {
+                padding: 12px 16px;
+                gap: 10px;
+            }
+            .account-modal-form textarea {
+                min-height: 50px;
+            }
+            .account-modal-actions {
+                margin-top: 4px;
+                padding-top: 8px;
+            }
         }
 
         /* Dark mode overrides for account page */
@@ -435,6 +613,24 @@
             background-color: rgba(255, 255, 255, 0.05) !important;
             border-color: var(--border-color) !important;
             color: var(--text-color) !important;
+        }
+
+        [data-theme="dark"] .account-modal-header,
+        body.dark-mode .account-modal-header {
+            background: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+        }
+        [data-theme="dark"] .account-modal-header h3,
+        body.dark-mode .account-modal-header h3 {
+            color: var(--text-color) !important;
+        }
+        [data-theme="dark"] .close-modal-btn:hover,
+        body.dark-mode .close-modal-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        [data-theme="dark"] .account-modal-actions,
+        body.dark-mode .account-modal-actions {
+            border-color: var(--border-color) !important;
         }
     </style>
   <meta name="theme-color" content="#2563eb">
@@ -583,38 +779,47 @@
     </main>
 
     <!-- Modal for Adding Address -->
-    <div class="account-modal" id="add-address-modal">
+    <div class="account-modal" id="add-address-modal" role="dialog" aria-modal="true" aria-labelledby="add-address-title">
         <div class="account-modal-content">
-            <button class="close-modal-btn" id="close-address-modal">&times;</button>
-            <h3 style="margin-bottom: 20px;"><i class="fas fa-map-marker-alt" style="color:var(--primary-color); margin-left:8px;"></i><span data-i18n="account.add_new_address">إضافة عنوان شحن جديد</span></h3>
-            <form id="add-address-form">
-                <div class="form-group">
-                    <label for="addr-title"><span data-i18n="account.address_title">اسم العنوان (مثال: المنزل، العمل)</span></label>
-                    <input type="text" id="addr-title" required data-i18n-placeholder="account.address_title_placeholder" placeholder="المنزل">
+            <div class="account-modal-header">
+                <h3 id="add-address-title">
+                    <i class="fas fa-map-marker-alt" style="color:var(--primary-color);"></i>
+                    <span data-i18n="account.add_new_address">إضافة عنوان شحن جديد</span>
+                </h3>
+                <button type="button" class="close-modal-btn" id="close-address-modal" aria-label="Close">&times;</button>
+            </div>
+            <form id="add-address-form" class="account-modal-form">
+                <div class="account-modal-grid">
+                    <div class="form-group">
+                        <label for="addr-title"><span data-i18n="account.address_title">اسم العنوان (مثال: المنزل، العمل)</span></label>
+                        <input type="text" id="addr-title" required data-i18n-placeholder="account.address_title_placeholder" placeholder="المنزل">
+                    </div>
+                    <div class="form-group">
+                        <label for="addr-fullname"><span data-i18n="account.recipient_name">الاسم الكامل للمستلم</span></label>
+                        <input type="text" id="addr-fullname" required data-i18n-placeholder="account.recipient_name_placeholder" placeholder="الاسم الكامل">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="addr-fullname"><span data-i18n="account.recipient_name">الاسم الكامل للمستلم</span></label>
-                    <input type="text" id="addr-fullname" required data-i18n-placeholder="account.recipient_name_placeholder" placeholder="الاسم الكامل">
-                </div>
-                <div class="form-group">
-                    <label for="addr-phone" data-i18n="checkout.phone">رقم الهاتف</label>
-                    <input type="tel" id="addr-phone" required placeholder="0550000000">
-                </div>
-                <div class="form-group">
-                    <label for="addr-city"><span data-i18n="account.city_wilaya">المدينة / الولاية</span></label>
-                    <input type="text" id="addr-city" required data-i18n-placeholder="account.algiers_placeholder" placeholder="الجزائر العاصمة">
+                <div class="account-modal-grid">
+                    <div class="form-group">
+                        <label for="addr-phone" data-i18n="checkout.phone">رقم الهاتف</label>
+                        <input type="tel" id="addr-phone" required placeholder="0550000000">
+                    </div>
+                    <div class="form-group">
+                        <label for="addr-city"><span data-i18n="account.city_wilaya">المدينة / الولاية</span></label>
+                        <input type="text" id="addr-city" required data-i18n-placeholder="account.algiers_placeholder" placeholder="الجزائر العاصمة">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="addr-street"><span data-i18n="account.detailed_address">العنوان التفصيلي</span></label>
                     <textarea id="addr-street" rows="3" required data-i18n-placeholder="account.detailed_address_placeholder" placeholder="اسم الشارع، رقم العمارة، الشقة..."></textarea>
                 </div>
-                <div style="margin-top: 10px;">
+                <div class="modal-checkbox-row">
                     <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
                         <input type="checkbox" id="addr-default" class="custom-checkbox-input"> <span data-i18n="account.set_default">تعيين كعنوان افتراضي</span>
                     </label>
                 </div>
-                <div style="margin-top: 25px; display:flex; justify-content:flex-end; gap:10px;">
-                    <button type="button" class="btn" style="background:#95a5a6;" id="cancel-address-btn"><span data-i18n="common.cancel">إلغاء</span></button>
+                <div class="account-modal-actions">
+                    <button type="button" class="btn btn-secondary-modal" id="cancel-address-btn"><span data-i18n="common.cancel">إلغاء</span></button>
                     <button type="submit" class="btn"><span data-i18n="account.save_address">حفظ العنوان</span></button>
                 </div>
             </form>

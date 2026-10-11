@@ -206,6 +206,16 @@
             if (openAddBtn) openAddBtn.addEventListener('click', () => addressModal && addressModal.classList.add('show'));
             if (closeAddBtn) closeAddBtn.addEventListener('click', () => addressModal && addressModal.classList.remove('show'));
             if (cancelAddBtn) cancelAddBtn.addEventListener('click', () => addressModal && addressModal.classList.remove('show'));
+            if (addressModal) {
+                addressModal.addEventListener('click', (e) => {
+                    if (e.target === addressModal) addressModal.classList.remove('show');
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && addressModal.classList.contains('show')) {
+                        addressModal.classList.remove('show');
+                    }
+                });
+            }
 
             const addAddressForm = document.getElementById('add-address-form');
             if (addAddressForm) {
