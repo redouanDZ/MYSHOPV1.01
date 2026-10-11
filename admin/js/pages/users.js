@@ -230,6 +230,5 @@ window.resetUsersFilters = resetUsersFilters;
 window.viewCustomerDetails = viewCustomerDetails;
 window.closeCustomerModal = closeCustomerModal;
 window.changeUserRole = changeUserRole;
-window.changeUserStatus = changeUserStatus;
 window.deleteUserAccount = deleteUserAccount;
     

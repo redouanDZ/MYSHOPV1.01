@@ -220,5 +220,6 @@ window.resetCouponsFilters = resetCouponsFilters;
 window.openAddCouponModal = openAddCouponModal;
 window.openEditCouponModal = openEditCouponModal;
 window.closeCouponModal = closeCouponModal;
-window.saveCoupon = saveCoupon;
+window.handleSaveCoupon = handleSaveCoupon;
+window.toggleCouponStatus = toggleCouponStatus;
 window.deleteCoupon = deleteCoupon;

@@ -5217,7 +5217,7 @@ input[type="tel"] {
         min-height: 60px;
     }
     .shop-layout {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: minmax(0, 1fr) !important;
     }
     /* .shop-sidebar is a bottom sheet on phones/tablets — layout is owned by shop.html */
 }
@@ -6625,4 +6625,21 @@ input[type="checkbox"]:checked { border-color: var(--primary-color) !important; 
 /* Back-to-top covered product buttons on phones; the bottom nav + header make it redundant there */
 @media (max-width: 768px) {
     .back-to-top-btn { display: none !important; }
+}
+
+
+/* Fix: allow grid children to shrink (prevents horizontal overflow on 320px screens) */
+.shop-layout > * { min-width: 0; }
+.shop-main { min-width: 0; }
+
+/* Fix: compact cart/wishlist badges so they don't cover the icon on phones */
+@media (max-width: 768px) {
+    .cart-count, .wishlist-count {
+        min-width: 16px;
+        height: 16px;
+        font-size: 10px;
+        padding: 0 3px;
+        top: -6px;
+        inset-inline-end: -6px;
+    }
 }

@@ -418,6 +418,14 @@
                     }
                 });
             }
+            // Expose functions to window
+            window.t = t;
+            window.applyUserData = applyUserData;
+            window.switchTab = switchTab;
+            window.loadAddresses = loadAddresses;
+            window.loadUserOrders = loadUserOrders;
+            window.getStatusLabel = getStatusLabel;
+            window.loadUserWishlist = loadUserWishlist;
         });
     
 
@@ -492,12 +500,3 @@ document.addEventListener('error', function(e) {
         }
     }
 }, true);
-
-// Expose functions to window
-window.t = t;
-window.applyUserData = applyUserData;
-window.switchTab = switchTab;
-window.loadAddresses = loadAddresses;
-window.loadUserOrders = loadUserOrders;
-window.getStatusLabel = getStatusLabel;
-window.loadUserWishlist = loadUserWishlist;
