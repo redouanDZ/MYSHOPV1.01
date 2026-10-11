@@ -159,14 +159,113 @@
         }
 
         .section-title {
-            font-size: 1.4rem;
-            margin-bottom: 24px;
+            font-size: 1.25rem;
+            margin-bottom: 20px;
             padding-bottom: 12px;
             border-bottom: 2px solid var(--border-color);
             color: var(--dark-color, #2c3e50);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 12px;
+        }
+
+        .section-title > span:first-child {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            min-width: 0;
+        }
+
+        .section-title i {
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        .add-address-header-btn {
+            font-size: 0.88rem;
+            padding: 8px 16px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .section-title {
+                font-size: 1.1rem;
+                margin-bottom: 16px;
+                padding-bottom: 10px;
+                gap: 10px;
+            }
+
+            .section-title > span:first-child {
+                font-size: 1.1rem;
+                gap: 6px;
+            }
+
+            .section-title i {
+                font-size: 1.02rem;
+            }
+
+            .add-address-header-btn {
+                font-size: 0.82rem !important;
+                padding: 6px 12px !important;
+                gap: 5px !important;
+            }
+
+            .add-address-header-btn i {
+                font-size: 0.78rem !important;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .account-content-card {
+                padding: 16px 12px;
+            }
+
+            .section-title {
+                font-size: 0.98rem;
+                margin-bottom: 14px;
+                padding-bottom: 8px;
+                gap: 8px;
+            }
+
+            .section-title > span:first-child {
+                font-size: 0.98rem;
+                gap: 6px;
+            }
+
+            .section-title i {
+                font-size: 0.92rem;
+            }
+
+            .add-address-header-btn {
+                font-size: 0.78rem !important;
+                padding: 5px 10px !important;
+                border-radius: 6px !important;
+                gap: 4px !important;
+            }
+
+            .add-address-header-btn i {
+                font-size: 0.72rem !important;
+            }
+        }
+
+        @media (max-width: 340px) {
+            .section-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .add-address-header-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         .form-grid {
@@ -698,7 +797,7 @@
             <!-- TAB 1: Profile -->
             <div class="tab-section active" id="tab-profile">
                 <div class="section-title">
-                    <span><i class="fas fa-user-edit" style="color: var(--primary-color); margin-left: 8px;"></i><span data-i18n="account.profile_data">بيانات الملف الشخصي</span></span>
+                    <span><i class="fas fa-user-edit" style="color: var(--primary-color);"></i><span data-i18n="account.profile_data">بيانات الملف الشخصي</span></span>
                 </div>
 
                 <form id="profile-update-form">
@@ -743,9 +842,9 @@
             <!-- TAB 2: Addresses -->
             <div class="tab-section" id="tab-addresses">
                 <div class="section-title">
-                    <span><i class="fas fa-map-marked-alt" style="color: var(--primary-color); margin-left: 8px;"></i><span data-i18n="account.saved_addresses">عناوين الشحن المكتوبة</span></span>
-                    <button type="button" class="btn" id="open-add-address-btn" style="font-size: 0.88rem; padding: 8px 16px;">
-                        <i class="fas fa-plus" style="margin-left: 6px;"></i><span data-i18n="account.add_address">إضافة عنوان جديد</span>
+                    <span><i class="fas fa-map-marked-alt" style="color: var(--primary-color);"></i><span data-i18n="account.saved_addresses">عناوين الشحن المحفوظة</span></span>
+                    <button type="button" class="btn add-address-header-btn" id="open-add-address-btn">
+                        <i class="fas fa-plus"></i><span data-i18n="account.add_address">إضافة عنوان جديد</span>
                     </button>
                 </div>
 
@@ -757,7 +856,7 @@
             <!-- TAB 3: Orders -->
             <div class="tab-section" id="tab-orders">
                 <div class="section-title">
-                    <span><i class="fas fa-shopping-bag" style="color: var(--primary-color); margin-left: 8px;"></i><span data-i18n="account.order_history">سجل الطلبات</span></span>
+                    <span><i class="fas fa-shopping-bag" style="color: var(--primary-color);"></i><span data-i18n="account.order_history">سجل الطلبات</span></span>
                 </div>
 
                 <div class="order-history-list" id="orders-container">
@@ -768,7 +867,7 @@
             <!-- TAB 4: Wishlist -->
             <div class="tab-section" id="tab-wishlist">
                 <div class="section-title">
-                    <span><i class="fas fa-heart" style="color: var(--danger-color); margin-left: 8px;"></i><span data-i18n="account.wishlist_tab">قائمة المفضلة</span></span>
+                    <span><i class="fas fa-heart" style="color: var(--danger-color);"></i><span data-i18n="account.wishlist_tab">قائمة المفضلة</span></span>
                 </div>
 
                 <div class="products-grid" id="wishlist-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
