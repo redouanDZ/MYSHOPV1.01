@@ -9191,7 +9191,24 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
         [data-theme="dark"] .form-field input { min-height: 44px; height: 44px; background: #0f172a; border-color: #334155; color: #f1f5f9; }
         [data-theme="dark"] .form-field input::placeholder { color: #94a3b8; }
         [data-theme="dark"] .timeline-stepper::before { background: #334155; }
-        [data-theme="dark"] .step-icon { background: var(--text-color); border-color: var(--text-color); }
+        [data-theme="dark"] .step-icon {
+            background: var(--card-bg, #1e293b);
+            border-color: #334155;
+            box-shadow: 0 0 0 4px var(--card-bg, #1e293b);
+            color: var(--light-text);
+        }
+        [data-theme="dark"] .step-node.completed .step-icon {
+            background: var(--success-color);
+            border-color: var(--success-color);
+            color: #fff;
+            box-shadow: 0 0 0 4px var(--card-bg, #1e293b);
+        }
+        [data-theme="dark"] .step-node.active .step-icon {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.35);
+        }
         [data-theme="dark"] .step-label { color: var(--light-text); }
         [data-theme="dark"] .order-header-info { background: #0f172a; }
         [data-theme="dark"] .order-info-item span { color: var(--light-text); }
@@ -9235,17 +9252,19 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
             content: '';
             position: absolute;
             top: 23px;
-            right: 40px;
-            left: 40px;
+            right: 12.5%;
+            left: 12.5%;
             height: 4px;
             background: #e2e8f0;
             z-index: 1;
         }
         .timeline-progress-bar {
-            width: var(--progress-perc, 0%);
+            width: calc(var(--progress-ratio, 0) * 75%);
+            max-width: 75%;
             position: absolute;
             top: 23px;
-            right: 40px;
+            right: 12.5%;
+            left: auto;
             height: 4px;
             background: var(--success-color);
             z-index: 2;
@@ -9254,7 +9273,7 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
         html[dir="ltr"] .timeline-progress-bar,
         [dir="ltr"] .timeline-progress-bar {
             right: auto;
-            left: 40px;
+            left: 12.5%;
         }
         .step-node {
             position: relative;
@@ -9383,7 +9402,8 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
             .timeline-progress-bar {
                 top: 22px;
                 width: 4px !important;
-                height: var(--progress-perc, 0%);
+                max-width: 4px !important;
+                height: calc((100% - 44px) * var(--progress-ratio, 0));
                 max-height: calc(100% - 44px);
                 z-index: 2;
                 transition: height 0.4s ease;

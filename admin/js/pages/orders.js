@@ -192,156 +192,198 @@
                 const safeTotal = AdminTable.escapeHtml(total);
                 const safeDate = AdminTable.escapeHtml(date);
 
-                printWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html lang="ar" dir="rtl">
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>بوليصة شحن - ${safeOrderNum}</title>
-                        <style>
-                            @page {
-                                size: 100mm 150mm;
-                                margin: 0;
-                            }
-                            * {
-                                box-sizing: border-box;
-                                margin: 0;
-                                padding: 0;
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                            }
-                            body {
-                                width: 100mm;
-                                height: 150mm;
-                                padding: 6mm;
-                                background: var(--card-bg, #fff);
-                                color: #000;
-                                font-size: 11pt;
-                                line-height: 1.3;
-                            }
-                            .label-container {
-                                border: 2px solid #000;
-                                height: 100%;
-                                display: flex;
-                                flex-direction: column;
-                                justify-content: space-between;
-                                padding: 4mm;
-                            }
-                            .header {
-                                border-bottom: 2px solid #000;
-                                padding-bottom: 3mm;
-                                display: flex;
-                                justify-content: space-between;
-                                align-items: center;
-                            }
-                            .store-title {
-                                font-size: 14pt;
-                                font-weight: 900;
-                            }
-                            .order-badge {
-                                border: 2px solid #000;
-                                padding: 2px 6px;
-                                font-size: 12pt;
-                                font-weight: bold;
-                            }
-                            .recipient-section {
-                                border-bottom: 2px dashed #000;
-                                padding: 4mm 0;
-                            }
-                            .recipient-name {
-                                font-size: 14pt;
-                                font-weight: bold;
-                            }
-                            .recipient-phone {
-                                font-size: 16pt;
-                                font-weight: 900;
-                                letter-spacing: 1px;
-                                margin: 2mm 0;
-                                background: #f0f0f0;
-                                padding: 2px 4px;
-                                display: inline-block;
-                            }
-                            .recipient-address {
-                                font-size: 11pt;
-                                font-weight: 600;
-                            }
-                            .wilaya-box {
-                                font-size: 15pt;
-                                font-weight: 900;
-                                margin-bottom: 2mm;
-                            }
-                            .delivery-badge {
-                                display: inline-block;
-                                font-weight: bold;
-                                font-size: 11pt;
-                                margin-top: 2mm;
-                            }
-                            .cod-box {
-                                border: 3px solid #000;
-                                text-align: center;
-                                padding: 3mm;
-                                margin: 3mm 0;
-                                background: #fafafa;
-                            }
-                            .cod-title {
-                                font-size: 11pt;
-                                font-weight: bold;
-                            }
-                            .cod-amount {
-                                font-size: 20pt;
-                                font-weight: 900;
-                            }
-                            .barcode-area {
-                                text-align: center;
-                                font-family: monospace;
-                                font-size: 12pt;
-                                letter-spacing: 4px;
-                                font-weight: bold;
-                                padding-top: 2mm;
-                                border-top: 2px solid #000;
-                            }
-                            @media print {
-                                body { width: 100mm; height: 150mm; padding: 0; }
-                                .label-container { border: 2px solid #000; height: 146mm; margin: 2mm; }
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="label-container">
-                            <div class="header">
-                                <div>
-                                    <div class="store-title">${safeStoreName}</div>
-                                    <div style="font-size: 8pt;">${safeStoreTagline}</div>
-                                </div>
-                                <div class="order-badge">${safeOrderNum}</div>
-                            </div>
+                printWindow.document.write(`<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>بوليصة شحن - ${safeOrderNum}</title>
+    <style>
+        @page {
+            size: 100mm 150mm;
+            margin: 0;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        html, body {
+            width: 100mm;
+            height: 100%;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #fff;
+            color: #000;
+            font-size: 10.5pt;
+            line-height: 1.25;
+            overflow: hidden;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        .label-container {
+            width: 96mm;
+            max-width: 96mm;
+            height: 144mm;
+            max-height: 144mm;
+            margin: 2mm auto 0 auto;
+            border: 2px solid #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3.5mm;
+            box-sizing: border-box;
+            overflow: hidden;
+            page-break-inside: avoid;
+            break-inside: avoid;
+            page-break-after: avoid;
+            break-after: avoid;
+        }
+        .header {
+            border-bottom: 2px solid #000;
+            padding-bottom: 2.5mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .store-title {
+            font-size: 13pt;
+            font-weight: 900;
+        }
+        .order-badge {
+            border: 2px solid #000;
+            padding: 2px 6px;
+            font-size: 11pt;
+            font-weight: bold;
+        }
+        .recipient-section {
+            border-bottom: 2px dashed #000;
+            padding: 3mm 0;
+        }
+        .recipient-name {
+            font-size: 13pt;
+            font-weight: bold;
+        }
+        .recipient-phone {
+            font-size: 15pt;
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin: 1.5mm 0;
+            background: #f0f0f0;
+            padding: 2px 4px;
+            display: inline-block;
+        }
+        .recipient-address {
+            font-size: 10pt;
+            font-weight: 600;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+        .wilaya-box {
+            font-size: 14pt;
+            font-weight: 900;
+            margin-bottom: 1.5mm;
+        }
+        .delivery-badge {
+            display: inline-block;
+            font-weight: bold;
+            font-size: 10pt;
+            margin-top: 1.5mm;
+        }
+        .cod-box {
+            border: 2.5px solid #000;
+            text-align: center;
+            padding: 2.5mm;
+            margin: 2.5mm 0;
+            background: #fafafa;
+        }
+        .cod-title {
+            font-size: 10pt;
+            font-weight: bold;
+        }
+        .cod-amount {
+            font-size: 18pt;
+            font-weight: 900;
+        }
+        .barcode-area {
+            text-align: center;
+            font-family: monospace;
+            font-size: 11pt;
+            letter-spacing: 3px;
+            font-weight: bold;
+            padding-top: 2mm;
+            border-top: 2px solid #000;
+        }
+        @media print {
+            @page {
+                size: 100mm 150mm;
+                margin: 0;
+            }
+            html, body {
+                width: 100mm !important;
+                max-width: 100mm !important;
+                height: 148mm !important;
+                max-height: 148mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+            }
+            .label-container {
+                width: 96mm !important;
+                max-width: 96mm !important;
+                height: 144mm !important;
+                max-height: 144mm !important;
+                margin: 2mm auto 0 auto !important;
+                border: 2px solid #000 !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+                overflow: hidden !important;
+            }
+        }
+    </style>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                window.print();
+            }, 150);
+        });
+    <\/script>
+</head>
+<body><div class="label-container">
+    <div class="header">
+        <div>
+            <div class="store-title">${safeStoreName}</div>
+            <div style="font-size: 8pt;">${safeStoreTagline}</div>
+        </div>
+        <div class="order-badge">${safeOrderNum}</div>
+    </div>
 
-                            <div class="recipient-section">
-                                <div style="font-size: 9pt; color: var(--light-text);">المستلم (Recipient):</div>
-                                <div class="recipient-name">${safeCustomerName}</div>
-                                <div class="recipient-phone" dir="ltr">${safePhone}</div>
-                                <div class="wilaya-box">📍 ولاية: ${safeWilaya}</div>
-                                <div class="recipient-address">العنوان: ${safeAddress}</div>
-                                <div class="delivery-badge">${safeDeliveryType}</div>
-                            </div>
+    <div class="recipient-section">
+        <div style="font-size: 8.5pt; color: #555;">المستلم (Recipient):</div>
+        <div class="recipient-name">${safeCustomerName}</div>
+        <div class="recipient-phone" dir="ltr">${safePhone}</div>
+        <div class="wilaya-box">📍 ولاية: ${safeWilaya}</div>
+        <div class="recipient-address">العنوان: ${safeAddress}</div>
+        <div class="delivery-badge">${safeDeliveryType}</div>
+    </div>
 
-                            <div class="cod-box">
-                                <div class="cod-title">المبلغ المطلوب تحصيله (COD AMOUNT)</div>
-                                <div class="cod-amount">${safeTotal} دج</div>
-                            </div>
+    <div class="cod-box">
+        <div class="cod-title">المبلغ المطلوب تحصيله (COD AMOUNT)</div>
+        <div class="cod-amount">${safeTotal} دج</div>
+    </div>
 
-                            <div class="barcode-area">
-                                <div style="font-size: 8pt; letter-spacing: 0; margin-bottom: 2px;">تاريخ الشحن: ${safeDate}</div>
-                                <div>*${safeOrderNum}*</div>
-                            </div>
-                        </div>
-                        <script>
-                            window.onload = function() {
-                                window.print();
-                            };
-                        <\/script>
-                    </body>
-                    </html>
-                `);
+    <div class="barcode-area">
+        <div style="font-size: 8pt; letter-spacing: 0; margin-bottom: 2px;">تاريخ الشحن: ${safeDate}</div>
+        <div>*${safeOrderNum}*</div>
+    </div>
+</div></body>
+</html>`);
                 printWindow.document.close();
             } catch (err) {
                 alert('خطأ في تحضير بوليصة الشحن: ' + err.message);
