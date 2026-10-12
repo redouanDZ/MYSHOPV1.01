@@ -3074,4 +3074,12 @@ input:checked + .slider:before {
     font-weight: bold;
 }
 
+/* Mobile layout: admin pages do not have a bottom navigation bar, eliminate 78px blank gap */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 0 !important;
+    }
+}
+
+
 

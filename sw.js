@@ -1,4 +1,4 @@
-const CACHE_NAME = 'myshop-pwa-va29866134e';
+const CACHE_NAME = 'myshop-pwa-vda33d599ce';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -15,6 +15,7 @@ const STATIC_ASSETS = [
   '/privacy.html',
   '/css/style.min.css',
   '/css/invoice.css',
+  '/css/order-confirmation.css',
   '/fonts/fonts.css',
   '/vendor/fontawesome/css/all.min.css',
   '/vendor/fontawesome/webfonts/fa-solid-900.woff2',
