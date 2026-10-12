@@ -815,11 +815,12 @@ header .container {
         height: 100vh;
         z-index: 10000;
         transition: inset-inline-start 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+        box-shadow: none; /* closed: don't let the shadow bleed into the viewport edge */
         overflow-y: auto;
     }
 
     .sidebar.active, .sidebar.open {
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
         inset-inline-start: 0;
     }
 
