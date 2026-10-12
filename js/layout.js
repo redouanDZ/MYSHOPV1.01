@@ -69,12 +69,12 @@
           <!-- Wishlist -->
           <a href="wishlist.html" class="action-btn wishlist-icon ${active === 'wishlist' ? 'active' : ''}" data-i18n-title="common.wishlist" title="المفضلة">
             <i class="fas fa-heart text-danger"></i>
-            <span class="badge-count wishlist-count" id="wishlist-count">0</span>
+            <span class="badge-count wishlist-count" id="wishlist-count" style="display:none;">0</span>
           </a>
           <!-- Shopping Cart -->
           <a href="cart.html" class="action-btn cart-icon ${active === 'cart' ? 'active' : ''}" data-i18n-title="common.cart_title" title="السلة">
             <i class="fas fa-bag-shopping"></i>
-            <span class="badge-count cart-count">0</span>
+            <span class="badge-count cart-count" style="display:none;">0</span>
           </a>
           <!-- User Profile -->
           <a href="account.html" class="action-btn user-icon ${active === 'account' ? 'active' : ''}" data-i18n-title="common.my_account" title="حسابي">
@@ -191,14 +191,14 @@
       <a href="wishlist.html" class="mobile-nav-item ${active === 'wishlist' ? 'active' : ''}">
         <div class="nav-icon-badge-wrap">
           <i class="fas fa-heart"></i>
-          <span class="mobile-badge wishlist-count" id="mobile-wishlist-count">0</span>
+          <span class="mobile-badge wishlist-count" id="mobile-wishlist-count" style="display:none;">0</span>
         </div>
         <span data-i18n="common.wishlist">المفضلة</span>
       </a>
       <a href="cart.html" class="mobile-nav-item ${active === 'cart' ? 'active' : ''}">
         <div class="nav-icon-badge-wrap">
           <i class="fas fa-bag-shopping"></i>
-          <span class="mobile-badge cart-count" id="mobile-cart-count">0</span>
+          <span class="mobile-badge cart-count" id="mobile-cart-count" style="display:none;">0</span>
         </div>
         <span data-i18n="common.cart_title">السلة</span>
       </a>
@@ -214,21 +214,23 @@
     // 1. Sync Cart Count
     try {
       const savedCart = localStorage.getItem('cart');
-      if (savedCart) {
-        const items = JSON.parse(savedCart);
-        const count = Array.isArray(items) ? items.reduce((s, it) => s + (it.quantity || 1), 0) : 0;
-        document.querySelectorAll('.cart-count').forEach(el => { el.textContent = count; });
-      }
+      const items = savedCart ? JSON.parse(savedCart) : [];
+      const count = Array.isArray(items) ? items.reduce((s, it) => s + (it.quantity || 1), 0) : 0;
+      document.querySelectorAll('.cart-count').forEach(el => {
+        el.textContent = count;
+        el.style.display = count > 0 ? '' : 'none';
+      });
     } catch (e) {}
 
     // 2. Sync Wishlist Count
     try {
       const savedWish = localStorage.getItem('wishlist');
-      if (savedWish) {
-        const ids = JSON.parse(savedWish);
-        const count = Array.isArray(ids) ? ids.length : 0;
-        document.querySelectorAll('#wishlist-count, .wishlist-count').forEach(el => { el.textContent = count; });
-      }
+      const ids = savedWish ? JSON.parse(savedWish) : [];
+      const count = Array.isArray(ids) ? ids.length : 0;
+      document.querySelectorAll('#wishlist-count, .wishlist-count').forEach(el => {
+        el.textContent = count;
+        el.style.display = count > 0 ? '' : 'none';
+      });
     } catch (e) {}
   }
 

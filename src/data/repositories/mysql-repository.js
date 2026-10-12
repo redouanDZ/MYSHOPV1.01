@@ -9,6 +9,7 @@ const DEFAULT_PRODUCTS = [
     category: 'أزياء وملابس',
     name: 'قميص رجالي كاجوال من الكتان الفاخر',
     price: 3800,
+    old_price: 4900,
     cost_price: 2100,
     stock: 18,
     image_url: '/images/prod_linen_shirt.jpg',
@@ -22,6 +23,7 @@ const DEFAULT_PRODUCTS = [
     category: 'أزياء وملابس',
     name: 'فستان صيفي أنيق بتصميم عصري ناعم',
     price: 4900,
+    old_price: 5900,
     cost_price: 2700,
     stock: 3,
     image_url: '/images/prod_summer_dress.jpg',
@@ -35,6 +37,7 @@ const DEFAULT_PRODUCTS = [
     category: 'أزياء وملابس',
     name: 'حذاء رياضي مريح للجري والمشي اليومي',
     price: 5500,
+    old_price: null,
     cost_price: 3200,
     stock: 24,
     image_url: '/images/prod_sneakers.jpg',
@@ -48,6 +51,7 @@ const DEFAULT_PRODUCTS = [
     category: 'ساعات وإكسسوارات',
     name: 'ساعة يد رجالية كلاسيكية بسوار جلدي فاخر',
     price: 4200,
+    old_price: 5400,
     cost_price: 2300,
     stock: 4,
     image_url: '/images/prod_classic_watch.jpg',
@@ -61,6 +65,7 @@ const DEFAULT_PRODUCTS = [
     category: 'عطور ومستحضرات تجميل',
     name: 'عطر فاخر برائحة العود والعنبر الفواح 100ml',
     price: 6200,
+    old_price: null,
     cost_price: 3500,
     stock: 15,
     image_url: '/images/prod_perfume.jpg',
@@ -74,6 +79,7 @@ const DEFAULT_PRODUCTS = [
     category: 'منزل وديكور',
     name: 'طقم أواني ومقالي غرانيت غير لاصقة (4 قطع)',
     price: 8900,
+    old_price: 11500,
     cost_price: 5200,
     stock: 2,
     image_url: '/images/prod_cookware.jpg',
@@ -87,6 +93,7 @@ const DEFAULT_PRODUCTS = [
     category: 'هواتف وإلكترونيات',
     name: 'حاسوب محمول فائق الأداء للأعمال والبرمجة',
     price: 3900,
+    old_price: 5200,
     cost_price: 2100,
     stock: 16,
     image_url: '/images/christopher-gower-m_HRfLhgABo-unsplash.jpg',
@@ -100,6 +107,7 @@ const DEFAULT_PRODUCTS = [
     category: 'هواتف وإلكترونيات',
     name: 'كاميرا رقمية احترافية بدقة 4K للتصوير الفوتوغرافي',
     price: 4200,
+    old_price: 5800,
     cost_price: 2400,
     stock: 5,
     image_url: '/images/samsung-memory-RZM2cE0lx0Y-unsplash.jpg',
@@ -2308,7 +2316,21 @@ function createFallbackRepository() {
     },
     async createProduct(productData) {
       const id = state.nextProductId++;
-      const product = { id, name: String(productData.name || '').trim(), category: String(productData.category || 'إلكترونيات'), price: Number(productData.price), stock: Number(productData.stock), image_url: productData.image_url || '/images/product-placeholder.jpg', status: productData.status || 'active', description: productData.description || '', rating: Number(productData.rating || 5), created_at: new Date().toISOString() };
+      const rawCost = productData.cost_price ?? productData.costPrice ?? 0;
+      const costPrice = Number(rawCost);
+      const product = { 
+        id, 
+        name: String(productData.name || '').trim(), 
+        category: String(productData.category || 'إلكترونيات'), 
+        price: Number(productData.price), 
+        cost_price: Number.isFinite(costPrice) ? costPrice : 0,
+        stock: Number(productData.stock), 
+        image_url: productData.image_url || '/images/product-placeholder.jpg', 
+        status: productData.status || 'active', 
+        description: productData.description || '', 
+        rating: Number(productData.rating || 5), 
+        created_at: new Date().toISOString() 
+      };
       state.products.push(product);
       return id;
     },
@@ -2318,6 +2340,11 @@ function createFallbackRepository() {
       if (productData.name !== undefined) product.name = String(productData.name || '').trim();
       if (productData.category !== undefined) product.category = String(productData.category || 'إلكترونيات');
       if (productData.price !== undefined) product.price = Number(productData.price);
+      if (productData.cost_price !== undefined || productData.costPrice !== undefined) {
+        const rawCost = productData.cost_price !== undefined ? productData.cost_price : productData.costPrice;
+        const costPrice = Number(rawCost);
+        product.cost_price = Number.isFinite(costPrice) ? costPrice : 0;
+      }
       if (productData.stock !== undefined) product.stock = Number(productData.stock);
       if (productData.image_url !== undefined) product.image_url = productData.image_url || '/images/product-placeholder.jpg';
       if (productData.status !== undefined) product.status = productData.status || 'active';
@@ -2388,17 +2415,25 @@ function createFallbackRepository() {
       const cartInput = Array.isArray(orderData.cart) ? orderData.cart : null;
       let cartItems = [];
       if (cartInput && cartInput.length > 0) {
-        cartItems = cartInput.map(item => {
-          const product = state.products.find(entry => Number(entry.id) === Number(item.id || item.product_id));
-          return { 
-            product_id: Number(item.id || item.product_id), 
-            quantity: Number(item.quantity) || 1, 
+        for (const item of cartInput) {
+          const pid = Number(item.id || item.product_id);
+          const qty = Number(item.quantity);
+          if (!Number.isInteger(pid) || pid <= 0) {
+            throw new Error('معرف المنتج غير صالح في بيانات السلة');
+          }
+          if (!Number.isInteger(qty) || qty < 1 || qty > 100) {
+            throw new Error('الكمية المطلوبة غير صالحة (يجب أن تكون عدداً صحيحاً بين 1 و 100)');
+          }
+          const product = state.products.find(entry => Number(entry.id) === pid);
+          cartItems.push({ 
+            product_id: pid, 
+            quantity: qty, 
             name: product ? product.name : (item.name || 'منتج'), 
             price: product ? Number(product.price) : 0, 
             image_url: product ? product.image_url : (item.image || item.image_url || '/images/product-placeholder.jpg'),
             variant_id: (item.variant_id || item.variantId) ? Number(item.variant_id || item.variantId) : null
-          };
-        });
+          });
+        }
       } else if (userId) {
         cartItems = await repo.getCartItems(userId);
       }
@@ -2454,7 +2489,7 @@ function createFallbackRepository() {
         total: finalTotal,
         status: 'pending',
         payment_method: orderData.paymentMethod || shippingInfo.paymentMethod || 'cod',
-        payment_status: orderData.paymentStatus || 'pending',
+        payment_status: 'pending',
         shipping_full_name: shippingInfo.fullName || '',
         phone: shippingInfo.phone || '',
         email: shippingInfo.email || '',
@@ -2572,7 +2607,17 @@ function createFallbackRepository() {
     },
     async getAdminDashboardStats() {
       const nonCancelled = state.orders.filter(o => o.status !== 'cancelled');
+      const nonCancelledIds = new Set(nonCancelled.map(o => Number(o.id)));
       const totalRevenue = nonCancelled.reduce((sum, o) => sum + Number(o.total || 0), 0);
+      let totalCost = 0;
+      for (const item of (state.orderItems || [])) {
+        if (nonCancelledIds.has(Number(item.order_id))) {
+          const product = state.products.find(p => Number(p.id) === Number(item.product_id));
+          const unitCost = Number(product?.cost_price || 0);
+          totalCost += unitCost * Number(item.quantity || 1);
+        }
+      }
+      const netProfit = Math.max(0, totalRevenue - totalCost);
       const totalOrders = state.orders.length;
       const newOrders = state.orders.filter(o => o.status === 'pending').length;
       const outOfStockCount = state.products.filter(p => Number(p.stock) === 0).length;
@@ -2585,6 +2630,8 @@ function createFallbackRepository() {
 
       return {
         totalRevenue,
+        totalCost,
+        netProfit,
         totalOrders,
         newOrders,
         outOfStockCount,
@@ -3192,11 +3239,39 @@ function createFallbackRepository() {
       return true;
     },
 
-    async storeRefreshToken(data) {},
-    async getRefreshToken(tokenHash) { return null; },
-    async deleteRefreshToken(tokenHash) {},
-    async revokeRefreshToken(tokenHash) {},
-    async revokeAllUserRefreshTokens(userId) {},
+    async storeRefreshToken(data) {
+      if (!state.refreshTokens) state.refreshTokens = new Map();
+      state.refreshTokens.set(data.tokenHash, {
+        tokenHash: data.tokenHash,
+        userId: Number(data.userId),
+        sessionId: data.sessionId,
+        remember: Boolean(data.remember),
+        expiresAt: Number(data.expiresAt),
+        revokedAt: null
+      });
+    },
+    async getRefreshToken(tokenHash) {
+      if (!state.refreshTokens) state.refreshTokens = new Map();
+      const token = state.refreshTokens.get(tokenHash);
+      return token ? { ...token } : null;
+    },
+    async deleteRefreshToken(tokenHash) {
+      if (!state.refreshTokens) return;
+      state.refreshTokens.delete(tokenHash);
+    },
+    async revokeRefreshToken(tokenHash) {
+      if (!state.refreshTokens) return;
+      const token = state.refreshTokens.get(tokenHash);
+      if (token) token.revokedAt = Date.now();
+    },
+    async revokeAllUserRefreshTokens(userId) {
+      if (!state.refreshTokens) return;
+      for (const token of state.refreshTokens.values()) {
+        if (Number(token.userId) === Number(userId) && !token.revokedAt) {
+          token.revokedAt = Date.now();
+        }
+      }
+    },
     async getLoginAttempt(identifier) {
       if (!state.loginAttempts) state.loginAttempts = new Map();
       const item = state.loginAttempts.get(String(identifier || '').toLowerCase());

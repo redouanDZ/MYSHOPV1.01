@@ -8,44 +8,6 @@
     <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../css/style.min.css">
     <link rel="stylesheet" href="css/dashboard.min.css">
-    <style>
-        .review-action-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            background: var(--light-color, #f1f5f9);
-            color: var(--text-color, #334155);
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            margin-left: 4px;
-            transition: all 0.2s;
-        }
-        .review-action-btn.approve-btn:hover { background: var(--success-color); color: #ffffff; }
-        .review-action-btn.reject-btn:hover { background: #f59e0b; color: #ffffff; }
-        .review-action-btn.delete-btn:hover { background: #dc2626; color: #ffffff; }
-        .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        .status-approved { background: #d1fae5; color: #065f46; }
-        .status-pending { background: #fef3c7; color: #92400e; }
-        .status-rejected { background: #fee2e2; color: #991b1b; }
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            background: var(--card-bg, #fff);
-            border-radius: 8px;
-            border: 1px solid var(--border-color, #e2e8f0);
-        }
-        .stars-gold { color: #f59e0b; }
-    </style>
 
     <!-- Theme Anti-Flicker -->
     <script src="../js/theme-init.js"></script>
@@ -74,7 +36,7 @@
                     <li><a href="../documentation/index.html" target="_blank" class="text-indigo fw-600"><i class="fas fa-book-open"></i> التوثيق</a></li>
                 </ul>
             </nav>
-            <div class="user-actions" style="display: flex; gap: 15px; align-items: center;">
+            <div class="user-actions admin-user-actions">
                 <a href="../account.html" class="user-icon" title="حساب الأدمن">
                     <i class="fas fa-user-shield"></i>
                 </a>
@@ -102,7 +64,7 @@
                 <li><a href="reviews.html" class="active"><i class="fas fa-star"></i> تقييمات المنتجات</a></li>
                 <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات والبكسلات</a></li>
                 <li><a href="../index.html"><i class="fas fa-store"></i> واجهة المتجر</a></li>
-                <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                <li class="sidebar-logout-item">
                     <a href="#" id="adminLogoutBtn" class="text-danger"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
                 </li>
             </ul>
@@ -110,16 +72,16 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <div class="dashboard-header dashboard-header-flex">
                 <h1>إدارة ومراقبة تقييمات العملاء</h1>
                 <div>
-                    <span id="reviewsCountDisplay" style="font-weight: bold; color: var(--primary-color);"></span>
+                    <span id="reviewsCountDisplay" class="fw-bold text-primary"></span>
                 </div>
             </div>
 
             <!-- Filters Bar -->
             <div class="filters-bar surface-card">
-                <div style="flex: 1; min-width: 200px;">
+                <div class="relative-grow">
                     <input type="text" id="searchInput" placeholder="البحث باسم المنتج، العميل أو التعليق..." class="admin-input">
                 </div>
                 <div>
@@ -140,7 +102,7 @@
                         <option value="1">★☆☆☆☆ (نجمة واحدة)</option>
                     </select>
                 </div>
-                <div style="display: flex; gap: 8px;">
+                <div class="page-header-actions">
                     <button type="button" data-action="loadAdminReviews" data-args="1" class="btn btn-primary">
                         <i class="fas fa-filter"></i> تصفية
                     </button>
@@ -152,22 +114,22 @@
 
             <!-- Reviews Table -->
             <div class="table-responsive">
-                <table class="data-table cards-table" style="width: 100%; border-collapse: collapse;">
+                <table class="data-table cards-table">
                     <thead>
                         <tr class="table-header-row">
-                            <th style="padding: 12px 15px;">#</th>
-                            <th style="padding: 12px 15px;">المنتج</th>
-                            <th style="padding: 12px 15px;">العميل</th>
-                            <th style="padding: 12px 15px; text-align: center;">التقييم</th>
-                            <th style="padding: 12px 15px;">التعليق والملاحظات</th>
-                            <th style="padding: 12px 15px; text-align: center;">التاريخ</th>
-                            <th style="padding: 12px 15px; text-align: center;">الحالة</th>
-                            <th style="padding: 12px 15px; text-align: center;">إجراءات المراقبة</th>
+                            <th>#</th>
+                            <th>المنتج</th>
+                            <th>العميل</th>
+                            <th class="th-center">التقييم</th>
+                            <th>التعليق والملاحظات</th>
+                            <th class="th-center">التاريخ</th>
+                            <th class="th-center">الحالة</th>
+                            <th class="th-center">إجراءات المراقبة</th>
                         </tr>
                     </thead>
                     <tbody id="reviews-tbody">
                         <tr>
-                            <td colspan="8" style="text-align: center; padding: 30px; color: var(--light-text, #64748b);">
+                            <td colspan="8" class="table-empty-cell">
                                 <i class="fas fa-spinner fa-spin"></i> جاري تحميل التقييمات...
                             </td>
                         </tr>
@@ -176,7 +138,7 @@
             </div>
 
             <!-- Pagination -->
-            <div class="pagination" id="pagination" style="display: flex; justify-content: center; gap: 8px; margin-top: 20px;"></div>
+            <div class="pagination admin-pagination" id="pagination"></div>
         </div>
     </div>
 

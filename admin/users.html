@@ -8,40 +8,6 @@
     <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../css/style.min.css">
     <link rel="stylesheet" href="css/dashboard.min.css">
-    <style>
-        .customer-action-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            background: var(--light-color, #f1f5f9);
-            color: var(--text-color, #334155);
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            margin-left: 4px;
-            transition: all 0.2s;
-        }
-        .customer-action-btn:hover { background: var(--primary-color); color: #ffffff; }
-        .role-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        .role-admin { background: #fee2e2; color: var(--danger-color); }
-        .role-customer { background: #e0f2fe; color: #0284c7; }
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            background: var(--card-bg, #fff);
-            border-radius: 8px;
-            border: 1px solid var(--border-color, #e2e8f0);
-        }
-    </style>
 
     <!-- Theme Anti-Flicker -->
     <script src="../js/theme-init.js"></script>
@@ -70,7 +36,7 @@
                     <li><a href="../documentation/index.html" target="_blank" class="text-indigo fw-600"><i class="fas fa-book-open"></i> التوثيق</a></li>
                 </ul>
             </nav>
-            <div class="user-actions" style="display: flex; gap: 15px; align-items: center;">
+            <div class="user-actions admin-user-actions">
                 <a href="../account.html" class="user-icon" title="حساب الأدمن">
                     <i class="fas fa-user-shield"></i>
                 </a>
@@ -98,7 +64,7 @@
                 <li><a href="reviews.html"><i class="fas fa-star"></i> تقييمات المنتجات</a></li>
                 <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات والبكسلات</a></li>
                 <li><a href="../index.html"><i class="fas fa-store"></i> واجهة المتجر</a></li>
-                <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                <li class="sidebar-logout-item">
                     <a href="#" id="adminLogoutBtn" class="text-danger"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
                 </li>
             </ul>
@@ -106,16 +72,16 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <div class="dashboard-header dashboard-header-flex">
                 <h1>إدارة المستخدمين</h1>
                 <div>
-                    <span id="customersCountDisplay" style="font-weight: bold; color: var(--primary-color);"></span>
+                    <span id="customersCountDisplay" class="fw-bold text-primary"></span>
                 </div>
             </div>
 
             <!-- Filters Bar -->
             <div class="filters-bar surface-card">
-                <div style="flex: 1; min-width: 220px;">
+                <div class="relative-grow">
                     <input type="text" id="searchInput" placeholder="البحث بالاسم، البريد أو الهاتف..." class="admin-input">
                 </div>
                 <div>
@@ -125,7 +91,7 @@
                         <option value="admin">المدراء والمشرفين</option>
                     </select>
                 </div>
-                <div style="display: flex; gap: 8px;">
+                <div class="page-header-actions">
                     <button type="button" data-action="loadAdminCustomers" data-args="1" class="btn btn-primary">
                         <i class="fas fa-search"></i> بحث
                     </button>
@@ -137,23 +103,23 @@
 
             <!-- Customers Table -->
             <div class="table-responsive">
-                <table class="data-table cards-table" style="width: 100%; border-collapse: collapse;">
+                <table class="data-table cards-table">
                     <thead>
                         <tr class="table-header-row">
-                            <th style="padding: 12px 15px;">#</th>
-                            <th style="padding: 12px 15px;">الاسم واللقب</th>
-                            <th style="padding: 12px 15px;">البريد الإلكتروني</th>
-                            <th style="padding: 12px 15px;">رقم الهاتف</th>
-                            <th style="padding: 12px 15px;">نوع الحساب</th>
-                            <th style="padding: 12px 15px; text-align: center;">الطلبات</th>
-                            <th style="padding: 12px 15px; text-align: left;">إجمالي المشتريات</th>
-                            <th style="padding: 12px 15px; text-align: center;">تاريخ التسجيل</th>
-                            <th style="padding: 12px 15px; text-align: center;">إجراءات</th>
+                            <th>#</th>
+                            <th>الاسم واللقب</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>رقم الهاتف</th>
+                            <th>نوع الحساب</th>
+                            <th class="th-center">الطلبات</th>
+                            <th class="text-left">إجمالي المشتريات</th>
+                            <th class="th-center">تاريخ التسجيل</th>
+                            <th class="th-center">إجراءات</th>
                         </tr>
                     </thead>
                     <tbody id="customers-tbody">
                         <tr>
-                            <td colspan="9" style="text-align: center; padding: 30px; color: var(--light-text, #64748b);">
+                            <td colspan="9" class="table-empty-cell">
                                 <i class="fas fa-spinner fa-spin"></i> جاري تحميل بيانات العملاء...
                             </td>
                         </tr>
@@ -162,16 +128,16 @@
             </div>
 
             <!-- Pagination -->
-            <div class="pagination" id="pagination" style="display: flex; justify-content: center; gap: 8px; margin-top: 20px;"></div>
+            <div class="pagination admin-pagination" id="pagination"></div>
         </div>
     </div>
 
     <!-- Customer Details Modal -->
-    <div id="customerModal" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; overflow-y: auto; padding: 20px;">
+    <div id="customerModal" class="modal admin-modal-overlay">
         <div class="modal-surface">
-            <button type="button" data-action="closeCustomerModal" data-args="" class="btn-close-modal" style="position: absolute; left: 20px; top: 20px; font-size: 1.2rem;">&times;</button>
-            <h2 id="modalCustomerName" style="margin-top: 0; color: var(--text-color, #1e293b); border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">تفاصيل المستخدم</h2>
-            <div id="modalCustomerBody" style="margin-top: 15px;">
+            <button type="button" data-action="closeCustomerModal" data-args="" class="btn-close-modal close-modal-corner">&times;</button>
+            <h2 id="modalCustomerName" class="admin-modal-title modal-title-border">تفاصيل المستخدم</h2>
+            <div id="modalCustomerBody" class="modal-customer-body">
                 <!-- Filled dynamically -->
             </div>
         </div>

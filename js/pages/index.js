@@ -80,15 +80,24 @@ let homeProductsList = [];
                     `}).join('');
                 }
 
-                if (offersContainer && Array.isArray(products) && products.length > 0) {
-                    const specialOffers = products.slice(0, 4);
+                const discountedProducts = products.filter(p => p.old_price && Number(p.old_price) > Number(p.price));
+                const offersSection = offersContainer ? offersContainer.closest('.special-offers') : null;
+
+                if (offersSection) {
+                    if (discountedProducts.length < 2) {
+                        offersSection.style.display = 'none';
+                    } else {
+                        offersSection.style.display = '';
+                    }
+                }
+
+                if (offersContainer && discountedProducts.length >= 2) {
                     const wishlistIds = window.getWishlist ? window.getWishlist() : [];
-                    offersContainer.innerHTML = specialOffers.map(p => {
+                    offersContainer.innerHTML = discountedProducts.slice(0, 8).map(p => {
                         const isFav = wishlistIds.includes(p.id);
                         const safeName = window.escapeHtml ? window.escapeHtml(p.name) : p.name;
                         const safeCat = window.escapeHtml ? window.escapeHtml(p.category || 'عرض خاص') : (p.category || 'عرض خاص');
-                        const hasDiscount = p.old_price && Number(p.old_price) > Number(p.price);
-                        const discountPct = hasDiscount ? Math.round((1 - Number(p.price) / Number(p.old_price)) * 100) : 20;
+                        const discountPct = Math.round((1 - Number(p.price) / Number(p.old_price)) * 100);
                         return `
                         <div class="product-card offer-card" id="offer-card-${p.id}">
                             <span class="product-badge">-${discountPct}%</span>
@@ -112,7 +121,7 @@ let homeProductsList = [];
                                 </div>
                                 <div class="product-price-row">
                                     <span class="product-price">${Number(p.price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>
-                                    ${hasDiscount ? `<span class="product-old-price">${Number(p.old_price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>` : ''}
+                                    <span class="product-old-price">${Number(p.old_price).toLocaleString()} <small data-i18n="common.currency">دج</small></span>
                                 </div>
                                 <div class="product-card-actions">
                                     <button type="button" data-action="quickAddToCart" data-id="${p.id}" class="btn btn-primary" ${p.stock <= 0 ? 'disabled' : ''}>

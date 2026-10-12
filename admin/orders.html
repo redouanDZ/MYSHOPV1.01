@@ -8,63 +8,6 @@
     <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../css/style.min.css">
     <link rel="stylesheet" href="css/dashboard.min.css">
-    <style>
-        .status-select {
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            cursor: pointer;
-            border: 1.5px solid var(--border-color, #cbd5e1);
-            background: var(--card-bg, #fff);
-            color: var(--text-color, #334155);
-            outline: none;
-            transition: all 0.2s ease;
-        }
-        .status-select.pending { background: #fef3c7; color: #d97706; border-color: #fde68a; }
-        .status-select.processing { background: #e0f2fe; color: #0284c7; border-color: #bae6fd; }
-        .status-select.shipped { background: #ede9fe; color: #7c3aed; border-color: #ddd6fe; }
-        .status-select.delivered { background: #d1fae5; color: var(--success-color); border-color: #a7f3d0; }
-        .status-select.cancelled { background: #fee2e2; color: var(--danger-color); border-color: #fecaca; }
-        
-        .order-action-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            background: var(--light-color, #f1f5f9);
-            color: var(--text-color, #334155);
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            margin-left: 4px;
-            transition: all 0.2s;
-        }
-        .order-action-btn:hover { background: var(--primary-color, #2563eb); color: #ffffff; }
-        .order-action-btn.view-btn:hover { background: #0284c7; color: #ffffff; }
-        .order-action-btn.invoice-btn:hover { background: var(--success-color); color: #ffffff; }
-        .order-action-btn.whatsapp-btn:hover { background: #25d366; color: #ffffff; }
-        .order-action-btn.delete-btn:hover { background: #dc2626; color: #ffffff; }
-        
-        .status-tab-btn {
-            padding: 6px 14px;
-            border: 1px solid var(--border-color, #cbd5e1);
-            background: var(--card-bg, #fff);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--text-color, #475569);
-            transition: all 0.2s;
-        }
-        .status-tab-btn.active {
-            background: var(--primary-color, #2563eb);
-            color: #ffffff;
-            border-color: var(--primary-color, #2563eb);
-        }
-    </style>
 
     <!-- Theme Anti-Flicker -->
     <script src="../js/theme-init.js"></script>
@@ -93,7 +36,7 @@
                     <li><a href="../documentation/index.html" target="_blank" class="text-indigo fw-600"><i class="fas fa-book-open"></i> التوثيق</a></li>
                 </ul>
             </nav>
-            <div class="user-actions" style="display: flex; gap: 15px; align-items: center;">
+            <div class="user-actions admin-user-actions">
                 <a href="../account.html" class="user-icon" title="حساب الأدمن">
                     <i class="fas fa-user-shield"></i>
                 </a>
@@ -121,7 +64,7 @@
                 <li><a href="reviews.html"><i class="fas fa-star"></i> تقييمات المنتجات</a></li>
                 <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات والبكسلات</a></li>
                 <li><a href="../index.html"><i class="fas fa-store"></i> واجهة المتجر</a></li>
-                <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                <li class="sidebar-logout-item">
                     <a href="#" id="adminLogoutBtn" class="text-danger"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
                 </li>
             </ul>
@@ -129,9 +72,9 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <div class="dashboard-header dashboard-header-flex">
                 <h1>إدارة وتجهيز الطلبات</h1>
-                <div style="display: flex; gap: 10px; align-items: center;">
+                <div class="page-header-actions">
                     <button type="button" data-action="exportOrdersToCsv" data-args="" class="btn btn-success flex-btn">
                         <i class="fas fa-file-excel"></i> تصدير الطلبات (CSV / Excel)
                     </button>
@@ -140,8 +83,8 @@
             </div>
 
             <div class="orders-container surface-card" >
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 15px; flex-wrap: wrap;">
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div class="filter-toolbar">
+                    <div class="status-tabs-wrap">
                         <button type="button" class="status-tab-btn active" data-action="filterByStatus" data-args="'all', this">الكل</button>
                         <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'pending', this">قيد المراجعة</button>
                         <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'processing', this">قيد التجهيز</button>
@@ -149,8 +92,8 @@
                         <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'delivered', this">تم التسليم</button>
                         <button type="button" class="status-tab-btn" data-action="filterByStatus" data-args="'cancelled', this">ملغي</button>
                     </div>
-                    <div class="search-box order-search-box" style="position: relative; min-width: 280px; display: flex; gap: 8px; align-items: center;">
-                        <div style="position: relative; flex: 1;">
+                    <div class="search-box order-search-box">
+                        <div class="relative-grow">
                             <input type="text" id="orderSearchInput" placeholder="بحث برقم الطلب، العميل، الهاتف، الولاية..." class="admin-input">
                             <i class="fas fa-search search-icon" aria-hidden="true"></i>
                         </div>
@@ -160,22 +103,22 @@
                     </div>
                 </div>
 
-                <table class="cards-table" style="width: 100%; border-collapse: collapse;">
+                <table class="cards-table">
                     <thead>
                         <tr class="table-header-row">
-                            <th style="padding: 12px 10px;">رقم الطلب</th>
-                            <th style="padding: 12px 10px;">العميل والهاتف</th>
-                            <th style="padding: 12px 10px;">الولاية والتوصيل</th>
-                            <th style="padding: 12px 10px;">الإجمالي</th>
-                            <th style="padding: 12px 10px;">طريقة الدفع</th>
-                            <th style="padding: 12px 10px;">التاريخ</th>
-                            <th style="padding: 12px 10px; width: 170px;">حالة الطلب والتجهيز</th>
-                            <th style="padding: 12px 10px; text-align: center;">إجراءات</th>
+                            <th>رقم الطلب</th>
+                            <th>العميل والهاتف</th>
+                            <th>الولاية والتوصيل</th>
+                            <th>الإجمالي</th>
+                            <th>طريقة الدفع</th>
+                            <th>التاريخ</th>
+                            <th class="th-col-status">حالة الطلب والتجهيز</th>
+                            <th class="th-center">إجراءات</th>
                         </tr>
                     </thead>
                     <tbody id="admin-orders-tbody">
                         <tr>
-                            <td colspan="8" style="text-align: center; padding: 30px; color: var(--light-text, #64748b);">جاري جلب قائمة الطلبات...</td>
+                            <td colspan="8" class="table-empty-cell">جاري جلب قائمة الطلبات...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -184,18 +127,18 @@
     </div>
 
     <!-- نافذة منبثقة لتفاصيل ومحتويات الطلب -->
-    <div class="modal" id="orderDetailsModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
+    <div class="modal admin-modal-overlay" id="orderDetailsModal">
         <div class="modal-content">
-            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color, #e2e8f0); padding-bottom: 15px; margin-bottom: 20px;">
-                <h2 id="modalOrderTitle" style="margin: 0; font-size: 1.3rem; color: var(--text-color, #1e293b);">تفاصيل الطلب</h2>
+            <div class="modal-header admin-modal-header">
+                <h2 id="modalOrderTitle" class="admin-modal-title">تفاصيل الطلب</h2>
                 <button type="button" class="close-modal btn-close-modal" data-action="closeOrderDetailsModal" data-args="" >
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body" id="modalOrderContent">
-                <p style="text-align: center; padding: 20px; color: var(--light-text, #64748b);">جاري جلب بيانات الطلب...</p>
+                <p class="table-modal-empty-cell">جاري جلب بيانات الطلب...</p>
             </div>
-            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 20px;">
+            <div class="modal-footer admin-modal-footer">
                 <button type="button" class="btn btn-primary" data-action="closeOrderDetailsModal" data-args="" >إغلاق</button>
             </div>
         </div>

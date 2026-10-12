@@ -237,6 +237,7 @@ window.WishlistManager = {
 
         badges.forEach(b => {
             b.textContent = count;
+            b.style.display = count > 0 ? '' : 'none';
         });
 
         // Synchronize heart button states in DOM

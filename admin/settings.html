@@ -8,163 +8,6 @@
     <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../css/style.min.css">
     <link rel="stylesheet" href="css/dashboard.min.css">
-    <style>
-        .settings-section-card {
-            background: var(--card-bg, #fff);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.05));
-            border: 1px solid var(--border-color, #e2e8f0);
-            margin-bottom: 24px;
-        }
-        .settings-section-card h3 {
-            margin-top: 0;
-            margin-bottom: 18px;
-            color: var(--text-color, #1e293b);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.15rem;
-            border-bottom: 1px solid var(--border-color, #f1f5f9);
-            padding-bottom: 12px;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .form-group label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-color, #334155);
-        }
-        .form-group input, .form-group textarea, .form-group select {
-            padding: 10px 14px;
-            border: 1px solid var(--border-color, #cbd5e1);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: border-color 0.2s, background-color 0.2s;
-            background-color: var(--card-bg, #fff);
-            color: var(--text-color, #1e293b);
-        }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-color, #2563eb);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-        .upload-field-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .upload-btn {
-            background: var(--light-color, #f1f5f9);
-            color: var(--text-color, #334155);
-            border: 1px solid var(--border-color, #cbd5e1);
-            padding: 10px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.88rem;
-            font-weight: 600;
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .upload-btn:hover {
-            background: var(--border-color, #e2e8f0);
-        }
-        .media-preview-box {
-            width: 48px;
-            height: 48px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color, #e2e8f0);
-            object-fit: contain;
-            background: var(--light-color, #f8fafc);
-            display: none;
-        }
-        .toggle-switch-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--light-color, #f8fafc);
-            padding: 14px 18px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color, #e2e8f0);
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 48px;
-            height: 26px;
-        }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--border-color, #cbd5e1);
-            transition: .3s;
-            border-radius: 26px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 3px;
-            bottom: 3px;
-            background-color: var(--card-bg, #fff);
-            transition: .3s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: var(--success-color, #10b981);
-        }
-        input:checked + .slider:before {
-            transform: translateX(22px);
-        }
-        /* Dark mode specifics */
-        [data-theme="dark"] .toggle-switch-container {
-            background: var(--light-color);
-            border-color: var(--border-color);
-        }
-        [data-theme="dark"] .toggle-switch-container strong {
-            color: var(--text-color) !important;
-        }
-        [data-theme="dark"] .toggle-switch-container small {
-            color: var(--light-text) !important;
-        }
-        [data-theme="dark"] .settings-section-card {
-            background: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-        }
-        [data-theme="dark"] .form-group input,
-        [data-theme="dark"] .form-group textarea,
-        [data-theme="dark"] .form-group select {
-            background-color: var(--light-color) !important;
-            color: var(--text-color) !important;
-            border-color: var(--border-color) !important;
-        }
-        [data-theme="dark"] .upload-btn {
-            background: var(--light-color) !important;
-            color: var(--text-color) !important;
-            border-color: var(--border-color) !important;
-        }
-        [data-theme="dark"] .success-card {
-            background: rgba(16, 185, 129, 0.08) !important;
-            border-color: rgba(16, 185, 129, 0.2) !important;
-        }
-    </style>
 
     <!-- Theme Anti-Flicker -->
     <script src="../js/theme-init.js"></script>
@@ -193,7 +36,7 @@
                     <li><a href="../documentation/index.html" target="_blank" class="text-indigo fw-600"><i class="fas fa-book-open"></i> التوثيق</a></li>
                 </ul>
             </nav>
-            <div class="user-actions" style="display: flex; gap: 15px; align-items: center;">
+            <div class="user-actions admin-user-actions">
                 <a href="../account.html" class="user-icon" title="حساب الأدمن">
                     <i class="fas fa-user-shield"></i>
                 </a>
@@ -221,7 +64,7 @@
                 <li><a href="reviews.html"><i class="fas fa-star"></i> تقييمات المنتجات</a></li>
                 <li><a href="settings.html" class="active"><i class="fas fa-cog"></i> الإعدادات والبكسلات</a></li>
                 <li><a href="../index.html"><i class="fas fa-store"></i> واجهة المتجر</a></li>
-                <li style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                <li class="sidebar-logout-item">
                     <a href="#" id="adminLogoutBtn" class="text-danger"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
                 </li>
             </ul>
@@ -229,12 +72,12 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <div class="dashboard-header" style="margin-bottom: 25px;">
+            <div class="dashboard-header form-group-mb25">
                 <h1>⚙️ التخصيص العام وإدارة المتجر والسحابة</h1>
-                <p style="color: var(--light-text, #64748b); margin-top: 5px;">تحكم بهوية متجرك، الشعار، أرقام التواصل، روابط الشبكات الاجتماعية، السياسات، بكسلات التتبع الإعلاني، والتخزين السحابي للوسائط.</p>
+                <p class="settings-subtitle">تحكم بهوية متجرك، الشعار، أرقام التواصل، روابط الشبكات الاجتماعية، السياسات، بكسلات التتبع الإعلاني، والتخزين السحابي للوسائط.</p>
             </div>
 
-            <form id="settingsForm" data-action="saveSettings" data-args="event" style="max-width: 950px;">
+            <form id="settingsForm" data-action="saveSettings" data-args="event" class="settings-form-container">
                 <!-- 1. Identity & Branding -->
                 <div class="settings-section-card">
                     <h3><i class="fas fa-palette text-blue" ></i> هوية وشعار المتجر (Branding & Logo)</h3>
@@ -249,17 +92,17 @@
                         </div>
                     </div>
 
-                    <div class="form-grid" style="margin-top: 16px;">
+                    <div class="form-grid form-grid-mt16">
                         <!-- Logo Upload -->
                         <div class="form-group">
                             <label for="logoFileInput">شعار المتجر الرئيسي (Logo)</label>
                             <div class="upload-field-row">
                                 <img id="logoPreview" class="media-preview-box" alt="Logo Preview">
-                                <input type="text" id="setting_store_logo" placeholder="/images/logo.png أو رابط CDN" style="flex: 1;">
+                                <input type="text" id="setting_store_logo" placeholder="/images/logo.png أو رابط CDN" class="relative-grow">
                                 <label for="logoFileInput" class="upload-btn" role="button" tabindex="0" title="رفع شعار المتجر">
                                     <i class="fas fa-cloud-upload-alt"></i> <span>رفع شعار</span>
                                 </label>
-                                <input type="file" id="logoFileInput" accept="image/*" style="display: none;" data-action="uploadSingleMedia" data-args="this, 'setting_store_logo', 'logoPreview'">
+                                <input type="file" id="logoFileInput" accept="image/*" class="file-input-hidden" data-action="uploadSingleMedia" data-args="this, 'setting_store_logo', 'logoPreview'">
                             </div>
                         </div>
 
@@ -268,11 +111,11 @@
                             <label for="faviconFileInput">أيقونة المتصفح المصغرة (Favicon)</label>
                             <div class="upload-field-row">
                                 <img id="faviconPreview" class="media-preview-box" alt="Favicon Preview">
-                                <input type="text" id="setting_store_favicon" placeholder="/favicon.ico أو رابط CDN" style="flex: 1;">
+                                <input type="text" id="setting_store_favicon" placeholder="/favicon.ico أو رابط CDN" class="relative-grow">
                                 <label for="faviconFileInput" class="upload-btn" role="button" tabindex="0" title="رفع أيقونة المتصفح">
                                     <i class="fas fa-cloud-upload-alt"></i> <span>رفع أيقونة</span>
                                 </label>
-                                <input type="file" id="faviconFileInput" accept="image/*" style="display: none;" data-action="uploadSingleMedia" data-args="this, 'setting_store_favicon', 'faviconPreview'">
+                                <input type="file" id="faviconFileInput" accept="image/*" class="file-input-hidden" data-action="uploadSingleMedia" data-args="this, 'setting_store_favicon', 'faviconPreview'">
                             </div>
                         </div>
                     </div>
@@ -300,7 +143,7 @@
                         </div>
                     </div>
 
-                    <div class="form-grid" style="margin-top: 16px;">
+                    <div class="form-grid form-grid-mt16">
                         <div class="form-group">
                             <label><i class="fab fa-facebook text-facebook" ></i> رابط صفحة الفيسبوك</label>
                             <input type="url" id="setting_facebook_url" placeholder="https://facebook.com/yourpage" dir="ltr">
@@ -319,7 +162,7 @@
                 <!-- 3. Store Policies & Announcement Bar -->
                 <div class="settings-section-card">
                     <h3><i class="fas fa-shield-alt text-purple" ></i> سياسات المتجر وشريط الإعلانات</h3>
-                    <div class="form-group" style="margin-bottom: 16px;">
+                    <div class="form-group form-group-mb16">
                         <label><i class="fas fa-bullhorn text-amber" ></i> نص شريط الإعلانات العلوي (Announcement Bar)</label>
                         <input type="text" id="setting_announcement_bar_text" placeholder="توصيل سريع لـ 58 ولاية والدفع عند الاستلام!">
                     </div>
@@ -343,7 +186,7 @@
                 <!-- 4. Payment Gateways Control -->
                 <div class="settings-section-card">
                     <h3><i class="fas fa-credit-card text-amber" ></i> تفعيل / تعطيل بوابات وطرق الدفع</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <div class="form-grid">
                         <div class="toggle-switch-container">
                             <div>
                                 <strong class="text-slate-900 block"><i class="fas fa-money-bill-wave text-green" ></i> الدفع عند الاستلام (COD)</strong>
@@ -398,10 +241,10 @@
                 <!-- 6. Telegram Instant Order Alerts -->
                 <div class="settings-section-card">
                     <h3><i class="fab fa-telegram text-telegram" ></i> إشعارات تيليجرام الفورية للطلبات (Telegram Instant Order Alerts)</h3>
-                    <p style="color: var(--light-text, #64748b); font-size: 0.9rem; margin-top: -8px; margin-bottom: 16px;">
+                    <p class="settings-desc-note">
                         استلم إشعاراً فورياً على هاتفك عبر تطبيق Telegram مع رنة تنبيه وتفاصيل العميل بمجرد تسجيل أي طلب شراء جديد.
                     </p>
-                    <div class="toggle-switch-container" style="margin-bottom: 16px;">
+                    <div class="toggle-switch-container form-group-mb16">
                         <div>
                             <strong class="text-slate-900 block"><i class="fas fa-bell text-telegram" ></i> تفعيل إشعارات التيليجرام</strong>
                             <small class="text-slate">إرسال تفاصيل كل طلب شراء جديد فور تسجيله إلى حساب التيليجرام الخاص بك</small>
@@ -423,7 +266,7 @@
                             <small class="text-slate">يمكنك معرفة الـ ID الخاص بك عبر مراسلة <strong>@userinfobot</strong></small>
                         </div>
                     </div>
-                    <div style="margin-top: 14px; display: flex; gap: 10px;">
+                    <div class="page-header-actions form-group-mt14">
                         <button type="button" data-action="testTelegramNotification" data-args="" id="testTelegramBtn" class="btn btn-telegram">
                             <i class="fas fa-paper-plane"></i> اختبار الإرسال الفوري للتيليجرام
                         </button>
@@ -432,16 +275,16 @@
 
                 <!-- 7. Cloud Media Storage Info -->
                 <div class="settings-section-card success-card">
-                    <h3 style="border-bottom: none; margin-bottom: 8px; color: #166534;">
+                    <h3 class="success-banner-title">
                         <i class="fas fa-cloud text-green-dark" ></i> حالة التخزين السحابي للوسائط (Cloud Media Storage)
                     </h3>
-                    <p style="color: #15803d; font-size: 0.9rem; line-height: 1.6; margin: 0;">
+                    <p class="success-banner-desc">
                         ☁️ <strong>جاهز للنشر السحابي:</strong> يدعم المتجر تلقائياً التخزين السحابي الدائم لصور المنتجات والشعارات عبر <strong>Cloudinary</strong> و <strong>AWS S3 / Cloudflare R2</strong>. عند توفير متغيرات البيئة <code>CLOUDINARY_CLOUD_NAME</code> و <code>CLOUDINARY_API_KEY</code> و <code>CLOUDINARY_API_SECRET</code> في الخادم السحابي، سيتم رفع الصور مباشرة إلى شبكة CDN السحابية لضمان بقائها وعدم فقدانها عند إعادة تشغيل الخادم.
                     </p>
                 </div>
 
                 <!-- Save Button -->
-                <div style="margin-top: 10px; margin-bottom: 40px;">
+                <div class="settings-footer-actions">
                     <button type="submit" id="saveSettingsBtn" class="btn-primary btn-save">
                         <i class="fas fa-save"></i> حفظ كافة التغييرات والإعدادات
                     </button>

@@ -161,6 +161,7 @@ function updateHeaderCount() {
   const countBadges = document.querySelectorAll('.cart-count');
   countBadges.forEach(badge => {
     badge.textContent = totalQty;
+    badge.style.display = totalQty > 0 ? '' : 'none';
   });
 }
 

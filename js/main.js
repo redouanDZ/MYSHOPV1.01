@@ -213,6 +213,7 @@ function updateWishlistUI() {
   const wishlistBadges = document.querySelectorAll('.wishlist-count, #wishlist-count');
   wishlistBadges.forEach(badge => {
     badge.textContent = count;
+    badge.style.display = count > 0 ? '' : 'none';
   });
 
   // Update heart buttons on cards
@@ -512,14 +513,18 @@ function renderVipRewardCard(card, code, email) {
 // Sync cart counter on page load
 function syncCartCounter() {
   const savedCart = localStorage.getItem('cart');
+  let totalCount = 0;
   if (savedCart) {
     try {
       const cartItems = JSON.parse(savedCart);
-      const totalCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
-      const cartCounts = document.querySelectorAll('.cart-count');
-      cartCounts.forEach(el => el.textContent = totalCount);
+      totalCount = Array.isArray(cartItems) ? cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0) : 0;
     } catch (e) {}
   }
+  const cartCounts = document.querySelectorAll('.cart-count');
+  cartCounts.forEach(el => {
+    el.textContent = totalCount;
+    el.style.display = totalCount > 0 ? '' : 'none';
+  });
 }
 
 // Network Status Watcher (Online / Offline mode)
@@ -944,14 +949,14 @@ function initMobileBottomBar() {
     <a href="wishlist.html" class="mobile-nav-item ${isWishlist ? 'active' : ''}">
       <div class="nav-icon-badge-wrap">
         <i class="fas fa-heart"></i>
-        <span class="mobile-badge wishlist-count">0</span>
+        <span class="mobile-badge wishlist-count" style="display:none;">0</span>
       </div>
       <span data-i18n="nav.wishlist">المفضلة</span>
     </a>
     <a href="cart.html" class="mobile-nav-item ${isCart ? 'active' : ''}">
       <div class="nav-icon-badge-wrap">
         <i class="fas fa-shopping-cart"></i>
-        <span class="mobile-badge cart-count">0</span>
+        <span class="mobile-badge cart-count" style="display:none;">0</span>
       </div>
       <span data-i18n="nav.cart_short">السلة</span>
     </a>

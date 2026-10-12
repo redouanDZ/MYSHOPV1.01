@@ -123,7 +123,10 @@ async function removeFromCart(productIdOrKey) {
 function updateCartUI() {
     const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
     const cartCounts = document.querySelectorAll('.cart-count');
-    cartCounts.forEach(el => el.textContent = totalCount);
+    cartCounts.forEach(el => {
+        el.textContent = totalCount;
+        el.style.display = totalCount > 0 ? '' : 'none';
+    });
 
     const container = document.querySelector('.cart-items .products-grid');
     if (!container) return;

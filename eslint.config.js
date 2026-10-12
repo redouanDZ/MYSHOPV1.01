@@ -2,7 +2,7 @@ const globals = require('globals');
 
 module.exports = [
     {
-        ignores: ['node_modules/', 'coverage/', '.git/']
+        ignores: ['node_modules/', 'coverage/', '.git/', 'vendor/']
     },
     {
         files: ['**/*.js'],
@@ -11,7 +11,13 @@ module.exports = [
             sourceType: 'commonjs',
             globals: {
                 ...globals.node,
-                ...globals.browser
+                ...globals.browser,
+                AdminAuth: 'readonly',
+                AdminTable: 'readonly',
+                AdminUI: 'readonly',
+                Chart: 'readonly',
+                getErrorMessage: 'readonly',
+                showToast: 'readonly'
             }
         },
         rules: {
