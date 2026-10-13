@@ -836,6 +836,8 @@
         "REVIEW_UPDATE_FAILED": "Échec de mise à jour du statut de l'avis",
         "REVIEW_DELETE_FAILED": "Échec de suppression de l'avis",
         "SETTINGS_SAVE_FAILED": "Échec de l'enregistrement des paramètres",
+        "INVALID_CCP_FIELD": "Données du compte CCP invalides : chiffres uniquement, longueur limitée",
+        "INVALID_SETTINGS_PAYLOAD": "Données de paramètres invalides",
         "NO_FILE_UPLOADED": "Aucun fichier téléversé",
         "FILE_UPLOAD_FAILED": "Échec du téléversement du fichier",
         "INVALID_ROLE": "Rôle non valide (customer ou admin)",

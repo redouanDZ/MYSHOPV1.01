@@ -208,6 +208,41 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
+
+                        <div class="toggle-switch-container">
+                            <div>
+                                <strong class="text-slate-900 block"><i class="fas fa-university text-amber" ></i> التحويل البريدي / البنكي (CCP / BaridiMob)</strong>
+                                <small class="text-slate">يعرض للزبون بيانات حسابك البريدي ليحوّل المبلغ ويرسل الوصل</small>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="setting_enable_ccp" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4b. CCP / BaridiMob account details (shown to customers on the checkout page) -->
+                <div class="settings-section-card">
+                    <h3><i class="fas fa-university text-amber" ></i> بيانات الحساب البريدي (CCP / BaridiMob)</h3>
+                    <p class="text-slate" style="margin: 0 0 14px;">تظهر هذه البيانات للزبائن في صفحة الدفع عند اختيار التحويل البريدي. تأكد من صحتها قبل الحفظ، فهي المكان الذي سيُحوَّل إليه المال.</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="setting_ccp_account_number">رقم الحساب البريدي (CCP)</label>
+                            <input type="text" id="setting_ccp_account_number" inputmode="numeric" maxlength="24" pattern="[0-9 ]*" dir="ltr" placeholder="مثال: 0012345678" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="setting_ccp_account_key">المفتاح (Clé)</label>
+                            <input type="text" id="setting_ccp_account_key" inputmode="numeric" maxlength="6" pattern="[0-9 ]*" dir="ltr" placeholder="مثال: 90" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="setting_ccp_rip">RIP</label>
+                            <input type="text" id="setting_ccp_rip" inputmode="numeric" maxlength="32" pattern="[0-9 ]*" dir="ltr" placeholder="مثال: 00799999001234567890" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="setting_ccp_account_holder">اسم صاحب الحساب</label>
+                            <input type="text" id="setting_ccp_account_holder" maxlength="80" placeholder="يظهر اسم المتجر إذا تُرك فارغًا" autocomplete="off">
+                        </div>
                     </div>
                 </div>
 

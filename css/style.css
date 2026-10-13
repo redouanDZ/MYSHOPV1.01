@@ -4,6 +4,9 @@
 :root {
     /* Color Palette */
     --primary-color: #4f46e5;
+    --header-solid-bg: #ffffff;
+    --primary-solid: #4f46e5;        /* solid fills that carry white text */
+    --primary-solid-hover: #4338ca;
     --primary-hover: #4338ca;
     --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #8b5cf6 100%);
     --primary-hover-gradient: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
@@ -72,8 +75,11 @@
 }
 
 [data-theme="dark"] {
-    --primary-color: #6366f1;
-    --primary-hover: #818cf8;
+    --header-solid-bg: #111827;
+    --primary-color: #818cf8;        /* lighter indigo for TEXT on dark cards (AA contrast) */
+    --primary-hover: #a5b4fc;
+    --primary-solid: #4f46e5;
+    --primary-solid-hover: #4338ca;
     --dark-color: #f8fafc;
     --light-color: #090d16;
     --card-bg: #111827;
@@ -120,6 +126,11 @@ body {
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Form controls do not inherit the page font by default (they fall back to Arial) */
+button, input, select, textarea, optgroup {
+    font-family: inherit;
 }
 
 .container,
@@ -314,9 +325,7 @@ ul {
 
 /* رأس الموقع الزجاجي الاحترافي */
 header#main-header, header {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: var(--header-solid-bg, #ffffff);   /* opaque: page content must never show through */
     border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
@@ -637,7 +646,7 @@ body.dark-mode .header-search-form input {
 }
 
 .mobile-menu-btn:hover {
-    background: var(--primary-color);
+    background: var(--primary-solid);
     color: #fff;
 }
 
@@ -956,7 +965,7 @@ body.dark-mode .search-bar input[type="text"] {
 
 .banner .btn-hero-primary {
     background: #ffffff;
-    color: var(--primary-color);
+    color: var(--primary-solid);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     font-size: 1rem;
     padding: 13px 28px;
@@ -971,7 +980,7 @@ body.dark-mode .search-bar input[type="text"] {
 
 .banner .btn-hero-primary:hover {
     background: #f8fafc;
-    color: var(--primary-hover);
+    color: var(--primary-solid-hover);
     transform: translateY(-3px) scale(1.02);
     box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
 }
@@ -1823,7 +1832,7 @@ body.dark-mode .search-bar input[type="text"] {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: var(--primary-color, #4f46e5);
+    background: var(--primary-solid, #4f46e5);
     color: #ffffff;
     border: none;
     border-radius: 6px;
@@ -1922,7 +1931,7 @@ footer {
     bottom: 0;
     width: 50px;
     height: 2px;
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
 }
 
 html[dir="rtl"] .footer-col h3:after,
@@ -2007,7 +2016,7 @@ html[dir="ltr"] .footer-col ul li a:hover i,
 }
 
 .social-links a:hover {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     transform: translateY(-3px);
 }
 
@@ -2044,7 +2053,7 @@ html[dir="ltr"] .footer-col ul li a:hover i,
 }
 
 .filter-btn:hover, .filter-btn.active {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     color: white;
     border-color: var(--primary-color);
 }
@@ -2087,7 +2096,7 @@ html[dir="ltr"] .footer-col ul li a:hover i,
 }
 
 .page-btn:hover, .page-btn.active {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     color: white;
     border-color: var(--primary-color);
 }
@@ -2185,7 +2194,7 @@ html[dir="ltr"] .footer-col ul li a:hover i,
 }
 
 .discount {
-    background-color: var(--danger-color);
+    background-color: #dc2626;
     color: white;
     font-size: 14px;
     padding: 3px 8px;
@@ -2237,7 +2246,7 @@ html[dir="ltr"] .footer-col ul li a:hover i,
 
 .color-btn.active, .size-btn.active {
     border-color: var(--primary-color);
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     color: white;
 }
 
@@ -2281,7 +2290,7 @@ html[dir="ltr"] .footer-col ul li a:hover i,
 .add-to-cart {
     flex: 1;
     padding: 12px 20px;
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     color: white;
     border: none;
     border-radius: var(--border-radius);
@@ -2492,7 +2501,7 @@ body.dark-mode .review-content p {
 }
 
 .submit-review {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -2617,7 +2626,7 @@ body.dark-mode .review-content p {
 }
 
 .quantity-btn:hover {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     color: white;
 }
 
@@ -2870,7 +2879,7 @@ body.dark-mode .review-content p {
 }
 
 .step.active .step-number {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     color: white;
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
 }
@@ -3158,7 +3167,7 @@ body.dark-mode .review-content p {
     right: 0;
     width: 50px;
     height: 2px;
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
 }
 
 .order-info {
@@ -3309,7 +3318,7 @@ body.dark-mode .review-content p {
 
 .track-btn {
     padding: 10px 20px;
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     color: white;
     border: none;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
@@ -3411,7 +3420,7 @@ body.dark-mode .review-content p {
 }
 
 .admin-nav a:hover, .admin-nav a.active {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
 }
 
 .admin-dashboard {
@@ -3472,7 +3481,7 @@ body.dark-mode .review-content p {
     right: 0;
     width: 50px;
     height: 2px;
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
 }
 
 /* صفحة المنتجات في الإدارة */
@@ -3667,7 +3676,7 @@ body.dark-mode .review-content p {
 }
 
 .order-actions .update {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
 }
 
 .order-actions .update:hover {
@@ -4265,7 +4274,7 @@ body.dark-mode .skeleton {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: var(--primary-color, #3498db);
+  background: var(--primary-solid, #3498db);
   color: #ffffff;
   border: none;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -4537,7 +4546,7 @@ body.dark-mode .back-to-top-btn:hover {
 .modal-body input[type="checkbox"]:checked,
 .custom-checkbox-input:checked,
 .checkbox-group input[type="checkbox"]:checked {
-    background-color: var(--primary-color) !important;
+    background-color: var(--primary-solid) !important;
     border-color: var(--primary-color) !important;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") !important;
     background-size: 13px 13px !important;
@@ -4563,7 +4572,7 @@ body.dark-mode .modal-body input[type="checkbox"]:checked,
 body.dark-mode .custom-checkbox-input:checked,
 [data-theme="dark"] .checkbox-group input[type="checkbox"]:checked,
 body.dark-mode .checkbox-group input[type="checkbox"]:checked {
-    background-color: var(--primary-color) !important;
+    background-color: var(--primary-solid) !important;
     border-color: var(--primary-color) !important;
 }
 
@@ -4732,22 +4741,18 @@ body.dark-mode .mobile-nav-item.active {
         padding-block: 8px 10px !important;
         gap: 8px 10px !important;
         min-height: auto !important;
-        transition: padding 0.32s cubic-bezier(0.25, 1, 0.5, 1), gap 0.32s cubic-bezier(0.25, 1, 0.5, 1) !important;
-    }
-
-    #main-header.search-collapsed .header-main-container {
-        padding-block: 8px 8px !important;
-        gap: 0 !important;
     }
 
     .logo {
-        flex: 0 0 auto !important;
+        flex: 1 1 0 !important;   /* take whatever width the action buttons leave */
         min-width: 0 !important;
     }
 
     .logo-link {
         font-size: 1.2rem !important;
         gap: 8px !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
     }
 
     .logo-text {
@@ -4759,6 +4764,7 @@ body.dark-mode .mobile-nav-item.active {
     .site-logo-img {
         width: 30px !important;
         height: 30px !important;
+        flex: 0 0 auto !important;
     }
 
     .user-actions {
@@ -4782,21 +4788,6 @@ body.dark-mode .mobile-nav-item.active {
         width: 100% !important;
         max-width: 100% !important;
         margin: 4px 0 0 0 !important;
-        max-height: 56px;
-        opacity: 1;
-        overflow: hidden;
-        transform: translateY(0);
-        will-change: max-height, opacity, transform;
-        transition: max-height 0.32s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.22s ease, margin 0.32s cubic-bezier(0.25, 1, 0.5, 1), transform 0.32s cubic-bezier(0.25, 1, 0.5, 1) !important;
-    }
-
-    #main-header.search-collapsed .header-search {
-        max-height: 0 !important;
-        opacity: 0 !important;
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        transform: translateY(-6px) !important;
-        pointer-events: none !important;
     }
 
     .header-search-form {
@@ -5922,7 +5913,7 @@ input[type="tel"] {
     background: #334155;
 }
 .custom-lang-dropdown .lang-options li.active {
-    background: var(--primary-color);
+    background: var(--primary-solid);
     color: #fff;
 }
 @media (max-width: 768px) {
@@ -6425,7 +6416,7 @@ body.dark-mode .search-bar input[type="text"],
     color: var(--text-color);
 }
 .quantity .quantity-btn:hover {
-    background: var(--primary-color);
+    background: var(--primary-solid);
     color: #fff;
 }
 .quantity input {
@@ -6456,7 +6447,7 @@ body.dark-mode .quantity .quantity-btn {
 }
 [data-theme="dark"] .quantity .quantity-btn:hover,
 body.dark-mode .quantity .quantity-btn:hover {
-    background: var(--primary-color) !important;
+    background: var(--primary-solid) !important;
     color: #fff !important;
 }
 [data-theme="dark"] .quantity input,
@@ -6516,7 +6507,7 @@ input[type="radio"]:checked {
 }
 input[type="checkbox"]:checked {
     border-color: var(--primary-color);
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.5l3 3 6-6.5'/%3E%3C/svg%3E");
 }
 input[type="radio"]:focus-visible,
@@ -6531,7 +6522,7 @@ input[type="checkbox"]:disabled { opacity: .5; cursor: not-allowed; }
 body.dark-mode input[type="radio"],
 body.dark-mode input[type="checkbox"] { border-color: #64748b; background-color: transparent !important; }
 [data-theme="dark"] input[type="checkbox"]:checked,
-body.dark-mode input[type="checkbox"]:checked { background-color: var(--primary-color) !important; border-color: var(--primary-color); }
+body.dark-mode input[type="checkbox"]:checked { background-color: var(--primary-solid) !important; border-color: var(--primary-color); }
 
 /* generic form rules (.form-group input {width:100%}) were stretching them */
 .form-group input[type="radio"],
@@ -6779,7 +6770,7 @@ input[type="checkbox"]:checked { border-color: var(--primary-color) !important; 
 }
 .category-pill:hover,
 .category-pill.active {
-    background: var(--primary-color, #4f46e5);
+    background: var(--primary-solid, #4f46e5);
     color: #ffffff;
     border-color: var(--primary-color, #4f46e5);
 }
@@ -7034,7 +7025,7 @@ input[type="checkbox"]:checked { border-color: var(--primary-color) !important; 
   padding: 0 6px;
   border-radius: 999px;
   box-sizing: border-box;
-  background: var(--primary-color);
+  background: var(--primary-solid);
   color: #fff;
   font-size: 0.75rem;
   font-weight: 700;
@@ -7490,7 +7481,7 @@ body.dark-mode .main-image.skeleton {
   justify-content: center;
 }
 .quantity-btn:hover {
-  background: var(--primary-color, #4f46e5);
+  background: var(--primary-solid, #4f46e5);
   color: #ffffff;
 }
 
@@ -7618,7 +7609,7 @@ body.dark-mode .main-image.skeleton {
   justify-content: center;
 }
 .apply-promo:hover {
-  background: var(--primary-color, #4f46e5);
+  background: var(--primary-solid, #4f46e5);
   color: #ffffff;
   border-color: var(--primary-color, #4f46e5);
 }
@@ -7887,7 +7878,7 @@ body.dark-mode .quantity-btn {
 }
 [data-theme="dark"] .quantity-btn:hover,
 body.dark-mode .quantity-btn:hover {
-  background: var(--primary-color, #6366f1);
+  background: var(--primary-solid, #6366f1);
   color: #ffffff;
 }
 [data-theme="dark"] .item-total,
@@ -8099,7 +8090,7 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
 }
 .payment-option-icon.epay {
     background: #eff6ff;
-    color: var(--primary-color);
+    color: var(--primary-solid);
 }
 .payment-option-icon.bank {
     background: #fefce8;
@@ -8628,7 +8619,7 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
 
         .status-pending { background: var(--warning-color); color: var(--bg-color, #fff); }
         .status-processing { background: var(--secondary-color); color: var(--bg-color, #fff); }
-        .status-shipped { background: var(--primary-color); color: var(--bg-color, #fff); }
+        .status-shipped { background: var(--primary-solid); color: var(--bg-color, #fff); }
         .status-delivered { background: var(--success-color); color: var(--bg-color, #fff); }
 
         .order-details-btn {
@@ -8905,7 +8896,7 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
 
         [data-theme="dark"] .account-nav-btn.active,
         body.dark-mode .account-nav-btn.active {
-            background-color: var(--primary-color) !important;
+            background-color: var(--primary-solid) !important;
             color: #ffffff !important;
         }
 
@@ -9143,7 +9134,7 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--primary-color);
+            background: var(--primary-solid);
             color: #fff;
             padding: 12px 28px;
             border-radius: 8px;
@@ -9204,7 +9195,7 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
             box-shadow: 0 0 0 4px var(--card-bg, #1e293b);
         }
         [data-theme="dark"] .step-node.active .step-icon {
-            background: var(--primary-color);
+            background: var(--primary-solid);
             border-color: var(--primary-color);
             color: #fff;
             box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.35);
@@ -9229,7 +9220,7 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
         }
         .form-field input:focus { border-color: var(--primary-color); }
         .btn-track { min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
-            background: var(--primary-color);
+            background: var(--primary-solid);
             color: var(--bg-color, #fff);
             border: none;
             padding: 13px 28px;
@@ -9302,7 +9293,7 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
             color: #fff;
         }
         .step-node.active .step-icon {
-            background: var(--primary-color);
+            background: var(--primary-solid);
             border-color: var(--primary-color);
             color: #fff;
             box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.25);
@@ -9459,3 +9450,97 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
             flex-direction: column;
             min-height: 100vh;
         }
+
+
+/* =========================================================================
+   Mobile header (<= 768px): the search row hides WITHOUT changing the header's
+   box. The header keeps its full height in the page flow, so the content below
+   never jumps; only its painted background (::before) shrinks and the search
+   row fades out. --header-collapse-offset is measured by js/main.js.
+   ========================================================================= */
+@media (max-width: 768px) {
+    #main-header {
+        background: transparent;
+        border-bottom: 0;
+        box-shadow: none;
+    }
+    #main-header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: var(--header-solid-bg, #ffffff);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+        pointer-events: none;
+        transition: bottom 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    #main-header .header-search {
+        transition: opacity 0.2s ease, transform 0.28s cubic-bezier(0.25, 1, 0.5, 1), visibility 0s;
+    }
+    #main-header.search-collapsed::before {
+        bottom: var(--header-collapse-offset, 63px);
+    }
+    #main-header.search-collapsed .header-search {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.2s ease, transform 0.28s cubic-bezier(0.25, 1, 0.5, 1), visibility 0s 0.28s;
+    }
+    /* the empty strip under the compact bar must not swallow taps meant for the page */
+    #main-header.search-collapsed { pointer-events: none; }
+    #main-header.search-collapsed .logo,
+    #main-header.search-collapsed .user-actions { pointer-events: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #main-header::before,
+    #main-header .header-search { transition: none !important; }
+}
+
+/* Store logo uploaded from Admin > Settings (rendered by js/main.js) */
+.site-logo-img.store-logo-custom {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+}
+.logo-link .store-name-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Row 1 of the mobile header = [logo + store name (shrinks, ellipsis)] [buttons].
+   ID selectors so the older narrow-screen rules above cannot re-introduce wrapping. */
+@media (max-width: 768px) {
+    #main-header .logo {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+    }
+    #main-header .logo-link {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+    #main-header .logo-link .logo-text,
+    #main-header .logo-link .store-name-text {
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+    #main-header .user-actions .theme-toggle-btn {
+        margin-inline: 2px !important;
+    }
+}
+
+
+/* ---- Dark-mode contrast (WCAG AA) ---- */
+[data-theme="dark"] .product-stock-note.is-low,
+[data-theme="dark"] .product-card .product-stock-note.is-low,
+body.dark-mode .product-stock-note.is-low,
+body.dark-mode .product-card .product-stock-note.is-low { color: #fdba74; }
+[data-theme="dark"] .reset-filters-btn,
+body.dark-mode .reset-filters-btn { color: #fca5a5; }

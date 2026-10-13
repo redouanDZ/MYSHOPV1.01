@@ -746,10 +746,10 @@ function applyGlobalStoreSettings(settings) {
     let content = '';
     if (settings.store_logo) {
       const altText = window.escapeHtml ? window.escapeHtml(localizedStoreName || '') || 'MYSHOP' : (localizedStoreName || 'MYSHOP');
-      content += `<img src="${settings.store_logo}" alt="${altText}"  style="max-height: 40px; width: 40px; height: 40px; border-radius: 10px; object-fit: cover; vertical-align: middle; margin-inline-end: 10px; box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);">`;
+      content += `<img class="site-logo-img store-logo-custom" src="${settings.store_logo}" alt="${altText}">`;
     }
     if (settings.store_name) {
-      content += `<span class="store-name-text" style="vertical-align: middle;">${window.escapeHtml ? window.escapeHtml(localizedStoreName) : localizedStoreName}</span>`;
+      content += `<span class="logo-text store-name-text">${window.escapeHtml ? window.escapeHtml(localizedStoreName) : localizedStoreName}</span>`;
     }
     
     if (content) {
@@ -820,22 +820,41 @@ function applyGlobalStoreSettings(settings) {
     if (settings.tiktok_url) el.href = settings.tiktok_url;
   });
 
-  // 5. Payment Methods Visibility Control (Checkout / Express)
-  if (settings.enable_cod === 'false') {
-    const codRadio = document.querySelector('input[name="paymentMethod"][value="cod"]') || document.querySelector('.cod-option');
-    if (codRadio) {
-      const container = codRadio.closest('.payment-option') || codRadio.parentElement;
-      if (container) container.style.display = 'none';
+  // 5. Payment methods (checkout): show/hide per Admin > Settings and keep a valid selection.
+  //    radio values: cod | chargily | bank-transfer (CCP / BaridiMob)
+  const paymentRadios = document.querySelectorAll('input[name="payment-method"]');
+  if (paymentRadios.length) {
+    const enabledFlags = {
+      'cod': settings.enable_cod,
+      'chargily': settings.enable_chargily,
+      'bank-transfer': settings.enable_ccp
+    };
+    paymentRadios.forEach(radio => {
+      const off = enabledFlags[radio.value] === 'false';
+      const box = radio.closest('.payment-option') || radio.parentElement;
+      if (box) box.style.display = off ? 'none' : '';
+      radio.disabled = off;
+      if (off) radio.checked = false;
+    });
+    const available = Array.from(paymentRadios).filter(r => !r.disabled);
+    if (available.length && !available.some(r => r.checked)) {
+      available[0].checked = true;
+      available[0].dispatchEvent(new Event('change', { bubbles: true }));
     }
+    const bankDetails = document.getElementById('bank-transfer-details');
+    const selected = document.querySelector('input[name="payment-method"]:checked');
+    if (bankDetails && selected) bankDetails.style.display = selected.value === 'bank-transfer' ? 'block' : 'none';
   }
 
-  if (settings.enable_chargily === 'false') {
-    const chargilyRadio = document.querySelector('input[name="paymentMethod"][value="chargily"]') || document.querySelector('.chargily-option');
-    if (chargilyRadio) {
-      const container = chargilyRadio.closest('.payment-option') || chargilyRadio.parentElement;
-      if (container) container.style.display = 'none';
-    }
-  }
+  // 6. CCP / BaridiMob account details (editable from Admin > Settings; rendered as text, never as HTML)
+  const setCcpField = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value || '—';
+  };
+  setCcpField('ccp-account-number', settings.ccp_account_number);
+  setCcpField('ccp-account-key', settings.ccp_account_key);
+  setCcpField('ccp-rip', settings.ccp_rip);
+  setCcpField('ccp-account-holder', settings.ccp_account_holder || localizedStoreName);
 }
 
 /**
@@ -992,6 +1011,23 @@ function initMobileSmartHeader() {
 function bindSmartHeader(header) {
   if (!header || header._smartHeaderBound) return;
   header._smartHeaderBound = true;
+
+  // Distance the header must slide up so only its first row (logo + buttons) stays visible.
+  // Measured from the real layout, so it stays right for any logo/store-name/font size.
+  const updateCollapseOffset = () => {
+    if (window.innerWidth > 768) return;
+    const box = header.getBoundingClientRect();
+    if (!box.height) return;
+    const firstRowBottom = Array.from(header.querySelectorAll('.logo, .user-actions'))
+      .map(el => el.getBoundingClientRect().bottom - box.top)
+      .reduce((max, v) => Math.max(max, v), 0);
+    const offset = Math.max(0, Math.round(box.height - (firstRowBottom + 8)));
+    header.style.setProperty('--header-collapse-offset', offset + 'px');
+  };
+  updateCollapseOffset();
+  window.addEventListener('resize', updateCollapseOffset, { passive: true });
+  if (typeof ResizeObserver === 'function') new ResizeObserver(updateCollapseOffset).observe(header);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateCollapseOffset);
 
   let lastScrollY = Math.max(0, window.scrollY || 0);
   let accumulatedDistance = 0;

@@ -154,13 +154,20 @@ async function loadInvoiceStoreIdentity() {
                     const lineTotal = Number(item.price) * Number(item.quantity);
                     subtotal += lineTotal;
                     const safeName = window.escapeHtml ? window.escapeHtml(item.name) : item.name;
+                    const fmt = (n) => window.I18n ? window.I18n.formatNumber(n) : Number(n).toLocaleString();
+                    const cur = t('common.currency', 'دج');
+                    const lbl = (key, fallback) => {
+                        const text = t(key, fallback);
+                        return window.escapeHtml ? window.escapeHtml(text) : text;
+                    };
+                    // data-label feeds the stacked mobile layout (see css/invoice.css)
                     return `
                         <tr>
-                            <td>${index + 1}</td>
-                            <td>${safeName}</td>
-                            <td style="text-align: center;">${item.quantity}</td>
-                            <td style="text-align: left;">${window.I18n ? window.I18n.formatNumber(item.price) : Number(item.price).toLocaleString()} ${t('common.currency', 'دج')}</td>
-                            <td>${window.I18n ? window.I18n.formatNumber(lineTotal) : lineTotal.toLocaleString()} ${t('common.currency', 'دج')}</td>
+                            <td class="col-idx">${index + 1}</td>
+                            <td class="col-name">${safeName}</td>
+                            <td class="col-qty" data-label="${lbl('invoice.col_qty', 'الكمية')}">${item.quantity}</td>
+                            <td class="col-price" data-label="${lbl('invoice.col_price', 'السعر الفردي')}">${fmt(item.price)} ${cur}</td>
+                            <td class="col-total" data-label="${lbl('invoice.col_total', 'الإجمالي')}">${fmt(lineTotal)} ${cur}</td>
                         </tr>
                     `;
                 }).join('');

@@ -613,12 +613,12 @@ header .container {
 }
 
 .edit-btn {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     color: white;
 }
 
 .edit-btn:hover {
-    background-color: var(--primary-hover);
+    background-color: var(--primary-solid-hover);
 }
 
 .delete-btn {
@@ -686,11 +686,11 @@ header .container {
 }
 
 .order-actions .view {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
 }
 
 .order-actions .view:hover {
-    background-color: var(--primary-hover);
+    background-color: var(--primary-solid-hover);
 }
 
 .order-actions .edit {
@@ -743,7 +743,7 @@ header .container {
     font-weight: bold;
 }
 
-.btn-view { background-color: var(--primary-color); color: #fff; }
+.btn-view { background-color: var(--primary-solid); color: #fff; }
 .btn-edit { background-color: var(--warning-color); color: #fff; }
 .btn-delete { background-color: var(--danger-color); color: #fff; }
 
@@ -1233,7 +1233,7 @@ header .container {
 .customer-action-btn:hover,
 .coupon-action-btn:hover,
 .review-action-btn:hover {
-    background: var(--primary-color);
+    background: var(--primary-solid);
     color: #ffffff;
     border-color: var(--primary-color);
     transform: translateY(-2px);
@@ -1471,13 +1471,13 @@ header .container {
 }
 
 .admin-confirm-actions .btn-primary {
-    background: var(--primary-color, #4f46e5);
+    background: var(--primary-solid, #4f46e5);
     border: 1px solid var(--primary-color, #4f46e5);
     color: #ffffff;
 }
 
 .admin-confirm-actions .btn-primary:hover {
-    background: var(--primary-hover, #4338ca);
+    background: var(--primary-solid-hover, #4338ca);
 }
 
 /* KPI cards: grow to fill each row so the last row never leaves an orphan card */
@@ -1548,7 +1548,7 @@ header .container {
 [data-theme="dark"] .status-select.delivered { background: rgba(16, 185, 129, 0.2); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
 [data-theme="dark"] .status-select.cancelled { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
 [data-theme="dark"] .status-tab-btn.active {
-    background-color: var(--primary-color);
+    background-color: var(--primary-solid);
     border-color: var(--primary-color);
     color: #fff;
 }
@@ -1572,7 +1572,7 @@ header .container {
     color: var(--text-color);
 }
 [data-theme="dark"] .order-action-btn:hover {
-    background: var(--primary-color);
+    background: var(--primary-solid);
     color: #fff;
 }
 
@@ -1672,7 +1672,7 @@ header .container {
     font-weight: bold;
 }
 .badge-primary {
-    background: var(--primary-color) !important;
+    background: var(--primary-solid) !important;
     color: #fff !important;
 }
 .badge-danger-soft {
@@ -1716,7 +1716,7 @@ header .container {
     color: var(--success-text) !important;
 }
 
-.btn-primary { background: var(--primary-color) !important; color: #fff !important; cursor: pointer; border: none; font-weight: bold; }
+.btn-primary { background: var(--primary-solid) !important; color: #fff !important; cursor: pointer; border: none; font-weight: bold; }
 .btn-secondary { background: var(--secondary-color) !important; color: #fff !important; cursor: pointer; border: none; font-weight: bold; }
 .btn-danger { background: var(--danger-color) !important; color: #fff !important; cursor: pointer; border: none; font-weight: bold; }
 .btn-outline { background: var(--light-color) !important; color: var(--text-color) !important; border: 1px solid var(--border-color) !important; cursor: pointer; }
@@ -1760,7 +1760,7 @@ header .container {
     cursor: pointer;
 }
 .page-btn.active {
-    background: var(--primary-color) !important;
+    background: var(--primary-solid) !important;
     color: #fff !important;
     border-color: var(--primary-color) !important;
     font-weight: bold;
@@ -1908,7 +1908,7 @@ header .container {
     border: 1px solid var(--border-color, #cbd5e1) !important;
 }
 .page-btn:hover {
-    background: var(--primary-color) !important;
+    background: var(--primary-solid) !important;
     color: #fff !important;
     border-color: var(--primary-color) !important;
 }
@@ -2021,7 +2021,7 @@ header .container {
     border: 1px solid var(--border-color, #cbd5e1) !important;
 }
 .page-btn:hover {
-    background: var(--primary-color) !important;
+    background: var(--primary-solid) !important;
     color: #fff !important;
     border-color: var(--primary-color) !important;
 }
@@ -2461,14 +2461,14 @@ header .container .user-actions { flex: 0 0 auto; }
     font-size: 0.95rem;
 }
 
-.product-action-btn:hover { background: var(--primary-color); color: #ffffff; }
+.product-action-btn:hover { background: var(--primary-solid); color: #ffffff; }
 .product-action-btn.delete-btn:hover { background: #dc2626; color: #ffffff; }
 
 /* Customer Action Buttons Hover States */
-.customer-action-btn:hover { background: var(--primary-color); color: #ffffff; }
+.customer-action-btn:hover { background: var(--primary-solid); color: #ffffff; }
 
 /* Coupon Action Buttons Hover States */
-.coupon-action-btn:hover { background: var(--primary-color); color: #ffffff; }
+.coupon-action-btn:hover { background: var(--primary-solid); color: #ffffff; }
 .coupon-action-btn.delete-btn:hover { background: #dc2626; color: #ffffff; }
 .coupon-action-btn.toggle-btn:hover { background: var(--success-color); color: #ffffff; }
 
@@ -2490,13 +2490,13 @@ header .container .user-actions { flex: 0 0 auto; }
 .stars-gold { color: #f59e0b; }
 
 /* Review Action Buttons Hover States */
-.review-action-btn:hover { background: var(--primary-color); color: #ffffff; }
+.review-action-btn:hover { background: var(--primary-solid); color: #ffffff; }
 .review-action-btn.approve-btn:hover { background: var(--success-color); color: #ffffff; }
 .review-action-btn.reject-btn:hover { background: #f59e0b; color: #ffffff; }
 .review-action-btn.delete-btn:hover { background: #dc2626; color: #ffffff; }
 
 /* Order Action Buttons Hover States */
-.order-action-btn:hover { background: var(--primary-color, #2563eb); color: #ffffff; }
+.order-action-btn:hover { background: var(--primary-solid, #2563eb); color: #ffffff; }
 .order-action-btn.view-btn:hover { background: #0284c7; color: #ffffff; }
 .order-action-btn.invoice-btn:hover { background: var(--success-color); color: #ffffff; }
 .order-action-btn.whatsapp-btn:hover { background: #25d366; color: #ffffff; }
@@ -2749,7 +2749,7 @@ input:checked + .slider:before {
     transition: all 0.2s;
 }
 .status-tab-btn.active {
-    background: var(--primary-color, #2563eb);
+    background: var(--primary-solid, #2563eb);
     color: #ffffff;
     border-color: var(--primary-color, #2563eb);
 }

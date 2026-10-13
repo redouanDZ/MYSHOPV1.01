@@ -265,7 +265,7 @@ window.WishlistManager = {
         }
         const toast = document.createElement('div');
         toast.className = `notification ${type} show`;
-        toast.style.cssText = 'position:fixed; top:20px; right:20px; z-index:9999; background:var(--primary-color); color:var(--bg-color, #fff); padding:12px 20px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); font-weight:bold;';
+        toast.style.cssText = 'position:fixed; top:20px; right:20px; z-index:9999; background:var(--primary-solid, #4f46e5); color:var(--bg-color, #fff); padding:12px 20px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); font-weight:bold;';
         if (type === 'info') toast.style.background = '#0284c7';
         if (type === 'error') toast.style.background = '#ef4444';
         toast.textContent = message;

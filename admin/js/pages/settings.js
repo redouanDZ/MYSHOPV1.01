@@ -130,6 +130,19 @@
 
         async function saveSettings(e) {
             e.preventDefault();
+
+            // CCP fields are digits only (spaces are ignored); stop early with a clear message if not.
+            const ccpValue = (id) => document.getElementById(id).value.replace(/\s+/g, '');
+            const ccpFields = [['setting_ccp_account_number', 'رقم الحساب البريدي'], ['setting_ccp_account_key', 'المفتاح'], ['setting_ccp_rip', 'RIP']];
+            for (const [id, label] of ccpFields) {
+                const v = ccpValue(id);
+                if (v && !/^\d+$/.test(v)) {
+                    alert(`حقل "${label}" يجب أن يحتوي على أرقام فقط.`);
+                    document.getElementById(id).focus();
+                    return;
+                }
+            }
+
             const btn = document.getElementById('saveSettingsBtn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
@@ -151,6 +164,11 @@
                 warranty_policy: document.getElementById('setting_warranty_policy').value.trim(),
                 enable_cod: document.getElementById('setting_enable_cod').checked ? 'true' : 'false',
                 enable_chargily: document.getElementById('setting_enable_chargily').checked ? 'true' : 'false',
+                enable_ccp: document.getElementById('setting_enable_ccp').checked ? 'true' : 'false',
+                ccp_account_number: ccpValue('setting_ccp_account_number'),
+                ccp_account_key: ccpValue('setting_ccp_account_key'),
+                ccp_rip: ccpValue('setting_ccp_rip'),
+                ccp_account_holder: document.getElementById('setting_ccp_account_holder').value.trim(),
                 announcement_bar_text: document.getElementById('setting_announcement_bar_text').value.trim(),
                 facebook_pixel_id: document.getElementById('setting_facebook_pixel_id').value.trim(),
                 tiktok_pixel_id: document.getElementById('setting_tiktok_pixel_id').value.trim(),

@@ -836,6 +836,8 @@
         "REVIEW_UPDATE_FAILED": "Failed to update review status",
         "REVIEW_DELETE_FAILED": "Failed to delete review",
         "SETTINGS_SAVE_FAILED": "Failed to save settings",
+        "INVALID_CCP_FIELD": "Invalid CCP account data: digits only, limited length",
+        "INVALID_SETTINGS_PAYLOAD": "Invalid settings payload",
         "NO_FILE_UPLOADED": "No file uploaded",
         "FILE_UPLOAD_FAILED": "Failed to upload file",
         "INVALID_ROLE": "Invalid role type (customer or admin)",

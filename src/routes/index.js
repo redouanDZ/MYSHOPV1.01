@@ -26,6 +26,6 @@ router.use('/wishlist', wishlistRoutes);
 router.use('/coupons', couponRoutes);
 router.use('/newsletter', newsletterRoutes);
 router.get('/categories', require('../controllers/adminController').getCategories);
-router.get('/settings', require('../controllers/adminController').getStoreSettings);
+router.get('/settings', require('../controllers/adminController').getPublicStoreSettings);
 
 module.exports = router;

@@ -1875,6 +1875,11 @@ class MysqlRepository {
       warranty_policy: 'جميع منتجاتنا مضمونة وأصلية 100% مع دعم فني متواصل وخدمة ما بعد البيع.',
       enable_cod: 'true',
       enable_chargily: 'true',
+      enable_ccp: 'true',
+      ccp_account_number: '0012345678',   // demo values: change them in Admin > Settings
+      ccp_account_key: '90',
+      ccp_rip: '00799999001234567890',
+      ccp_account_holder: '',
       announcement_bar_text: 'توصيل سريع متوفر لـ 58 ولاية والدفع عند الاستلام!',
       facebook_pixel_id: '',
       tiktok_pixel_id: '',
@@ -3174,6 +3179,11 @@ function createFallbackRepository() {
           warranty_policy: 'جميع منتجاتنا مضمونة وأصلية 100% مع دعم فني متواصل وخدمة ما بعد البيع.',
           enable_cod: 'true',
           enable_chargily: 'true',
+          enable_ccp: 'true',
+          ccp_account_number: '0012345678',   // demo values: change them in Admin > Settings
+          ccp_account_key: '90',
+          ccp_rip: '00799999001234567890',
+          ccp_account_holder: '',
           announcement_bar_text: 'توصيل سريع متوفر لـ 58 ولاية والدفع عند الاستلام!',
           facebook_pixel_id: '',
           tiktok_pixel_id: '',

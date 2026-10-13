@@ -836,6 +836,8 @@
         "REVIEW_UPDATE_FAILED": "خطأ في تحديث حالة التقييم",
         "REVIEW_DELETE_FAILED": "خطأ في حذف التقييم",
         "SETTINGS_SAVE_FAILED": "خطأ في حفظ الإعدادات",
+        "INVALID_CCP_FIELD": "بيانات الحساب البريدي غير صالحة: أرقام فقط وبطول مسموح",
+        "INVALID_SETTINGS_PAYLOAD": "بيانات الإعدادات غير صالحة",
         "NO_FILE_UPLOADED": "لم يتم رفع أي ملف",
         "FILE_UPLOAD_FAILED": "خطأ أثناء رفع الملف",
         "INVALID_ROLE": "نوع الدور غير صالح (customer أو admin)",

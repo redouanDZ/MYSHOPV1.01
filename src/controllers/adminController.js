@@ -169,6 +169,52 @@ async function deleteReview(req, res) {
     }
 }
 
+// Settings that may be exposed to anonymous visitors (storefront). Everything else
+// (e.g. telegram_bot_token, telegram_chat_id) stays admin-only.
+const PUBLIC_SETTING_KEYS = [
+    'store_name', 'store_logo', 'store_favicon', 'store_tagline',
+    'store_phone', 'store_whatsapp', 'store_email', 'store_address', 'store_currency',
+    'facebook_url', 'instagram_url', 'tiktok_url',
+    'shipping_policy', 'return_policy', 'warranty_policy',
+    'enable_cod', 'enable_chargily', 'enable_ccp',
+    'ccp_account_number', 'ccp_account_key', 'ccp_rip', 'ccp_account_holder',
+    'announcement_bar_text',
+    'facebook_pixel_id', 'tiktok_pixel_id', 'google_analytics_id', 'snapchat_pixel_id', 'google_client_id'
+];
+
+// CCP / BaridiMob account fields: digits only, bounded length.
+const CCP_DIGIT_FIELDS = { ccp_account_number: 20, ccp_account_key: 4, ccp_rip: 24 };
+
+function validateSettingsPayload(body) {
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+        return { error: 'INVALID_SETTINGS_PAYLOAD' };
+    }
+    for (const [key, maxLen] of Object.entries(CCP_DIGIT_FIELDS)) {
+        if (body[key] === undefined || body[key] === null || body[key] === '') continue;
+        const value = String(body[key]).replace(/\s+/g, '');
+        if (!/^\d+$/.test(value) || value.length > maxLen) return { error: 'INVALID_CCP_FIELD' };
+        body[key] = value;
+    }
+    if (body.ccp_account_holder !== undefined && body.ccp_account_holder !== null) {
+        body.ccp_account_holder = String(body.ccp_account_holder).trim().slice(0, 80);
+    }
+    return {};
+}
+
+async function getPublicStoreSettings(req, res) {
+    try {
+        const all = await db.getStoreSettings();
+        const publicSettings = {};
+        for (const key of PUBLIC_SETTING_KEYS) {
+            if (Object.prototype.hasOwnProperty.call(all, key)) publicSettings[key] = all[key];
+        }
+        res.json(publicSettings);
+    } catch (error) {
+        console.error('Error fetching public store settings:', error);
+        res.status(500).json({ error: 'خطأ في جلب إعدادات المتجر' });
+    }
+}
+
 async function getStoreSettings(req, res) {
     try {
         const settings = await db.getStoreSettings();
@@ -181,6 +227,10 @@ async function getStoreSettings(req, res) {
 
 async function updateStoreSettings(req, res) {
     try {
+        const check = validateSettingsPayload(req.body);
+        if (check.error) {
+            return res.status(400).json({ error: check.error, message: check.error, code: check.error });
+        }
         const updated = await db.updateStoreSettings(req.body);
         res.json({ message: 'تم حفظ الإعدادات بنجاح', settings: updated });
     } catch (error) {
@@ -390,6 +440,8 @@ module.exports = {
     updateReviewStatus,
     deleteReview,
     getStoreSettings,
+    getPublicStoreSettings,
+    PUBLIC_SETTING_KEYS,
     updateStoreSettings,
     uploadMedia,
     testTelegramAlert
