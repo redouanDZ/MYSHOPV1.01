@@ -1177,9 +1177,18 @@ header .container {
 [data-theme="dark"] input,
 [data-theme="dark"] select,
 [data-theme="dark"] textarea {
+    color-scheme: dark !important;
     background-color: #1f2937;
     border-color: #374151;
     color: #f1f5f9;
+}
+
+[data-theme="dark"] select option,
+[data-theme="dark"] select optgroup,
+[data-theme="dark"] option {
+    color-scheme: dark !important;
+    background-color: #1f2937 !important;
+    color: #f1f5f9 !important;
 }
 
 [data-theme="dark"] .status-tab-btn {

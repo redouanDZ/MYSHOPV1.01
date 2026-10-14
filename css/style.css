@@ -2,6 +2,7 @@
    CSS Variables & Typography (Optimized Font Loading in HTML)
    ======================================================== */
 :root {
+    color-scheme: light;
     /* Color Palette */
     --primary-color: #4f46e5;
     --header-solid-bg: #ffffff;
@@ -74,7 +75,9 @@
     --transition-fast: all 0.15s ease;
 }
 
-[data-theme="dark"] {
+[data-theme="dark"],
+body.dark-mode {
+    color-scheme: dark;
     --header-solid-bg: #111827;
     --primary-color: #818cf8;        /* lighter indigo for TEXT on dark cards (AA contrast) */
     --primary-hover: #a5b4fc;
@@ -4180,6 +4183,13 @@ body.dark-mode .price-range-box {
     border-color: #334155 !important;
 }
 
+/* General select & option baseline */
+select option,
+select optgroup {
+    background-color: var(--card-bg, #ffffff);
+    color: var(--text-color, #1e293b);
+}
+
 [data-theme="dark"] input[type="text"],
 [data-theme="dark"] input[type="number"],
 [data-theme="dark"] input[type="email"],
@@ -4192,9 +4202,49 @@ body.dark-mode input[type="email"],
 body.dark-mode input[type="tel"],
 body.dark-mode select,
 body.dark-mode textarea {
+    color-scheme: dark !important;
     background-color: #0f172a !important;
     border-color: #334155 !important;
     color: #f8fafc !important;
+}
+
+[data-theme="dark"] select option,
+[data-theme="dark"] select optgroup,
+[data-theme="dark"] option,
+[data-theme="dark"] optgroup,
+body.dark-mode select option,
+body.dark-mode select optgroup,
+body.dark-mode option,
+body.dark-mode optgroup {
+    color-scheme: dark !important;
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+}
+
+/* Dark mode autofill normalization */
+[data-theme="dark"] input:-webkit-autofill,
+[data-theme="dark"] input:-webkit-autofill:hover, 
+[data-theme="dark"] input:-webkit-autofill:focus,
+[data-theme="dark"] textarea:-webkit-autofill,
+[data-theme="dark"] textarea:-webkit-autofill:hover,
+[data-theme="dark"] textarea:-webkit-autofill:focus,
+[data-theme="dark"] select:-webkit-autofill,
+[data-theme="dark"] select:-webkit-autofill:hover,
+[data-theme="dark"] select:-webkit-autofill:focus,
+body.dark-mode input:-webkit-autofill,
+body.dark-mode input:-webkit-autofill:hover, 
+body.dark-mode input:-webkit-autofill:focus,
+body.dark-mode textarea:-webkit-autofill,
+body.dark-mode textarea:-webkit-autofill:hover,
+body.dark-mode textarea:-webkit-autofill:focus,
+body.dark-mode select:-webkit-autofill,
+body.dark-mode select:-webkit-autofill:hover,
+body.dark-mode select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #f8fafc !important;
+    -webkit-box-shadow: 0 0 0px 1000px #0f172a inset !important;
+    box-shadow: 0 0 0px 1000px #0f172a inset !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+    color-scheme: dark !important;
 }
 
 [data-theme="dark"] input::placeholder,
@@ -8921,9 +8971,19 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
         body.dark-mode .form-group input,
         body.dark-mode .form-group select,
         body.dark-mode .form-group textarea {
+            color-scheme: dark !important;
             background-color: rgba(255, 255, 255, 0.05) !important;
             border-color: var(--border-color) !important;
             color: var(--text-color) !important;
+        }
+
+        [data-theme="dark"] .form-group select option,
+        [data-theme="dark"] .form-group select optgroup,
+        body.dark-mode .form-group select option,
+        body.dark-mode .form-group select optgroup {
+            background-color: #111827 !important;
+            color: #f1f5f9 !important;
+            color-scheme: dark !important;
         }
 
         [data-theme="dark"] .account-modal-header,
