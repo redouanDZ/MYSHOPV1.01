@@ -34,7 +34,9 @@ class MailService {
             }
         } else {
             // Development / Unconfigured fallback: structured log
-            console.log(`📧 [MailService Simulation] To: ${to} | Subject: "${subject}"`);
+            if (process.env.NODE_ENV !== 'test') {
+                console.log(`📧 [MailService Simulation] To: ${to} | Subject: "${subject}"`);
+            }
             return true;
         }
     }

@@ -249,10 +249,8 @@ test('Phase 2: Guest Order Authorization - Requires valid tracking token or phon
     
     // 5. Track order limits fields when using phone without token
     const url = `${baseUrl}/api/orders/status?orderId=${guestOrderId}&phone=0551239999`;
-    console.log('DEBUG_URL:', url);
     const trackRes = await fetch(url);
     const trackData = await trackRes.json();
-    if (trackRes.status !== 200) console.log('DEBUG_TRACK_ERROR:', trackData);
     assert.strictEqual(trackRes.status, 200, 'Should allow tracking with phone');
     assert.ok(!trackData.order.shipping_full_name, 'Should not return shipping_full_name');
     assert.ok(!trackData.order.phone, 'Should not return phone');

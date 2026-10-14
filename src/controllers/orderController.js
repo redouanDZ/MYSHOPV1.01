@@ -186,8 +186,6 @@ async function trackOrder(req, res) {
             searchId = String(searchId).replace(/^#/, '').trim();
         }
 
-        console.log('DEBUG_CONTROLLER:', { orderId, orderNumber, phone, token, searchId });
-
         if (!searchId || (!phone && !token)) {
             return res.status(400).json({ error: 'يرجى تقديم رقم الطلب ورقم الهاتف أو التوكن', message: 'يرجى تقديم رقم الطلب ورقم الهاتف أو التوكن', code: 'TRACKING_PARAMS_REQUIRED' });
         }
