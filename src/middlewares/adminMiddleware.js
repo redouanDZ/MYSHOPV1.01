@@ -20,6 +20,20 @@ async function requireAdmin(req, res, next) {
     }
 }
 
+// Same rule as requireAdmin, but answers true/false instead of ending the request.
+// Used by public endpoints that must show extra fields to the store owner only.
+async function isAdminRequest(req) {
+    try {
+        const userId = await parseUserFromReq(req);
+        if (!userId) return false;
+        const user = await db.findUserById(userId);
+        return !!user && user.role === 'admin';
+    } catch (error) {
+        return false;
+    }
+}
+
 module.exports = {
-    requireAdmin
+    requireAdmin,
+    isAdminRequest
 };

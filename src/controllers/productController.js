@@ -1,5 +1,15 @@
 const db = require('../data/db-connection.js');
 const { sanitizeString } = require('../utils/helpers');
+const { isAdminRequest } = require('../middlewares/adminMiddleware');
+
+// cost_price is the merchant's purchase cost (margin data): admins only, never public.
+const PRIVATE_PRODUCT_FIELDS = ['cost_price', 'costPrice'];
+function stripPrivateProductFields(product) {
+    if (!product || typeof product !== 'object') return product;
+    const copy = { ...product };
+    for (const field of PRIVATE_PRODUCT_FIELDS) delete copy[field];
+    return copy;
+}
 
 async function createProduct(req, res) {
     try {
@@ -57,6 +67,8 @@ async function getProducts(req, res) {
         const pageNum = Math.max(1, parseInt(page, 10) || 1);
         const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 100));
 
+        // Visitors only ever see published products; ?status=draft|all is an admin feature.
+        const isAdmin = await isAdminRequest(req);
         const result = await db.getProducts({
             category,
             search,
@@ -65,11 +77,14 @@ async function getProducts(req, res) {
             minRating: minRating ? parseFloat(minRating) : null,
             inStock: inStock === 'true' || inStock === '1' || inStock === true,
             stockStatus: stockStatus || req.query.stock,
-            status,
+            status: isAdmin ? status : 'active',
             sortBy,
             page: pageNum,
             limit: limitNum
         });
+        if (result && Array.isArray(result.products) && !isAdmin) {
+            result.products = result.products.map(stripPrivateProductFields);
+        }
         res.json(result);
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -81,7 +96,12 @@ async function getProductById(req, res) {
     try {
         const product = await db.getProductById(req.params.id);
         if (!product) return res.status(404).json({ error: 'المنتج غير موجود', message: 'المنتج غير موجود', code: 'PRODUCT_NOT_FOUND' });
-        res.json(product);
+        const isAdmin = await isAdminRequest(req);
+        if (!isAdmin && product.status !== 'active') {
+            // unpublished products must not be reachable by guessing their id
+            return res.status(404).json({ error: 'المنتج غير موجود', message: 'المنتج غير موجود', code: 'PRODUCT_NOT_FOUND' });
+        }
+        res.json(isAdmin ? product : stripPrivateProductFields(product));
     } catch (error) {
         console.error('Error fetching product:', error);
         res.status(500).json({ error: 'خطأ في جلب المنتج', message: 'خطأ في جلب المنتج', code: 'PRODUCT_FETCH_FAILED' });
@@ -173,7 +193,7 @@ async function recommendations(req, res) {
         if (!isNaN(productId)) {
             items = items.filter(p => p.id !== productId);
         }
-        res.json(items.slice(0, 4));
+        res.json(items.slice(0, 4).map(stripPrivateProductFields));
     } catch (err) {
         res.status(500).json({ error: 'خطأ في جلب التوصيات', message: 'خطأ في جلب التوصيات', code: 'RECOMMENDATIONS_FAILED' });
     }

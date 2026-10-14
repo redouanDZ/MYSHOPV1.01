@@ -50,6 +50,7 @@ test.after(async () => {
 require('./api.test.js');
 require('./new_features.test.js');
 require('./public_settings.test.js');
+require('./product_privacy.test.js');
 require('./remediation.test.js');
 require('./security.test.js');
 require('./session_ttl.test.js');

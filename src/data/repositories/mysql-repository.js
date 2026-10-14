@@ -2294,7 +2294,8 @@ function createFallbackRepository() {
     },
     async getProducts(options = {}) {
       let filtered = [...state.products];
-      const { category, search, minPrice, maxPrice, minRating, inStock, stockStatus, sortBy, page = 1, limit = 100 } = options;
+      const { category, search, minPrice, maxPrice, minRating, inStock, stockStatus, status = 'active', sortBy, page = 1, limit = 100 } = options;
+      if (status && status !== 'all') filtered = filtered.filter(item => (item.status || 'active') === status);
       if (category && category !== 'all') filtered = filtered.filter(item => item.category === category || item.category_name === category);
       if (search) {
         const term = String(search).trim().toLowerCase();
