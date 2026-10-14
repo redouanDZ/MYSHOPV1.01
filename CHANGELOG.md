@@ -2,17 +2,25 @@
 
 All notable changes to the MYSHOP e-commerce platform are documented in this file.
 
-## [Unreleased]
+## [1.1.0] - 2026-10-14
 
-### Security
-- Strict CSP is reported alongside the enforced policy; `CSP_STRICT=true` enforces it. All inline scripts moved to external files.
-- Removed the wildcard `*.onrender.com` CORS rule (exact `BASE_URL` / `RENDER_EXTERNAL_URL` only).
-- Rate limits configurable through `RATE_LIMIT_*` environment variables.
+### New Features & Payments
+- **Algerian CCP & BaridiMob Payment Support**: Integrated postal account configuration in the store settings with automated validation and digit normalization for CCP account numbers and keys (RIP / Clé).
+- **Public Product Privacy & Margin Protection**: Completely removed `cost_price` from all public API responses (product lists, details, related recommendations), reserving profitability metrics exclusively for authenticated administrators.
+- **Draft Products Access Control**: Draft products are strictly invisible to storefront visitors and return a clean 404 response even if accessed directly by ID.
 
-### Fixed
-- Admin: pagination actions ran twice per click; settings save/upload/Telegram test ran twice; product image picker buttons had lost their handler.
-- `robots.txt`, `sitemap.xml` and `og:url` no longer contain placeholder domains (generated from `BASE_URL`).
-- Home page metadata is consistent with the multi-category store.
+### Security & Hardening
+- **Public Store Settings Sanitization**: Enforced a strict key allow-list on the public `/api/settings` endpoint, ensuring operational secrets (such as Telegram bot tokens and chat IDs) are never exposed to clients.
+- **Strict Content Security Policy (CSP)**: Enhanced CSP headers with report-only mode and full external script compliance; all inline scripts eliminated.
+- **CORS & Rate Limiting Hardening**: Removed wildcard origin rules for Render domains and added granular `RATE_LIMIT_*` environment variables.
+
+### UI & Dark Mode Usability
+- **Select Dropdown Dark Mode Fix**: Added `color-scheme: dark` and explicit `<option>` background/color styles to prevent native browser dropdown popups from rendering blank/white-on-white text in dark mode.
+- **Autofill Dark Mode Normalization**: Standardized `:-webkit-autofill` styling across form inputs to blend seamlessly with dark themes.
+- **Admin Settings & UI Polish**: Fixed duplicate click handlers on settings actions, Telegram test alerts, and image pickers.
+
+### Quality Assurance & Testing
+- **Comprehensive Test Suite Expansion**: Expanded automated test coverage to **72 automated tests across 9 suites** (including product privacy, store settings sanitation, database sessions, and checkout flows), running cleanly in-process.
 
 ## [1.0.1] - 2026-09-30
 

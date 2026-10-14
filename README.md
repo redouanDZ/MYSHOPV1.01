@@ -18,20 +18,22 @@
 - **توصيل مخصص لـ 58 ولاية جزائرية**: حساب تلقائي لأسعار التوصيل للمنزل أو المكتب (Stop Desk).
 - **تتبع مباشر للطلبات**: صفحة مخصصة للعميل لتتبع حالة طلبه برقم التتبع والهاتف.
 - **طباعة الفواتير وبوالص الشحن**: صفحة فاتورة رسمية متجاوبة ومهيأة للطباعة المباشرة والطباعة الحرارية (Thermal Printing).
-- **بوابات الدفع**: الدفع عند الاستلام (COD) والدفع الإلكتروني عبر بوابة **Chargily Pay V2** (البطاقة الذهبية وبطاقات CIB البنكية).
+- **بوابات وطرق الدفع المرنة**: الدفع عند الاستلام (COD)، الدفع الإلكتروني عبر بوابة **Chargily Pay V2** (البطاقة الذهبية وبطاقات CIB البنكية)، والدفع عبر **الحساب البريدي الجاري الجزائري (CCP / BaridiMob)** مع التحقق التلقائي من صحة أرقام الحساب والمفتاح (RIP / Clé).
 
 ### 📊 لوحة التحكم الإدارية المتكاملة (Admin Dashboard)
 - **مؤشرات الأداء الرئيسية (KPIs)**: إحصائيات المبيعات، الطلبات، المنتجات الأكثر طلباً، وتنبيهات نفاد المخزون.
-- **تتبع سعر التكلفة والأرباح الصافية**: إدخال سعر التكلفة (`cost_price`) لكل منتج واحتساب صافي الأرباح تلقائياً في لوحة الإدارة.
+- **تتبع سعر التكلفة والأرباح الصافية**: إدخال سعر التكلفة (`cost_price`) لكل منتج واحتساب صافي الأرباح تلقائياً في لوحة الإدارة مع عزله التام عن الزوار.
 - **إدارة الطلبات**: فلترة متقدمة حسب الحالة، تعديل الحالات، تصدير ملفات CSV لشركات الشحن والتوصيل، وإمكانية حذف الطلبات مع استرجاع تلقائي للمخزون.
-- **إدارة المنتجات والمتغيرات**: إنشاء وتعديل وحذف المنتجات، مع دعم متغيرات الألوان والمقاسات وإدارة المخزون المستقل لكل متغير.
+- **إدارة المنتجات والمتغيرات**: إنشاء وتعديل وحذف المنتجات، مع دعم متغيرات الألوان والمقاسات وإدارة المخزون المستقل لكل متغير مع حجب المنتجات غير المنشورة (Drafts).
 - **إدارة الأقسام**: تصنيف متعدد المستويات مع ترجمات مخصصة لكل لغة.
 - **كوبونات الخصم الذكية**: قسائم خصم بنسبة مئوية أو مبلغ ثابت مع قيود الحد الأدنى للطلب والحد الأقصى للاستخدام.
 - **نظام التقييمات والمراجعات**: لوحة لاعتماد ومراقبة مراجعات العملاء وتحديث معدل التقييم تلقائياً.
 - **إدارة المستخدمين وصلاحيات الأدوار**: عرض العملاء، تعديل الأدوار (مدير / عميل)، مع حماية مدمجة تمنع قفل المدير لنفسه.
-- **إعدادات المتجر والتسويق**: تعديل هوية المتجر وأرقام التواصل وأسعار الشحن، مع دعم حقن بكسلات التتبع (Meta Pixel, TikTok Pixel, Google Analytics 4).
+- **إعدادات المتجر والتسويق**: تعديل هوية المتجر ومعلومات الدفع (CCP و Chargily) وأرقام التواصل وأسعار الشحن، مع دعم حقن بكسلات التتبع (Meta Pixel, TikTok Pixel, Google Analytics 4).
 
 ### 🛡️ الأمان وحماية البيانات (Security & Architecture)
+- **حماية خصوصية التكلفة وهوامش الربح**: عزل حقل سعر التكلفة (`cost_price`) تماماً عن كافة مسارات الـ API العامة، وحظر الوصول إلى مسودات المنتجات (Drafts) لغير المديرين.
+- **تطهير وعزل أسرار المتجر (Settings Sanitization)**: حظر تسريب توكنات تيليجرام أو المعرفات الخاصة عبر قائمة بيضاء صارمة في مسار الإعدادات العامة للمتجر.
 - **إدارة جلسات آمنة في قاعدة البيانات**: حفظ جلسات الدخول في MySQL مع دعم الإلغاء الفوري من الخادم (`revokeSession` / `revokeAllUserSessions`) وكاش ذاكرة سريع بـ TTL، مما يحافظ على تسجيل الدخول عبر عمليات إعادة تشغيل الخادم.
 - **حماية التوكنات بكوكيز `httpOnly`**: تخزين التوكنات في كوكيز مشفرة ومحمية من هجمات XSS.
 - **حماية CSRF**: عبر ترويسات `X-CSRF-Token` لكافة العمليات المغيرة للحالة.
@@ -167,9 +169,9 @@ docker compose up --build -d
 **MYSHOP** is a production-grade, full-stack Arabic, French, and English e-commerce platform built with Node.js, Express, and MySQL 8.0.
 
 ### Highlights:
-- **Trilingual Storefront**: Full RTL Arabic support, French, and English with instant locale switching.
-- **Conversion-Optimized Checkout**: 1-Click Cash on Delivery (COD) express checkout alongside **Chargily Pay V2** (EDAHABIA / CIB cards).
-- **Robust Security**: Database-backed sessions with server-side revocation and TTL memory cache; httpOnly cookies; CSRF tokens; strict CSP (no inline scripts); SQL row-level locks on inventory; production safety guards against demo scripts.
+- **Trilingual Storefront**: Full RTL Arabic support, French, and English with instant locale switching and dark mode support.
+- **Conversion-Optimized Checkout**: 1-Click Cash on Delivery (COD) express checkout, **Chargily Pay V2** (EDAHABIA / CIB cards), and Algerian postal accounts (**CCP / BaridiMob**) with RIP and Clé validation.
+- **Robust Security & Privacy**: Cost prices isolated from public APIs; database-backed sessions with server-side revocation and TTL memory cache; httpOnly cookies; CSRF tokens; strict CSP (no inline scripts); SQL row-level locks on inventory; production safety guards against demo scripts.
 - **Comprehensive Admin Panel**: Real-time sales KPIs, cost price and net profit margin tracking, order lifecycle management with CSV export, product variants (colors/sizes), thermal invoice printing, coupons, customer reviews, and granular role management.
 - **Omnichannel Communication**: Instant Telegram notifications on new orders, 1-click WhatsApp customer contact, and SMTP email invoices.
 - **Media Ready**: Local uploads or Cloudinary CDN / AWS S3 cloud media integration.
