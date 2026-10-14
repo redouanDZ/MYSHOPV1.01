@@ -74,6 +74,25 @@ const AdminAuth = {
         }
     },
 
+    _refreshPromise: null,
+
+    async refreshToken() {
+        if (!this._refreshPromise) {
+            this._refreshPromise = _originalFetch('/api/auth/refresh', {
+                method: 'POST',
+                credentials: 'include'
+            })
+            .then(res => res.ok)
+            .catch(() => false)
+            .finally(() => {
+                setTimeout(() => {
+                    this._refreshPromise = null;
+                }, 1000);
+            });
+        }
+        return this._refreshPromise;
+    },
+
     clearAuth() {
         localStorage.removeItem('currentUser');
         sessionStorage.removeItem('currentUser');
@@ -94,6 +113,60 @@ const AdminAuth = {
         this.clearAuth();
         window.location.href = '../index.html';
     }
+};
+
+/**
+ * Intercept /api/ calls in admin to silently refresh expired 15-minute access tokens
+ * and replay the original request transparently without interrupting the admin.
+ */
+const _originalFetch = window.fetch.bind(window);
+window.fetch = async function(resource, init = {}) {
+    const response = await _originalFetch(resource, init);
+    const urlStr = typeof resource === 'string' ? resource : (resource && resource.url ? resource.url : '');
+
+    const isApiCall = urlStr.includes('/api/');
+    const isAuthEndpoint = urlStr.includes('/api/auth/') || urlStr.includes('/api/login');
+
+    if (response.status === 401 && isApiCall && !isAuthEndpoint && !init._retried) {
+        const renewed = await AdminAuth.refreshToken();
+        if (renewed) {
+            const method = (init.method || 'GET').toUpperCase();
+            let freshHeaders = init.headers;
+            const freshCsrf = await AdminAuth.fetchCsrfToken();
+
+            if (freshHeaders instanceof Headers) {
+                if (freshCsrf && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
+                    freshHeaders.set('X-CSRF-Token', freshCsrf);
+                }
+            } else if (Array.isArray(freshHeaders)) {
+                freshHeaders = freshHeaders.filter(([k]) => k.toLowerCase() !== 'x-csrf-token');
+                if (freshCsrf && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
+                    freshHeaders.push(['X-CSRF-Token', freshCsrf]);
+                }
+            } else if (freshHeaders && typeof freshHeaders === 'object') {
+                freshHeaders = { ...freshHeaders };
+                if (freshCsrf && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
+                    freshHeaders['X-CSRF-Token'] = freshCsrf;
+                }
+            } else {
+                freshHeaders = {};
+                if (freshCsrf && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
+                    freshHeaders['X-CSRF-Token'] = freshCsrf;
+                }
+            }
+
+            return _originalFetch(resource, {
+                ...init,
+                headers: freshHeaders,
+                credentials: 'include',
+                _retried: true
+            });
+        } else {
+            AdminAuth.clearAuth();
+            window.location.href = '../index.html';
+        }
+    }
+    return response;
 };
 
 const AdminUI = {
