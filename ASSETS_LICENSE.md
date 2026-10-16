@@ -7,8 +7,8 @@
 | الملفات الموجودة | المصدر المسجل حاليًا | نتيجة التحقق |
 | --- | --- | --- |
 | `images/hero-banner.jpg`, `images/hero-banner.webp`, `images/prod_classic_watch.jpg`, `prod_cookware.jpg`, `prod_linen_shirt.jpg`, `prod_linen_shirt_navy.jpg`, `prod_linen_shirt_white.jpg`, `prod_perfume.jpg`, `prod_sneakers.jpg`, `prod_sneakers_black.jpg`, `prod_summer_dress.jpg`, `prod_summer_dress_coral.jpg`, `christopher-gower-m_HRfLhgABo-unsplash.jpg`, `samsung-memory-RZM2cE0lx0Y-unsplash.jpg`, `images/product-placeholder.jpg` | إفادة مالك المشروع: توليد باستخدام Gemini Flash عبر Nano Banana، دون تنزيل الصور من الإنترنت | هذه إفادة مصدر وليست سجل توليد مستقلًا. Google تنص على أنها لا تدّعي ملكية المحتوى المولّد، لكن ذلك لا يثبت تفرد المخرجات أو خلوها من حقوق الغير. راجع شروط الخدمة التي استُخدمت وقت التوليد، واحتفظ بالمطالبات والملفات الأصلية وسجلات التوليد. أسماء Unsplash والروابط المسجلة سابقًا غير معتمدة كمصدر لهذه الملفات. |
-| `images/logo.png`, `images/logo.svg` | إفادة مالك المشروع: العلامة الأصلية مولّدة عبر Gemini Flash/Nano Banana؛ `logo.svg` إعادة رسم متجهية مبسطة مستوحاة من الصورة المرفقة | `logo.png` مشتق محليًا من `logo.svg`. لم تُرفق سجلات التوليد أو المطالبات؛ يلزم الاحتفاظ بها ومراجعة شروط الخدمة المستخدمة قبل إعادة الترخيص التجاري. |
-| `images/favicon.svg`, `images/favicon.png`, `favicon.ico` | نسخة favicon من علامة الحقيبة وحرف M في `images/logo.svg` | رسم متجهي مخصص بلا أيقونة خارجية؛ PNG وICO مشتقان من SVG. |
+| `images/logo.svg`, `images/logo.png` | حقيبة تسوق معدلة من [Tabler Icons `shopping-bag`](https://github.com/tabler/tabler-icons/blob/main/icons/outline/shopping-bag.svg)، مع حرف M مخصص | SVG يستخدم هيئة الحقيبة مع تبسيط المقبض وإضافة حرف M؛ PNG مشتق منه. إشعار Tabler ورخصته أدناه. |
+| `images/favicon.svg`, `images/favicon.png`, `favicon.ico` | نسخة مصغرة من علامة `images/logo.svg` على خلفية داكنة | تتضمن الحقيبة المعدلة وحرف M المخصص؛ PNG وICO مشتقان من SVG، وتطبق رخصة Tabler MIT على أصل الأيقونة. |
 | `images/flags/dz.svg`, `images/flags/fr.svg`, `images/flags/gb.svg` | [lipis/flag-icons](https://github.com/lipis/flag-icons), مجلد `flags/4x3/`؛ ملفات `dz.svg`, `fr.svg`, `gb.svg` | استُبدلت الملفات المحلية بنسخ من هذا المصدر. المستودع يعلن رخصة MIT؛ إشعار الحقوق ونص الرخصة أدناه. |
 | أيقونات مخصصة مولّدة، إن كانت المقصودة غير Font Awesome | إفادة مالك المشروع: مولّدة | لم تُحدد ملفات مستقلة أو سجلات توليد لهذه الأيقونات. لا ينطبق ذلك على مكتبة Font Awesome المستخدمة في الواجهة، والمدرجة منفصلة أدناه. |
 
@@ -30,6 +30,22 @@
 ## الأيقونات
 
 المجلد `vendor/fontawesome/` يحتوي Font Awesome Free 6.5.1، وإشعار الإصدار والرخصة موجود في رأس `vendor/fontawesome/css/all.min.css`. وفق [رخصة Font Awesome Free](https://fontawesome.com/license/free): الأيقونات CC BY 4.0، والخطوط SIL OFL 1.1، والشفرة MIT. تبقى شعارات العلامات التجارية لأصحابها ولا تعني تأييدهم للمتجر.
+
+## رخصة أيقونة الشعار
+
+مسارا حقيبة التسوق والمقبض في الشعار والـfavicon من Tabler Icons، ويخضعان لرخصة MIT التالية:
+
+```text
+MIT License
+
+Copyright (c) 2020-2026 Paweł Kuna
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
 
 ## رخصة الأعلام
 
