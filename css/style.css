@@ -2977,24 +2977,38 @@ body.dark-mode .review-content p {
     min-height: 100px;
 }
 
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 8px;
+.checkbox-group,
+.form-group.checkbox-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    text-align: start !important;
+    margin: 20px 0 !important;
 }
 
-.checkbox-group input {
-    width: 18px;
-    height: 18px;
+.checkbox-group input,
+.checkbox-group input[type="checkbox"],
+.form-group.checkbox-group input[type="checkbox"] {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
     accent-color: var(--primary-color);
-    cursor: pointer;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    margin-top: 3px !important;
+    margin-inline-end: 0 !important;
 }
 
-.checkbox-group label {
-    margin-bottom: 0;
-    cursor: pointer;
-    font-size: 0.92rem;
+.checkbox-group label,
+.form-group.checkbox-group label {
+    margin: 0 !important;
+    cursor: pointer !important;
+    font-size: 0.92rem !important;
+    line-height: 1.6 !important;
+    text-align: start !important;
     color: var(--text-color);
 }
 

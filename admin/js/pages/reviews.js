@@ -62,7 +62,7 @@
             const statusLabels = { 'approved': 'موافق عليه ✅', 'pending': 'قيد المراجعة ⏳', 'rejected': 'مرفوض ❌' };
 
             tbody.innerHTML = reviews.map(r => {
-                const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                const stars = `<span style="color: #f59e0b; font-size: 1.05rem; letter-spacing: 1px;">${'★'.repeat(r.rating)}</span><span style="color: #cbd5e1; font-size: 1.05rem; letter-spacing: 1px;">${'☆'.repeat(5 - r.rating)}</span>`;
                 return `
                     <tr style="border-bottom: 1px solid var(--border-color);">
                         <td data-label="#" style="padding: 12px 15px; font-weight: bold;">${r.id}</td>

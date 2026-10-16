@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-const CACHE_NAME = 'myshop-pwa-vd402b2be26';
-=======
-const CACHE_NAME = 'myshop-pwa-v42be6b2f86';
->>>>>>> 04d8253 (feat(v1.0.2): beekalia marketplace compliance and UX improvements)
+const CACHE_NAME = 'myshop-pwa-v8de4974227';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

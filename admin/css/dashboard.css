@@ -2169,18 +2169,32 @@ header .container .user-actions { flex: 0 0 auto; }
     pointer-events: none;
 }
 
-/* Phones: page headers stack instead of squeezing title and actions side by side */
+/* Phones: page headers stack cleanly instead of squeezing title and actions or pushing counters to the far left */
 @media (max-width: 768px) {
     .dashboard-header,
-    .page-header {
-        flex-wrap: wrap !important;
+    .dashboard-header-flex,
+    .page-header,
+    .page-header-flex {
+        flex-direction: column !important;
         align-items: flex-start !important;
-        gap: 12px !important;
+        justify-content: flex-start !important;
+        text-align: start !important;
+        gap: 8px !important;
     }
     .dashboard-header h1,
-    .page-header h1 { font-size: 1.35rem; line-height: 1.4; flex: 1 1 100%; min-width: 0; }
+    .dashboard-header-flex h1,
+    .page-header h1,
+    .page-header-flex h1 { font-size: 1.35rem; line-height: 1.4; flex: 0 0 auto; min-width: 0; text-align: start !important; }
+    .dashboard-header > div,
+    .dashboard-header-flex > div,
     .dashboard-header > p,
-    .page-header > p { flex: 1 1 100%; margin: 0; }
+    .page-header > p,
+    #reviewsCountDisplay,
+    #customersCountDisplay {
+        align-self: flex-start !important;
+        text-align: start !important;
+        margin: 0 !important;
+    }
     .dashboard-header > .btn,
     .dashboard-header > button,
     .page-header > .add-product-btn { flex: 0 0 auto; }

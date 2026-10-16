@@ -207,11 +207,11 @@
 
                             <div class="order-totals" style="margin: 20px 0; background: var(--card-bg); padding: 15px; border-radius: 8px;">
                                 <div class="total-item" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span><span data-i18n="checkout.subtotal">المجموع الفرعي للمنتجات:</span>
+                                    <span><span data-i18n="checkout.subtotal">المجموع الفرعي للمنتجات:</span></span>
                                     <strong id="reviewSubtotal">0 <span data-i18n="common.currency">دج</span></strong>
                                 </div>
                                 <div class="total-item" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span>تكلفة الشحن والتوصيل (<span id="reviewWilayaName"><span data-i18n="checkout.wilaya_fallback">الولاية</span>):</span>
+                                    <span><span data-i18n="checkout.shipping_cost">تكلفة الشحن والتوصيل</span> (<span id="reviewWilayaName"><span data-i18n="checkout.wilaya_fallback">الولاية</span></span>):</span>
                                     <strong id="reviewShippingCost">0 <span data-i18n="common.currency">دج</span></strong>
                                 </div>
                                 <div class="total-item" id="reviewDiscountRow" style="display: none; justify-content: space-between; margin-bottom: 8px; color: var(--success-color);">
@@ -224,9 +224,9 @@
                                 </div>
                             </div>
 
-                            <div class="form-group checkbox-group" style="margin: 20px 0;">
-                                <input type="checkbox" id="terms" name="terms" required>
-                                <label for="terms"><span data-i18n="checkout.agree">أوافق على</span> <a href="terms.html" target="_blank" rel="noopener"><span data-i18n="checkout.tos">شروط الخدمة</span></a> <span data-i18n="checkout.and">و</span> <a href="terms.html#returns" target="_blank" rel="noopener"><span data-i18n="checkout.return_policy">سياسة الاسترجاع</span></a> <span data-i18n="checkout.store_policy_suffix">الخاصة بالمتجر.</span></label>
+                            <div class="form-group checkbox-group" style="margin: 20px 0; display: flex; flex-direction: row; align-items: flex-start; justify-content: flex-start; gap: 12px; text-align: start;">
+                                <input type="checkbox" id="terms" name="terms" required style="margin-top: 3px; flex-shrink: 0; cursor: pointer;">
+                                <label for="terms" style="margin: 0; text-align: start; line-height: 1.6; cursor: pointer;"><span data-i18n="checkout.agree">أوافق على</span> <a href="terms.html" target="_blank" rel="noopener"><span data-i18n="checkout.tos">شروط الخدمة</span></a> <span data-i18n="checkout.and">و</span> <a href="terms.html#returns" target="_blank" rel="noopener"><span data-i18n="checkout.return_policy">سياسة الاسترجاع</span></a> <span data-i18n="checkout.store_policy_suffix">الخاصة بالمتجر.</span></label>
                             </div>
 
                             <div class="step-buttons">
