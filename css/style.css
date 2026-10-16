@@ -9360,11 +9360,6 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
             cursor: pointer;
             transition: background 0.2s;
         }
-        .btn-track i,
-        .btn-track svg {
-            margin-inline-end: 10px !important;
-            flex-shrink: 0;
-        }
         .btn-track:hover { background: #1d4ed8; }
         
         /* Timeline Stepper */
@@ -9634,66 +9629,6 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
     }
 }
 
-/* =========================================================================
-   Universal Button & Icon Spacing Guard (Fixes icons stuck to text in RTL & LTR)
-   ========================================================================= */
-.btn,
-.btn-track,
-.btn-action,
-.btn-primary,
-.btn-secondary,
-.btn-outline,
-.header-search-btn,
-.newsletter-btn,
-.btn-hero-primary,
-.btn-hero-secondary,
-.btn-explore,
-button.btn-track,
-a.btn-action {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 10px !important;
-}
-
-/* الأيقونة التي تسبق النص تحصل على هامش فاصل 10px */
-.btn i,
-.btn svg,
-.btn-track i,
-.btn-track svg,
-.btn-action i,
-.btn-action svg,
-.btn-hero-primary i,
-.btn-hero-secondary i,
-.btn-explore i,
-button i,
-button svg,
-a.btn i,
-a.btn-action i {
-    margin-inline-end: 10px !important;
-    flex-shrink: 0;
-}
-
-/* الأيقونة التي تلي النص (مثل الأسهم التوجيهية) */
-.btn span + i,
-.btn-track span + i,
-.btn-action span + i,
-button span + i,
-a.btn span + i {
-    margin-inline-start: 10px !important;
-    margin-inline-end: 0 !important;
-}
-
-/* أيقونات ملخص السلة والشحن وتفاصيل الأسعار */
-.summary-line i,
-.order-summary-row i,
-.cart-summary i,
-.shipping-calc i,
-.payment-badge i,
-.trust-card i {
-    margin-inline-end: 8px !important;
-    vertical-align: middle;
-}
 
 /* Store logo uploaded from Admin > Settings (rendered by js/main.js) */
 .site-logo-img.store-logo-custom {

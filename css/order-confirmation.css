@@ -164,12 +164,6 @@
     transition: all 0.2s ease;
 }
 
-.btn-action i,
-.btn-action svg {
-    margin-inline-end: 10px !important;
-    flex-shrink: 0;
-}
-
 .btn-action.btn-primary {
     background: var(--primary-color, #4f46e5);
     color: #ffffff;

@@ -396,7 +396,7 @@ function updateSummary() {
     
     <div class="summary-item" style="border-bottom: 1px dashed var(--border-color, #e2e8f0); padding-bottom: 10px;">
       <span><span data-i18n="checkout.shipping_cost">مصاريف الشحن</span></span>
-      <span style="font-size: 0.88rem; color: var(--primary-color); font-weight: bold; display: inline-flex; align-items: center; gap: 4px;">
+      <span style="font-size: 0.88rem; color: var(--primary-color); font-weight: bold; display: inline-flex; align-items: center; gap: 6px;">
         <i class="fas fa-truck"></i> <span data-i18n="cart.shipping_calc">تُحسب حسب الولاية عند الدفع</span>
       </span>
     </div>
