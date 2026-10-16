@@ -9344,7 +9344,12 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
             transition: border-color 0.2s;
         }
         .form-field input:focus { border-color: var(--primary-color); }
-        .btn-track { min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
+        .btn-track { 
+            min-height: 44px; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center;
+            gap: 10px !important;
             background: var(--primary-solid);
             color: var(--bg-color, #fff);
             border: none;
@@ -9354,6 +9359,11 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
             font-weight: bold;
             cursor: pointer;
             transition: background 0.2s;
+        }
+        .btn-track i,
+        .btn-track svg {
+            margin-inline-end: 10px !important;
+            flex-shrink: 0;
         }
         .btn-track:hover { background: #1d4ed8; }
         
@@ -9578,48 +9588,93 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
 
 
 /* =========================================================================
-   Mobile header (<= 768px): the search row hides WITHOUT changing the header's
-   box. The header keeps its full height in the page flow, so the content below
-   never jumps; only its painted background (::before) shrinks and the search
-   row fades out. --header-collapse-offset is measured by js/main.js.
+   Mobile header (<= 768px): Solid, stable header with zero transparent gaps.
+   Prevents search bar from floating or clipping when scrolling on mobile.
    ========================================================================= */
 @media (max-width: 768px) {
-    #main-header {
-        background: transparent;
-        border-bottom: 0;
-        box-shadow: none;
+    #main-header,
+    header#main-header {
+        background: var(--header-solid-bg, #ffffff) !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        box-shadow: var(--shadow-sm) !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000 !important;
     }
-    #main-header::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background: var(--header-solid-bg, #ffffff);
-        border-bottom: 1px solid var(--border-color);
-        box-shadow: var(--shadow-sm);
-        pointer-events: none;
-        transition: bottom 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+    [data-theme="dark"] #main-header,
+    [data-theme="dark"] header#main-header,
+    body.dark-mode #main-header,
+    body.dark-mode header#main-header {
+        background: #0f172a !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     }
     #main-header .header-search {
-        transition: opacity 0.2s ease, transform 0.28s cubic-bezier(0.25, 1, 0.5, 1), visibility 0s;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        display: block !important;
     }
-    #main-header.search-collapsed::before {
-        bottom: var(--header-collapse-offset, 63px);
-    }
-    #main-header.search-collapsed .header-search {
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-8px);
-        transition: opacity 0.2s ease, transform 0.28s cubic-bezier(0.25, 1, 0.5, 1), visibility 0s 0.28s;
-    }
-    /* the empty strip under the compact bar must not swallow taps meant for the page */
-    #main-header.search-collapsed { pointer-events: none; }
-    #main-header.search-collapsed .logo,
-    #main-header.search-collapsed .user-actions { pointer-events: auto; }
 }
-@media (prefers-reduced-motion: reduce) {
-    #main-header::before,
-    #main-header .header-search { transition: none !important; }
+
+/* =========================================================================
+   Universal Button & Icon Spacing Guard (Fixes icons stuck to text in RTL & LTR)
+   ========================================================================= */
+.btn,
+.btn-track,
+.btn-action,
+.btn-primary,
+.btn-secondary,
+.btn-outline,
+.header-search-btn,
+.newsletter-btn,
+.btn-hero-primary,
+.btn-hero-secondary,
+.btn-explore,
+button.btn-track,
+a.btn-action {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+}
+
+/* الأيقونة التي تسبق النص تحصل على هامش فاصل 10px */
+.btn i,
+.btn svg,
+.btn-track i,
+.btn-track svg,
+.btn-action i,
+.btn-action svg,
+.btn-hero-primary i,
+.btn-hero-secondary i,
+.btn-explore i,
+button i,
+button svg,
+a.btn i,
+a.btn-action i {
+    margin-inline-end: 10px !important;
+    flex-shrink: 0;
+}
+
+/* الأيقونة التي تلي النص (مثل الأسهم التوجيهية) */
+.btn span + i,
+.btn-track span + i,
+.btn-action span + i,
+button span + i,
+a.btn span + i {
+    margin-inline-start: 10px !important;
+    margin-inline-end: 0 !important;
+}
+
+/* أيقونات ملخص السلة والشحن وتفاصيل الأسعار */
+.summary-line i,
+.order-summary-row i,
+.cart-summary i,
+.shipping-calc i,
+.payment-badge i,
+.trust-card i {
+    margin-inline-end: 8px !important;
+    vertical-align: middle;
 }
 
 /* Store logo uploaded from Admin > Settings (rendered by js/main.js) */
