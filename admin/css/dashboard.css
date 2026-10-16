@@ -1767,6 +1767,10 @@ header .container {
     border: 1px solid var(--border-color) !important;
     border-radius: 6px;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 .page-btn.active {
     background: var(--primary-solid) !important;
