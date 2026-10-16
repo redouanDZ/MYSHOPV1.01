@@ -3,10 +3,6 @@
         let totalPages = 1;
         let storeCategories = [];
 
-        // Theme Initialization
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', currentTheme);
-
         // Image Preview Handler
         document.addEventListener('DOMContentLoaded', async function() {
             const user = await AdminAuth.verifyAdmin();

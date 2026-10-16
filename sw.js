@@ -1,4 +1,4 @@
-const CACHE_NAME = 'myshop-pwa-v8de4974227';
+const CACHE_NAME = 'myshop-pwa-v7b3888a7c0';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -25,6 +25,7 @@ const STATIC_ASSETS = [
   '/fonts/font-2.woff2',
   '/fonts/font-3.woff2',
   '/js/layout.js',
+  '/js/theme-init.js',
   '/js/api-client.js',
   '/js/main.js',
   '/js/cart.js',

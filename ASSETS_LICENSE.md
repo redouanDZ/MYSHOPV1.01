@@ -1,56 +1,54 @@
-# 📜 ترخيص مصادر الصور والوسائط (Assets License & Attribution)
+# سجل مصادر الأصول وتراخيصها
 
-تم إعداد هذا الملف لتأكيد وتوثيق جميع مصادر الصور والرسومات والأيقونات والخطوط المستخدمة في مشروع **MYSHOP**، وضمان أنها مجانية 100%، وقابلة للتوزيع وإعادة الاستخدام التجاري (Free for Commercial and Personal Use) دون أي انتهاك لحقوق الملكية الفكرية، وذلك التزاماً بمعايير منصة **بيكاليكا (Beekalia)**.
+هذا السجل يميز بين شروط الخدمة المنشورة وبين إثبات مصدر كل ملف محلي. وفق إفادة مالك المشروع، صور المنتجات والبانرات أدناه مولّدة باستخدام Gemini Flash عبر Nano Banana وليست صورًا جرى تنزيلها من الإنترنت. لم تُرفق سجلات التوليد أو المطالبات أو الملفات الأصلية، لذلك تبقى المطابقة ملفًا بملف غير مثبتة. أسماء الملفات التي تحتوي `unsplash` وروابط Unsplash المسجلة سابقًا لا تثبت مصدر الصور.
 
----
+## الصور والرسومات
 
-## 1. 🖼️ صور المنتجات والبانرات (Product & Banner Images)
+| الملفات الموجودة | المصدر المسجل حاليًا | نتيجة التحقق |
+| --- | --- | --- |
+| `images/hero-banner.jpg`, `images/hero-banner.webp`, `images/prod_classic_watch.jpg`, `prod_cookware.jpg`, `prod_linen_shirt.jpg`, `prod_linen_shirt_navy.jpg`, `prod_linen_shirt_white.jpg`, `prod_perfume.jpg`, `prod_sneakers.jpg`, `prod_sneakers_black.jpg`, `prod_summer_dress.jpg`, `prod_summer_dress_coral.jpg`, `christopher-gower-m_HRfLhgABo-unsplash.jpg`, `samsung-memory-RZM2cE0lx0Y-unsplash.jpg`, `images/product-placeholder.jpg` | إفادة مالك المشروع: توليد باستخدام Gemini Flash عبر Nano Banana، دون تنزيل الصور من الإنترنت | هذه إفادة مصدر وليست سجل توليد مستقلًا. Google تنص على أنها لا تدّعي ملكية المحتوى المولّد، لكن ذلك لا يثبت تفرد المخرجات أو خلوها من حقوق الغير. راجع شروط الخدمة التي استُخدمت وقت التوليد، واحتفظ بالمطالبات والملفات الأصلية وسجلات التوليد. أسماء Unsplash والروابط المسجلة سابقًا غير معتمدة كمصدر لهذه الملفات. |
+| `images/logo.png`, `images/favicon.png`, `images/favicon.svg`, `favicon.ico` | موصوفة سابقًا بأنها أصول خاصة بالمشروع | لا يوجد في المستودع سجل منشئ أو مصدر يثبت الملكية أو حق إعادة الترخيص للمشتري. يلزم إثبات الإنشاء/التكليف أو استبدالها بأصول موثقة قبل البيع. |
+| `images/flags/dz.svg`, `images/flags/fr.svg`, `images/flags/gb.svg` | [lipis/flag-icons](https://github.com/lipis/flag-icons), مجلد `flags/4x3/`؛ ملفات `dz.svg`, `fr.svg`, `gb.svg` | استُبدلت الملفات المحلية بنسخ من هذا المصدر. المستودع يعلن رخصة MIT؛ إشعار الحقوق ونص الرخصة أدناه. |
+| أيقونات مخصصة مولّدة، إن كانت المقصودة غير Font Awesome | إفادة مالك المشروع: مولّدة | لم تُحدد ملفات مستقلة أو سجلات توليد لهذه الأيقونات. لا ينطبق ذلك على مكتبة Font Awesome المستخدمة في الواجهة، والمدرجة منفصلة أدناه. |
 
-جميع الصور الفوتوغرافية المستخدمة كبيانات تجريبية (Demo Data) في المتجر مأخوذة من منصة **Unsplash** العالمية، وهي مرخصة تحت رخصة **[Unsplash License](https://unsplash.com/license)** التي تمنح ترخيصاً عالمياً مجانياً وغير حصري لتحميل واستخدام وتعديل وتوزيع الصور للأغراض التجارية وغير التجارية دون اشتراط ذكر المصدر.
+وفق [شروط Google العامة](https://policies.google.com/terms) و[شروط Gemini API الإضافية](https://ai.google.dev/gemini-api/terms)، لا تدّعي Google ملكية المحتوى المولّد، لكن شروط API تنبه أيضًا إلى إمكان توليد محتوى مماثل لمستخدمين آخرين وتحمل المستخدم مسؤولية استخدام المخرجات. لا نعرف من المستودع هل تم التوليد عبر تطبيق Gemini أو AI Studio أو API، ولا الحساب/الخطة أو إصدار النموذج؛ لذلك لا يُعد هذا السجل رأيًا قانونيًا أو إثباتًا لحق إعادة ترخيص كل ملف لمشتري القالب.
 
-| اسم الملف | الاستخدام في المتجر | مصدر الصورة والرابط المباشر | الترخيص |
-| :--- | :--- | :--- | :--- |
-| `hero-banner.jpg` | البانر الترويجي الرئيسي بالصفحة الرئيسية | [Unsplash Photo](https://images.unsplash.com/photo-1441986300917-64674bd600d8) | Unsplash Free Commercial License |
-| `prod_classic_watch.jpg` | منتج ساعة يد كلاسيكية فاخرة | [Unsplash Watch Photo](https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9) | Unsplash Free Commercial License |
-| `prod_cookware.jpg` | منتج طقم أواني طهي بريميوم | [Unsplash Cookware Photo](https://images.unsplash.com/photo-1584990347449-399127521c7f) | Unsplash Free Commercial License |
-| `prod_linen_shirt.jpg` | منتج قميص كتان رجالي | [Unsplash Apparel Photo](https://images.unsplash.com/photo-1596755094514-f87e34085b2c) | Unsplash Free Commercial License |
-| `prod_linen_shirt_navy.jpg` | متغير اللون الكحلي للقميص | [Unsplash Linen Navy](https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf) | Unsplash Free Commercial License |
-| `prod_linen_shirt_white.jpg` | متغير اللون الأبيض للقميص | [Unsplash Linen White](https://images.unsplash.com/photo-1521572267360-ee0c2909d518) | Unsplash Free Commercial License |
-| `prod_perfume.jpg` | منتج عطر فاخر 100 مل | [Unsplash Perfume Photo](https://images.unsplash.com/photo-1592945403244-b3fbafd7f539) | Unsplash Free Commercial License |
-| `prod_sneakers.jpg` | منتج حذاء رياضي كاجوال | [Unsplash Sneakers Photo](https://images.unsplash.com/photo-1542291026-7eec264c27ff) | Unsplash Free Commercial License |
-| `prod_sneakers_black.jpg` | متغير الحذاء الأسود | [Unsplash Black Sneakers](https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a) | Unsplash Free Commercial License |
-| `prod_summer_dress.jpg` | منتج فستان صيفي نسائي | [Unsplash Dress Photo](https://images.unsplash.com/photo-1572804013309-59a88b7e92f1) | Unsplash Free Commercial License |
-| `prod_summer_dress_coral.jpg` | متغير الفستان الصيفي المرجاني | [Unsplash Coral Dress](https://images.unsplash.com/photo-1515372039744-b8f02a3ae446) | Unsplash Free Commercial License |
-| `christopher-gower-m_HRfLhgABo-unsplash.jpg` | صورة تقنية تجريبية | [Unsplash by Christopher Gower](https://unsplash.com/photos/m_HRfLhgABo) | Unsplash Free Commercial License |
-| `samsung-memory-RZM2cE0lx0Y-unsplash.jpg` | صورة تقنية للإلكترونيات | [Unsplash by Samsung Memory](https://unsplash.com/photos/RZM2cE0lx0Y) | Unsplash Free Commercial License |
-| `product-placeholder.jpg` | صورة افتراضية للمنتجات عند التحميل | تصميم رقمي خاص بالمشروع (Vector/CSS Placeholder) | رخصة المشروع الحرة |
+## الخطوط
 
----
+تعرّف `fonts/fonts.css` العائلات والملفات التالية. أضيف نص SIL Open Font License 1.1 وإشعارات أصحاب الحقوق في [`fonts/OFL.txt`](fonts/OFL.txt)، وهو مطلوب مع إعادة توزيع الخطوط.
 
-## 2. 🎨 الشعارات والأيقونات والرسومات التوضيحية (Branding & Icons)
+| العائلة | الملفات | المصدر/الترخيص |
+| --- | --- | --- |
+| Cairo | `font-1.woff2` إلى `font-3.woff2` | [Google Fonts: Cairo](https://fonts.google.com/specimen/Cairo)، SIL OFL 1.1؛ إشعار الحقوق في `fonts/OFL.txt`. |
+| Plus Jakarta Sans | `font-16.woff2` إلى `font-19.woff2` | [Google Fonts: Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans)، SIL OFL 1.1؛ إشعار الحقوق في `fonts/OFL.txt`. |
+| Outfit | `font-51.woff2` إلى `font-54.woff2` | [Google Fonts: Outfit](https://fonts.google.com/specimen/Outfit)، SIL OFL 1.1؛ إشعار الحقوق في `fonts/OFL.txt`. |
+| Tajawal | `font-55.woff2` إلى `font-59.woff2` | [Google Fonts: Tajawal](https://fonts.google.com/specimen/Tajawal)، SIL OFL 1.1؛ إشعار الحقوق في `fonts/OFL.txt`. |
 
-| العنصر | الملفات | المصدر | الترخيص |
-| :--- | :--- | :--- | :--- |
-| **هوية المتجر والأيقونة المفضلة** | `logo.png`, `favicon.png`, `favicon.svg`, `favicon.ico` | أصول خاصة صُممت للمشروع بصيغة SVG/PNG عالية الدقة | مرخصة للاستخدام التجاري للمشتري ضمن المشروع |
-| **أعلام اللغات (Flags)** | `images/flags/dz.svg`<br>`images/flags/fr.svg`<br>`images/flags/gb.svg` | [Flagpack](https://flagpack.net/) / [SVG Repo Public Domain](https://www.svgrepo.com/) | MIT License & Public Domain (مجانية تجارياً) |
-| **حزمة الأيقونات (Icons)** | `vendor/fontawesome/*` | [Font Awesome 6 Free](https://fontawesome.com/license/free) | • الخطوط: SIL OFL 1.1<br>• الأيقونات: CC BY 4.0<br>• الأكواد: MIT License |
+تسمح OFL بتضمين الخطوط وتوزيعها أو بيعها ضمن برنامج، ولا تسمح ببيع ملفات الخط وحدها، وتتطلب إرفاق إشعار الحقوق ونص الرخصة. أسماء الملفات أعلاه مستنتجة من `fonts.css`؛ لم يُتحقق من بصمة كل ملف ثنائي مقابل إصدار Google Fonts الأصلي.
 
----
+## الأيقونات
 
-## 3. 🔤 خطوط الطباعة (Typography Fonts)
+المجلد `vendor/fontawesome/` يحتوي Font Awesome Free 6.5.1، وإشعار الإصدار والرخصة موجود في رأس `vendor/fontawesome/css/all.min.css`. وفق [رخصة Font Awesome Free](https://fontawesome.com/license/free): الأيقونات CC BY 4.0، والخطوط SIL OFL 1.1، والشفرة MIT. تبقى شعارات العلامات التجارية لأصحابها ولا تعني تأييدهم للمتجر.
 
-تم تضمين الخطوط محلياً داخل مجلد `/fonts/` لتسريع التصفح وتحسين مؤشرات الأداء (Core Web Vitals / LCP)، وهي خطوط حرة ومفتوحة المصدر:
+## رخصة الأعلام
 
-| الخط | الأوزان المتضمنة | المصدر الرسمي | نوع الترخيص |
-| :--- | :--- | :--- | :--- |
-| **Cairo (خط عربي)** | 400, 600, 700, 800, 900 (WOFF2) | [Google Fonts - Cairo](https://fonts.google.com/specimen/Cairo) | [SIL Open Font License 1.1 (OFL)](https://openfontlicense.org/) |
-| **Plus Jakarta Sans (خط لاتيني)** | 400, 500, 600, 700, 800 (WOFF2) | [Google Fonts - Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) | [SIL Open Font License 1.1 (OFL)](https://openfontlicense.org/) |
+حقوق مشروع `flag-icons` محفوظة لـ Panayiotis Lipiridis (2013). يُرفق نص MIT كما في مستودع المصدر:
 
----
+```text
+The MIT License (MIT)
 
-## 4. ⚖️ إقرار وتعهد الامتثال (Compliance Statement)
+Copyright (c) 2013 Panayiotis Lipiridis
 
-نقر نحن مطورو سكربت **MYSHOP** بالآتي:
-1. جميع المواد البصرية المرفقة خالية من أي علامات مائية أو حقوق ملكية مقيدة تحظر الاستخدام التجاري.
-2. المشتري لسكربت MYSHOP على منصة **بيكاليكا** يمتلك الحق الكامل في استخدام هذه الأصول في متجره الفعلي أو استبدالها بصور منتجاته الخاصة بكل سهولة عبر لوحة التحكم أو ملفات المشروع.
-3. لا توجد أي مراجع لصور مستضافة على خدمات خارجية قد تتوقف أو تنتهك شروط الاستخدام، بل جميع الأصول محملة محلياً وقابلة للعمل دون اتصال بالإنترنت (Offline-Ready).
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+## ما يلزم قبل إدراج المنتج
+
+- حفظ مطالبات التوليد والملفات الأصلية وتاريخها واسم الخدمة/النموذج للأصول المولّدة، ومراجعة شروط الخدمة والخطة المستخدمة وقت التوليد قبل إعادة توزيعها مع القالب.
+- إثبات ملكية/حق إعادة ترخيص الشعار؛ أُرفق مصدر الأعلام ورخصتها في هذا السجل.
+- مراجعة شروط بيكاليكا لإرفاق الأصول المرخصة ضمن قالب قابل للبيع، والتأكد من عدم بيع الصور أو الخطوط منفردة.
+- إدخال عنوان المنتج وسعر الرخصة وصورة العرض وبيانات صفحة البيع يدويًا في لوحة بيكاليكا؛ هذه الحقول ليست ملفات من المشروع.

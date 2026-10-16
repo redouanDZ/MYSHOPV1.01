@@ -24,9 +24,13 @@ d. Use the Software or any portion thereof to create a competing product, servic
    redistributable template/framework.
 
 3. INTELLECTUAL PROPERTY RIGHTS
-All title, ownership rights, and intellectual property rights in and to the Software
-(including but not limited to any code, images, text, database schemas, interfaces,
-and features incorporated into the Software) are owned by the Licensor.
+The Licensor owns the original project materials to which it holds rights. Third-party
+software, fonts, icons, photographs, flags, and other assets remain the property of
+their respective rights holders and are governed by their own licenses. They are not
+transferred or relicensed by this Agreement. Applicable notices and known license
+terms are recorded in ASSETS_LICENSE.md, fonts/OFL.txt, and the notices shipped with
+vendor assets. The Licensee must comply with those third-party terms when using,
+modifying, or redistributing the Software.
 
 4. DISCLAIMER OF WARRANTY
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,

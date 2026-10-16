@@ -2,19 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <!-- Theme Anti-Flicker (Executes synchronously before stylesheets load) -->
-    <script>
-      (function() {
-        try {
-          var t = localStorage.getItem('theme');
-          if (!t) {
-            t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-          }
-          document.documentElement.setAttribute('data-theme', t);
-          document.documentElement.classList.toggle('dark', t === 'dark');
-        } catch (e) {}
-      })();
-    </script>
+        <script src="/js/theme-init.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="home.meta.title">MYSHOP - متجر إلكتروني عربي احترافي متعدد الأقسام</title>
     <link rel="stylesheet" href="/fonts/fonts.css">
@@ -858,15 +846,13 @@ pm2 save</code></pre>
 
         // Dark / Light Mode Toggle
         const themeBtn = document.getElementById('themeToggleBtn');
-        const currentTheme = localStorage.getItem('doc_theme') || 'light';
-        document.documentElement.setAttribute('data-theme', currentTheme);
+        const currentTheme = window.ThemeManager.getCurrentTheme();
         updateThemeIcon(currentTheme);
 
         themeBtn.addEventListener('click', () => {
-            const activeTheme = document.documentElement.getAttribute('data-theme');
+            const activeTheme = window.ThemeManager.getCurrentTheme();
             const newTheme = activeTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('doc_theme', newTheme);
+            window.ThemeManager.setTheme(newTheme);
             updateThemeIcon(newTheme);
         });
 

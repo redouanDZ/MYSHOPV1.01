@@ -195,9 +195,7 @@ const AdminUI = {
     },
 
     initTheme() {
-        const currentTheme = localStorage.getItem('theme') ||
-            (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', currentTheme);
+        return window.ThemeManager.applySavedTheme();
     },
 
     initThemeToggle() {
@@ -208,9 +206,8 @@ const AdminUI = {
             button.type = 'button';
             button.className = 'admin-theme-toggle';
             button.addEventListener('click', () => {
-                const nextTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', nextTheme);
-                localStorage.setItem('theme', nextTheme);
+                const nextTheme = window.ThemeManager.getCurrentTheme() === 'dark' ? 'light' : 'dark';
+                window.ThemeManager.setTheme(nextTheme);
                 this.updateThemeToggle(button);
             });
             container.insertBefore(button, container.firstChild);

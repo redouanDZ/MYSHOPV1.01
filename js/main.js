@@ -44,15 +44,7 @@ if (typeof window !== 'undefined' && !window.getErrorMessage) {
  * Dark / Light Theme Manager
  */
 function initTheme() {
-  const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-  if (savedTheme === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    if (document.body) document.body.classList.add('dark-mode');
-  } else {
-    document.documentElement.setAttribute('data-theme', 'light');
-    if (document.body) document.body.classList.remove('dark-mode');
-  }
+  return window.ThemeManager.applySavedTheme();
 }
 
 // Run immediately to avoid page flicker
@@ -64,24 +56,17 @@ function toggleTheme() {
   if (now - lastThemeToggleTime < 300) return;
   lastThemeToggleTime = now;
 
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  const currentTheme = window.ThemeManager.getCurrentTheme();
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-  document.documentElement.setAttribute('data-theme', newTheme);
-  document.documentElement.classList.toggle('dark', newTheme === 'dark');
+  window.ThemeManager.setTheme(newTheme);
   if (document.body) {
     document.body.classList.add('theme-transitioning');
-    if (newTheme === 'dark') {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
     setTimeout(() => {
       document.body.classList.remove('theme-transitioning');
     }, 350);
   }
 
-  localStorage.setItem('theme', newTheme);
   updateThemeToggleIcons(newTheme);
 
   if (window.showToast) {
