@@ -2,14 +2,27 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <!-- Theme Anti-Flicker (Executes synchronously before stylesheets load) -->
+    <script>
+      (function() {
+        try {
+          var t = localStorage.getItem('theme');
+          if (!t) {
+            t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+          }
+          document.documentElement.setAttribute('data-theme', t);
+          document.documentElement.classList.toggle('dark', t === 'dark');
+        } catch (e) {}
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="home.meta.title">المتجر الإلكتروني المتكامل</title>
-    <meta name="description" data-i18n="home.meta.description" content="متجر إلكتروني حديث يقدم أفضل المنتجات المتنوعة في الجزائر بأسعار تنافسية وتوصيل سريع.">
+    <title data-i18n="home.meta.title">MYSHOP - متجر إلكتروني عربي احترافي متعدد الأقسام</title>
+    <meta name="description" data-i18n="home.meta.description" content="سكربت متجر إلكتروني عربي حديث ومتكامل يدعم الدفع عند الاستلام، السلة، المفضلة، وتتبع الشحنات.">
     <meta name="theme-color" content="#2563eb">
     <link rel="manifest" href="/manifest.json">
     
     <!-- Preload Hero Image for LCP -->
-    <link rel="preload" as="image" href="/images/hero-banner.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="/images/hero-banner.webp" type="image/webp" fetchpriority="high">
 
     <!-- OpenGraph Tags -->
     <meta property="og:title" data-i18n="home.meta.og_title" content="المتجر الإلكتروني الشامل">
@@ -50,8 +63,6 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/images/logo.png">
 
-    <!-- Theme Anti-Flicker -->
-    <script src="/js/theme-init.js"></script>
 </head>
 <body>
     <!-- ===== Unified Header & Search (Injected by js/layout.js) ===== -->

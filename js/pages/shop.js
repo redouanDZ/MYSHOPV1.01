@@ -85,11 +85,11 @@
       let html = '';
       for (let i = 1; i <= 5; i++) {
         if (r >= i) {
-          html += '<i class="fas fa-star"></i>';
+          html += '<i class="fas fa-star" aria-hidden="true"></i>';
         } else if (r >= i - 0.5) {
-          html += '<i class="fas fa-star-half-alt"></i>';
+          html += '<i class="fas fa-star-half-alt" aria-hidden="true"></i>';
         } else {
-          html += '<i class="far fa-star"></i>';
+          html += '<i class="far fa-star" aria-hidden="true"></i>';
         }
       }
       return html;
@@ -380,10 +380,10 @@
           <div class="product-info">
             <span class="product-category">${safeCat}</span>
             <h3 class="product-name">
-              <a href="product.html?id=${product.id}">${safeName}</a>
+              <a href="product.html?id=${product.id}" title="${safeName}">${safeName}</a>
             </h3>
             <div class="product-rating">
-              <div class="rating-stars">
+              <div class="rating-stars" aria-label="${Number(product.rating || 5).toFixed(1)} من 5 نجوم" title="${Number(product.rating || 5).toFixed(1)} من 5 نجوم">
                 ${renderStars(product.rating)}
               </div>
               <span class="rating-count">(${Number(product.rating || 5).toFixed(1)})</span>

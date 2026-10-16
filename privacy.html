@@ -2,8 +2,21 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+    <!-- Theme Anti-Flicker (Executes synchronously before stylesheets load) -->
+    <script>
+      (function() {
+        try {
+          var t = localStorage.getItem('theme');
+          if (!t) {
+            t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+          }
+          document.documentElement.setAttribute('data-theme', t);
+          document.documentElement.classList.toggle('dark', t === 'dark');
+        } catch (e) {}
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="privacy.meta_title">سياسة الخصوصية - المتجر الإلكتروني</title>
+  <title data-i18n="privacy.meta_title">سياسة الخصوصية | MYSHOP</title>
   <meta name="description" content="تعرف على كيفية جمع بياناتك الشخصية واستخدامها وحمايتها في متجرنا وفق أعلى معايير الأمان والشفافية." data-i18n="privacy.meta_description">
 
   <!-- Preload Primary Font for LCP / Text Performance -->
@@ -19,8 +32,6 @@
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/images/logo.png">
 
-  <!-- Theme Anti-Flicker -->
-  <script src="/js/theme-init.js"></script>
 </head>
 <body>
   <!-- Header (Injected by js/layout.js) -->

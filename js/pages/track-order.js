@@ -7,6 +7,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const orderInput = document.getElementById('orderInput');
+    const phoneInput = document.getElementById('phoneInput');
+
+    if (orderInput) {
+        orderInput.addEventListener('input', () => {
+            const val = orderInput.value.trim();
+            if (val.length >= 3) {
+                orderInput.style.borderColor = 'var(--success-color, #10b981)';
+            } else if (val.length > 0) {
+                orderInput.style.borderColor = 'var(--warning-color, #f59e0b)';
+            } else {
+                orderInput.style.borderColor = '';
+            }
+        });
+    }
+
+    if (phoneInput) {
+        phoneInput.addEventListener('input', () => {
+            const clean = phoneInput.value.replace(/[^0-9+]/g, '');
+            if (clean !== phoneInput.value) phoneInput.value = clean;
+            if (clean.length >= 9) {
+                phoneInput.style.borderColor = 'var(--success-color, #10b981)';
+            } else if (clean.length > 0) {
+                phoneInput.style.borderColor = 'var(--warning-color, #f59e0b)';
+            } else {
+                phoneInput.style.borderColor = '';
+            }
+        });
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('orderId') || urlParams.get('id');
     const phone = urlParams.get('phone');
