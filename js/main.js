@@ -1017,7 +1017,86 @@ function initMobileSmartHeader() {
 function bindSmartHeader(header) {
   if (!header || header._smartHeaderBound) return;
   header._smartHeaderBound = true;
-  header.classList.remove('search-collapsed');
+
+  let lastScrollY = Math.max(0, window.scrollY || 0);
+  let accumulatedDistance = 0;
+  let activeDirection = 0;
+  let ticking = false;
+
+  const DOWN_THRESHOLD = 40;
+  const UP_THRESHOLD = 25;
+  const TOP_SAFE_ZONE = 60;
+
+  const handleScroll = () => {
+    const currentScrollY = Math.max(0, window.scrollY || 0);
+
+    if (window.innerWidth > 768) {
+      if (header.classList.contains('search-collapsed')) {
+        header.classList.remove('search-collapsed');
+      }
+      lastScrollY = currentScrollY;
+      ticking = false;
+      return;
+    }
+
+    const activeEl = document.activeElement;
+    if (activeEl && activeEl.closest('.header-search')) {
+      lastScrollY = currentScrollY;
+      ticking = false;
+      return;
+    }
+
+    if (currentScrollY <= TOP_SAFE_ZONE) {
+      if (header.classList.contains('search-collapsed')) {
+        header.classList.remove('search-collapsed');
+      }
+      lastScrollY = currentScrollY;
+      accumulatedDistance = 0;
+      activeDirection = 0;
+      ticking = false;
+      return;
+    }
+
+    const delta = currentScrollY - lastScrollY;
+    const currentDir = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
+
+    if (currentDir !== 0) {
+      if (currentDir !== activeDirection) {
+        activeDirection = currentDir;
+        accumulatedDistance = 0;
+      }
+
+      accumulatedDistance += Math.abs(delta);
+
+      if (activeDirection === 1 && accumulatedDistance >= DOWN_THRESHOLD) {
+        if (!header.classList.contains('search-collapsed')) {
+          header.classList.add('search-collapsed');
+        }
+        accumulatedDistance = 0;
+      } else if (activeDirection === -1 && accumulatedDistance >= UP_THRESHOLD) {
+        if (header.classList.contains('search-collapsed')) {
+          header.classList.remove('search-collapsed');
+        }
+        accumulatedDistance = 0;
+      }
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(handleScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && header.classList.contains('search-collapsed')) {
+      header.classList.remove('search-collapsed');
+    }
+  }, { passive: true });
 }
 
 // Page Initialization

@@ -9608,11 +9608,29 @@ body.dark-mode .empty-cart-box .empty-state-icon i {
         background: #0f172a !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     }
+    /* شريط البحث في الهاتف: يختفي بسلاسة بالانطواء عند التمرير لأسفل ويعود عند التمرير لأعلى */
     #main-header .header-search {
+        order: 3 !important;
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 6px 0 0 0 !important;
+        max-height: 56px !important;
         opacity: 1 !important;
-        visibility: visible !important;
-        transform: none !important;
+        overflow: hidden !important;
         display: block !important;
+        transform: none !important;
+        transition: max-height 0.28s cubic-bezier(0.25, 1, 0.5, 1),
+                    opacity 0.22s ease,
+                    margin 0.28s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    }
+
+    #main-header.search-collapsed .header-search {
+        max-height: 0 !important;
+        opacity: 0 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        pointer-events: none !important;
     }
 }
 
