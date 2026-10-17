@@ -159,7 +159,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 
 // Body Parsers & Path Guard (Capturing rawBody for webhook HMAC verification)
 app.use(express.json({
