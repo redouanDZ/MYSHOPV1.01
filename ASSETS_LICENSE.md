@@ -1,18 +1,29 @@
 # سجل مصادر الأصول وتراخيصها
 
-هذا السجل يميز بين شروط الخدمة المنشورة وبين إثبات مصدر كل ملف محلي. وفق إفادة مالك المشروع، صور المنتجات والبانرات أدناه مولّدة باستخدام Gemini Flash عبر Nano Banana وليست صورًا جرى تنزيلها من الإنترنت. لم تُرفق سجلات التوليد أو المطالبات أو الملفات الأصلية، لذلك تبقى المطابقة ملفًا بملف غير مثبتة. أسماء الملفات التي تحتوي `unsplash` وروابط Unsplash المسجلة سابقًا لا تثبت مصدر الصور.
+استُبدلت صور المنتجات والبانر التجريبية ذات المصدر غير المثبت بنسخ محلية محسّنة من صور Unsplash المدرجة أدناه، مع إبقاء مسارات الملفات حتى لا تنكسر البيانات التجريبية المحفوظة. صور العطر والكاميرا والصورة البديلة العامة رسومات أصلية أنشئت لهذا المشروع، ومصادرها بصيغة SVG محفوظة بجانبها.
 
 ## الصور والرسومات
 
-| الملفات الموجودة | المصدر المسجل حاليًا | نتيجة التحقق |
+| الأصول | المصدر | الترخيص والملاحظات |
 | --- | --- | --- |
-| `images/hero-banner.jpg`, `images/hero-banner.webp`, `images/prod_classic_watch.jpg`, `prod_cookware.jpg`, `prod_linen_shirt.jpg`, `prod_linen_shirt_navy.jpg`, `prod_linen_shirt_white.jpg`, `prod_perfume.jpg`, `prod_sneakers.jpg`, `prod_sneakers_black.jpg`, `prod_summer_dress.jpg`, `prod_summer_dress_coral.jpg`, `christopher-gower-m_HRfLhgABo-unsplash.jpg`, `samsung-memory-RZM2cE0lx0Y-unsplash.jpg`, `images/product-placeholder.jpg` | إفادة مالك المشروع: توليد باستخدام Gemini Flash عبر Nano Banana، دون تنزيل الصور من الإنترنت | هذه إفادة مصدر وليست سجل توليد مستقلًا. Google تنص على أنها لا تدّعي ملكية المحتوى المولّد، لكن ذلك لا يثبت تفرد المخرجات أو خلوها من حقوق الغير. راجع شروط الخدمة التي استُخدمت وقت التوليد، واحتفظ بالمطالبات والملفات الأصلية وسجلات التوليد. أسماء Unsplash والروابط المسجلة سابقًا غير معتمدة كمصدر لهذه الملفات. |
+| `images/hero-banner.jpg`, `images/hero-banner.webp` | [Unsplash image `photo-1512436991641-6745cdb1723f`](https://images.unsplash.com/photo-1512436991641-6745cdb1723f) | [Unsplash License](https://unsplash.com/license). نسخ محلية مقصوصة ومحسّنة؛ لا يلزم الإسناد وفق الترخيص. |
+| `images/prod_linen_shirt.jpg` | [Unsplash image `photo-1598033129183-c4f50c736f10`](https://images.unsplash.com/photo-1598033129183-c4f50c736f10) | Unsplash License؛ نسخة محلية محسّنة. |
+| `images/prod_linen_shirt_white.jpg` | [Unsplash image `photo-1603252109303-2751441dd157`](https://images.unsplash.com/photo-1603252109303-2751441dd157) | Unsplash License؛ نسخة محلية محسّنة. |
+| `images/prod_linen_shirt_navy.jpg` | [Unsplash image `photo-1596755094514-f87e34085b2c`](https://images.unsplash.com/photo-1596755094514-f87e34085b2c) | Unsplash License؛ نسخة محلية محسّنة. |
+| `images/prod_summer_dress.jpg`, `images/prod_summer_dress_coral.jpg` | [Unsplash image `photo-1595777457583-95e059d581b8`](https://images.unsplash.com/photo-1595777457583-95e059d581b8) | Unsplash License؛ النسختان تستخدمان الصورة نفسها للبيانات التجريبية. |
+| `images/prod_sneakers.jpg` | [Unsplash image `photo-1549298916-b41d501d3772`](https://images.unsplash.com/photo-1549298916-b41d501d3772) | Unsplash License؛ نسخة محلية محسّنة. |
+| `images/prod_sneakers_black.jpg` | [Unsplash image `photo-1608231387042-66d1773070a5`](https://images.unsplash.com/photo-1608231387042-66d1773070a5) | Unsplash License؛ قد تظهر علامة تجارية على الحذاء في الصورة، ولا يمنح ترخيص الصورة حق استخدام العلامة تجاريًا أو يوحي بتأييد المتجر. |
+| `images/prod_classic_watch.jpg` | [Unsplash image `photo-1523275335684-37898b6baf30`](https://images.unsplash.com/photo-1523275335684-37898b6baf30) | Unsplash License؛ نسخة محلية محسّنة. |
+| `images/prod_cookware.jpg` | [Unsplash image `photo-1556911220-bff31c812dba`](https://images.unsplash.com/photo-1556911220-bff31c812dba) | Unsplash License؛ نسخة محلية محسّنة. |
+| `images/christopher-gower-m_HRfLhgABo-unsplash.jpg` (صورة الحاسوب المحمول التجريبي) | [Unsplash image `photo-1498050108023-c5249f4df085`](https://images.unsplash.com/photo-1498050108023-c5249f4df085) | Unsplash License؛ أُبقي اسم الملف لتوافق سجلات المنتجات التجريبية. |
+| `images/samsung-memory-RZM2cE0lx0Y-unsplash.jpg` (صورة الكاميرا التجريبية) | رسم أصلي في [`images/demo-camera.svg`](images/demo-camera.svg) | أُبقي اسم JPEG القديم للتوافق مع البيانات التجريبية؛ الرسم من إنشاء المشروع ولا يستخدم صورة أو علامة كاميرا خارجية. |
+| `images/prod_perfume.jpg` | رسم أصلي في [`images/demo-perfume.svg`](images/demo-perfume.svg) | رسم تجريبي من إنشاء المشروع، بلا علامة تجارية أو أصول خارجية. |
+| `images/product-placeholder.jpg` | رسم أصلي في [`images/demo-placeholder.svg`](images/demo-placeholder.svg) | رسم تجريدي بديل من إنشاء المشروع، بلا أصول خارجية. |
 | `images/logo.svg`, `images/logo.png` | حقيبة تسوق معدلة من [Tabler Icons `shopping-bag`](https://github.com/tabler/tabler-icons/blob/main/icons/outline/shopping-bag.svg)، مع حرف M مخصص | SVG يستخدم هيئة الحقيبة مع تبسيط المقبض وإضافة حرف M؛ PNG مشتق منه. إشعار Tabler ورخصته أدناه. |
 | `images/favicon.svg`, `images/favicon.png`, `favicon.ico` | نسخة مصغرة من علامة `images/logo.svg` على خلفية داكنة | تتضمن الحقيبة المعدلة وحرف M المخصص؛ PNG وICO مشتقان من SVG، وتطبق رخصة Tabler MIT على أصل الأيقونة. |
 | `images/flags/dz.svg`, `images/flags/fr.svg`, `images/flags/gb.svg` | [lipis/flag-icons](https://github.com/lipis/flag-icons), مجلد `flags/4x3/`؛ ملفات `dz.svg`, `fr.svg`, `gb.svg` | استُبدلت الملفات المحلية بنسخ من هذا المصدر. المستودع يعلن رخصة MIT؛ إشعار الحقوق ونص الرخصة أدناه. |
-| أيقونات مخصصة مولّدة، إن كانت المقصودة غير Font Awesome | إفادة مالك المشروع: مولّدة | لم تُحدد ملفات مستقلة أو سجلات توليد لهذه الأيقونات. لا ينطبق ذلك على مكتبة Font Awesome المستخدمة في الواجهة، والمدرجة منفصلة أدناه. |
 
-وفق [شروط Google العامة](https://policies.google.com/terms) و[شروط Gemini API الإضافية](https://ai.google.dev/gemini-api/terms)، لا تدّعي Google ملكية المحتوى المولّد، لكن شروط API تنبه أيضًا إلى إمكان توليد محتوى مماثل لمستخدمين آخرين وتحمل المستخدم مسؤولية استخدام المخرجات. لا نعرف من المستودع هل تم التوليد عبر تطبيق Gemini أو AI Studio أو API، ولا الحساب/الخطة أو إصدار النموذج؛ لذلك لا يُعد هذا السجل رأيًا قانونيًا أو إثباتًا لحق إعادة ترخيص كل ملف لمشتري القالب.
+تسمح [رخصة Unsplash](https://unsplash.com/license) بتنزيل الصور ونسخها وتعديلها وتوزيعها واستخدامها تجاريًا دون مقابل أو إسناد، مع منع تجميعها لإعادة إنشاء خدمة صور منافسة. هذا الترخيص يغطي حقوق الصورة ضمن شروطه، ولا يمنح تلقائيًا حقوق العلامات التجارية أو الأشخاص أو الممتلكات التي قد تظهر فيها. صور الكتالوج هنا للبيانات التجريبية فقط؛ لا تستخدمها لتمثيل منتج حقيقي أو توحي بموافقة علامة تجارية، واستبدلها بصور المنتج الفعلي قبل نشر متجر حقيقي.
 
 ## الخطوط
 

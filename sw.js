@@ -1,4 +1,4 @@
-const CACHE_NAME = 'myshop-pwa-v86ffca03d2';
+const CACHE_NAME = 'myshop-pwa-v34e81483c8';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -39,6 +39,23 @@ const STATIC_ASSETS = [
   '/locales/fr.json',
   '/locales/en.json',
   '/manifest.json'
+];
+const CACHE_VERSION_ASSETS = [
+  '/images/hero-banner.jpg',
+  '/images/hero-banner.webp',
+  '/images/prod_classic_watch.jpg',
+  '/images/prod_cookware.jpg',
+  '/images/prod_linen_shirt.jpg',
+  '/images/prod_linen_shirt_navy.jpg',
+  '/images/prod_linen_shirt_white.jpg',
+  '/images/prod_perfume.jpg',
+  '/images/prod_sneakers.jpg',
+  '/images/prod_sneakers_black.jpg',
+  '/images/prod_summer_dress.jpg',
+  '/images/prod_summer_dress_coral.jpg',
+  '/images/christopher-gower-m_HRfLhgABo-unsplash.jpg',
+  '/images/samsung-memory-RZM2cE0lx0Y-unsplash.jpg',
+  '/images/product-placeholder.jpg'
 ];
 
 // Install Event

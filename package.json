@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
+    "dev": "node --watch server.js",
     "build:css": "node scripts/build-css.js",
     "build:sw": "node scripts/build-sw-hash.js",
     "build": "npm run build:css && node scripts/build-sw-hash.js && node scripts/validate.js",
@@ -46,7 +46,6 @@
     "eslint": "^10.9.0",
     "globals": "^17.11.0",
     "lightningcss": "^1.33.0",
-    "nodemon": "^3.1.14",
     "playwright": "^1.64.0"
   }
 }

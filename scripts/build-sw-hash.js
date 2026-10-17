@@ -1,6 +1,6 @@
 /**
  * Service Worker Cache Version Hash Generator
- * Automatically generates a deterministic cache version hash from the contents of STATIC_ASSETS.
+ * Generates a cache version hash from precached assets and assets that are cache-versioned only.
  */
 const fs = require('fs');
 const path = require('path');
@@ -17,17 +17,22 @@ function generateSwCacheHash() {
     const isCrlf = swContent.includes('\r\n');
     const eol = isCrlf ? '\r\n' : '\n';
 
-    // Extract STATIC_ASSETS array from sw.js
-    const match = swContent.match(/const\s+STATIC_ASSETS\s*=\s*\[([\s\S]*?)\];/);
-    if (!match) {
-        console.error('❌ Could not parse STATIC_ASSETS in sw.js');
-        process.exit(1);
-    }
+    const extractAssets = (name) => {
+        const match = swContent.match(new RegExp(`const\\s+${name}\\s*=\\s*\\[([\\s\\S]*?)\\];`));
+        if (!match) {
+            console.error(`❌ Could not parse ${name} in sw.js`);
+            process.exit(1);
+        }
 
-    const assetEntries = match[1]
-        .split(',')
-        .map(s => s.trim().replace(/^['"]|['"]$/g, ''))
-        .filter(s => s.length > 0);
+        return match[1]
+            .split(',')
+            .map(s => s.trim().replace(/^['"]|['"]$/g, ''))
+            .filter(s => s.length > 0);
+    };
+    const assetEntries = [
+        ...extractAssets('STATIC_ASSETS'),
+        ...extractAssets('CACHE_VERSION_ASSETS')
+    ];
 
     const hash = crypto.createHash('sha256');
     let hashedCount = 0;
@@ -54,7 +59,7 @@ function generateSwCacheHash() {
     );
 
     fs.writeFileSync(swPath, updatedContent.split(/\r?\n/).join(eol), 'utf8');
-    console.log(`✔ Generated SW cache name: ${newCacheName} (hashed ${hashedCount} cached assets)`);
+    console.log(`✔ Generated SW cache name: ${newCacheName} (hashed ${hashedCount} cache/version assets)`);
 }
 
 generateSwCacheHash();
