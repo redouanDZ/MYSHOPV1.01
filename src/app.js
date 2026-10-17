@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
 const path = require('path');
 const fs = require('fs');
 const helmet = require('helmet');
@@ -14,6 +15,14 @@ const app = express();
 
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
+app.use(compression({
+    level: 6,
+    threshold: 1024,
+    filter: (req, res) => {
+        if (req.headers['x-no-compression']) return false;
+        return compression.filter(req, res);
+    }
+}));
 
 // Security Headers
 // CSP: the storefront and admin no longer rely on inline scripts or inline event handlers.
@@ -65,6 +74,20 @@ if (!CSP_STRICT && process.env.CSP_REPORT_ONLY !== 'true') {
 
 app.use((req, res, next) => {
     res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    next();
+});
+
+app.use((req, res, next) => {
+    const pathName = req.path || '/';
+    if (pathName === '/' || pathName.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+    } else if (/\.(?:js|css|png|jpe?g|webp|svg|ico|woff2?|ttf|map|json)$/i.test(pathName)) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
     next();
 });
 
@@ -175,15 +198,16 @@ app.get('/health', (req, res) => {
 // Static Files & Assets
 const rootDir = path.join(__dirname, '..');
 
-// Only serve these specific directories statically
-app.use('/admin', express.static(path.join(rootDir, 'admin')));
-app.use('/css', express.static(path.join(rootDir, 'css')));
-app.use('/js', express.static(path.join(rootDir, 'js')));
-app.use('/images', express.static(path.join(rootDir, 'images')));
-app.use('/locales', express.static(path.join(rootDir, 'locales')));
-app.use('/documentation', express.static(path.join(rootDir, 'documentation')));
-app.use('/fonts', express.static(path.join(rootDir, 'fonts')));
-app.use('/vendor', express.static(path.join(rootDir, 'vendor')));
+// Only serve these specific directories statically with long-lived cache headers
+const staticOptions = { maxAge: 31536000000, immutable: true, etag: true, lastModified: true };
+app.use('/admin', express.static(path.join(rootDir, 'admin'), staticOptions));
+app.use('/css', express.static(path.join(rootDir, 'css'), staticOptions));
+app.use('/js', express.static(path.join(rootDir, 'js'), staticOptions));
+app.use('/images', express.static(path.join(rootDir, 'images'), staticOptions));
+app.use('/locales', express.static(path.join(rootDir, 'locales'), staticOptions));
+app.use('/documentation', express.static(path.join(rootDir, 'documentation'), staticOptions));
+app.use('/fonts', express.static(path.join(rootDir, 'fonts'), staticOptions));
+app.use('/vendor', express.static(path.join(rootDir, 'vendor'), staticOptions));
 
 // Base URL used in SEO tags / sitemap / robots (never a hardcoded placeholder domain)
 const getBaseUrl = (req) => {

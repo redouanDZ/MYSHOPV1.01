@@ -31,10 +31,17 @@ function secureCompare(a, b) {
 }
 
 function getCookie(req, name) {
-    const cookieHeader = req.headers.cookie || '';
+    if (!req || !req.headers || typeof req.headers !== 'object') return null;
+    const cookieHeader = typeof req.headers.cookie === 'string' ? req.headers.cookie : '';
+    if (!cookieHeader) return null;
     const match = cookieHeader.split(';').map(part => part.trim()).find(part => part.startsWith(`${name}=`));
     if (!match) return null;
-    return decodeURIComponent(match.substring(name.length + 1));
+    const rawValue = match.substring(name.length + 1);
+    try {
+        return decodeURIComponent(rawValue);
+    } catch (_) {
+        return rawValue;
+    }
 }
 
 function setCookie(res, name, value, options = {}) {
@@ -192,20 +199,29 @@ async function revokeAllUserSessions(userId) {
 function getAccessTokenFromRequest(req) {
     const cookieToken = getCookie(req, 'access_token');
     if (cookieToken) return cookieToken;
-    const authHeader = req.headers.authorization || '';
-    if (authHeader.startsWith('Bearer ')) {
-        return authHeader.substring(7).trim();
+
+    const headers = req && req.headers ? req.headers : {};
+    const authHeader = Array.isArray(headers.authorization)
+        ? headers.authorization.find(value => typeof value === 'string' && value.trim()) || ''
+        : (typeof headers.authorization === 'string' ? headers.authorization : '');
+    const value = String(authHeader || '').trim();
+    if (!value) return null;
+    if (value.toLowerCase().startsWith('bearer ')) {
+        return value.substring(7).trim();
     }
     return null;
 }
 
 async function parseUserFromReq(req) {
     const token = getAccessTokenFromRequest(req);
-    if (!token) return null;
+    if (!token || typeof token !== 'string') return null;
+
+    const normalizedToken = token.trim();
+    if (!normalizedToken || /^token_user_/i.test(normalizedToken)) return null;
 
     try {
-        const decoded = jwt.verify(token, config.JWT_SECRET);
-        if (!decoded || !decoded.id || !decoded.sessionId) return null;
+        const decoded = jwt.verify(normalizedToken, config.JWT_SECRET);
+        if (!decoded || typeof decoded !== 'object' || !decoded.id || !decoded.sessionId) return null;
 
         const now = Date.now();
         let session = activeSessions.get(decoded.sessionId);

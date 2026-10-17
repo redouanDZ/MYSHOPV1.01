@@ -1,7 +1,10 @@
 const { getCookie, secureCompare } = require('../utils/tokenUtils');
 
 function getCsrfTokenFromRequest(req) {
-    return req.get('x-csrf-token') || (req.body && req.body.csrfToken) || '';
+    if (!req || typeof req !== 'object') return '';
+    const headerValue = req.get ? req.get('x-csrf-token') : undefined;
+    if (headerValue) return headerValue;
+    return (req.body && req.body.csrfToken) || '';
 }
 
 function requireCsrf(req, res, next) {

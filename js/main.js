@@ -1084,6 +1084,90 @@ function bindSmartHeader(header) {
   }, { passive: true });
 }
 
+function optimizeImageLoading() {
+  const scheduleIdle = (callback) => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(callback, { timeout: 250 });
+      return;
+    }
+    setTimeout(callback, 80);
+  };
+
+  const setSmartImageAttributes = (img) => {
+    if (!img || img.dataset.performanceReady === 'true') return;
+
+    if (!img.hasAttribute('loading')) {
+      img.setAttribute('loading', 'lazy');
+    }
+
+    if (!img.hasAttribute('decoding')) {
+      img.setAttribute('decoding', 'async');
+    }
+
+    if (!img.hasAttribute('fetchpriority') && !img.closest('header') && !img.closest('nav') && !img.closest('.hero')) {
+      img.setAttribute('fetchpriority', 'low');
+    }
+
+    if (img.closest('header') || img.closest('nav') || img.closest('.hero')) {
+      img.setAttribute('loading', 'eager');
+      img.setAttribute('fetchpriority', 'high');
+    }
+
+    img.dataset.performanceReady = 'true';
+  };
+
+  const processImages = () => {
+    document.querySelectorAll('img').forEach((img) => {
+      setSmartImageAttributes(img);
+    });
+
+    if (!('IntersectionObserver' in window)) return;
+
+    const lazyImages = document.querySelectorAll('img:not([loading="eager"])');
+    if (!lazyImages.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const img = entry.target;
+        if (!img.dataset.loaded) {
+          img.setAttribute('loading', 'lazy');
+          img.dataset.loaded = 'true';
+        }
+        observer.unobserve(img);
+      });
+    }, { rootMargin: '180px 0px', threshold: 0.01 });
+
+    lazyImages.forEach((img) => {
+      if (img.closest('header') || img.closest('nav') || img.closest('.hero')) {
+        img.setAttribute('loading', 'eager');
+        img.setAttribute('fetchpriority', 'high');
+        return;
+      }
+      observer.observe(img);
+    });
+  };
+
+  scheduleIdle(() => {
+    processImages();
+  });
+
+  if (document.body) {
+    const mutationObserver = new MutationObserver((mutations) => {
+      const hasNewImages = mutations.some((mutation) => Array.from(mutation.addedNodes).some((node) => {
+        if (!(node instanceof Element)) return false;
+        return node.matches?.('img') || node.querySelector?.('img');
+      }));
+
+      if (hasNewImages) {
+        scheduleIdle(() => processImages());
+      }
+    });
+
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+  }
+}
+
 // Page Initialization
 document.addEventListener('DOMContentLoaded', () => {
   try {
@@ -1095,6 +1179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   } catch(e) {}
 
+  optimizeImageLoading();
   initTheme();
   setupThemeToggleButtons();
   initMobileNavigation();

@@ -143,6 +143,18 @@ body {
     overflow-x: hidden;
 }
 
+section,
+.product-card,
+.category-card,
+.trust-card,
+.feature-card,
+.collection-card,
+.newsletter-section,
+.testimonials-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 400px 900px;
+}
+
 body.theme-transitioning {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
